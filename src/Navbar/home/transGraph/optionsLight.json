@@ -1,0 +1,45 @@
+{
+    "title": "Transactions activity",
+    "curveType": "function",
+    "titleTextStyle": {
+        "color": "#333",
+        "fontSize": 18
+    },
+    "legend": {
+        "position": "bottom",
+        "textStyle": {
+            "color": "#333",
+            "fontSize": 14
+        }
+    },
+    "hAxis": {
+        "gridlines": {
+            "color": "#C1C2C5",
+            "minSpacing": 20
+        },
+        "textStyle": {
+            "color": "#333",
+            "fontSize": 12
+        }
+    },
+    "vAxis": {
+        "gridlines": {
+            "color": "#C1C2C5",
+            "minSpacing": 20
+        },
+        "viewWindow": { "min": 0 },
+        "textStyle": {
+            "color": "#333",
+            "fontSize": 12
+        }
+    },
+    "series": {
+        "0": {
+            "color": "#3498db"
+        },
+        "1": {
+            "color": "#e74c3c"
+        }
+    },
+    "backgroundColor": "transparent"
+}
