@@ -49,10 +49,20 @@ export default function UserButton({
     ...others
 }: UserButtonProps) {
     const { classes } = useStyles();
-    const { toggleColorScheme, colorScheme } = useMantineColorScheme();
+    const { toggleColorScheme } = useMantineColorScheme();
 
     return (
-        <Menu shadow="md" width={200}>
+        <Menu
+            shadow="md"
+            width={200}
+            position="bottom-start"
+            withArrow
+            styles={{
+                dropdown: {
+                    marginLeft: "2em",
+                },
+            }}
+        >
             <Menu.Target>
                 <UnstyledButton className={classes.user} {...others}>
                     <Group>
@@ -93,6 +103,7 @@ export default function UserButton({
                 <Menu.Divider />
                 <Menu.Item
                     icon={<IconLogout size={18} />}
+                    color="red"
                     onClick={() => {
                         signOut(auth);
                     }}

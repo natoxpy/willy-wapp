@@ -1,6 +1,5 @@
 {
     "title": "Transactions activity",
-    "curveType": "function",
     "titleTextStyle": {
         "color": "#333",
         "fontSize": 18
@@ -9,7 +8,7 @@
         "position": "bottom",
         "textStyle": {
             "color": "#333",
-            "fontSize": 14
+            "fontSize": 10
         }
     },
     "hAxis": {
@@ -41,5 +40,9 @@
             "color": "#e74c3c"
         }
     },
-    "backgroundColor": "transparent"
+    "backgroundColor": "transparent",
+    "animation": {
+        "duration": 200,
+        "easing": "out"
+    }
 }

@@ -23,6 +23,8 @@ import {
     Flex,
     Space,
     Burger,
+    ScrollArea,
+    Drawer,
 } from "@mantine/core";
 import {
     IconSearch,
@@ -80,6 +82,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     mainLink: {
+        touchAction: "manipulation",
         display: "flex",
         alignItems: "center",
         width: "100%",
@@ -167,11 +170,13 @@ const links = [
 const collections = [
     {
         emoji: "$10",
-        label: "For ps4 sd as",
+        label: "Untitled",
+        id: "1",
     },
     {
         emoji: "$2000",
-        label: "For ps6",
+        label: "Untitled",
+        id: "2",
     },
 ];
 
@@ -183,17 +188,35 @@ interface NavbarProps {
     extended: {
         extended: boolean;
         extendedToggle: () => void;
+        navbarOpen: () => void;
+        navbarClose: () => void;
     };
     responsivity: {
         responsive: boolean;
         triggerSize: number;
     };
+    drawers: {
+        addMoney: {
+            active: boolean;
+            close: () => void;
+            open: () => void;
+        };
+        createBudget: {
+            active: boolean;
+            close: () => void;
+            open: () => void;
+        };
+    };
+
+    headerTitle: string;
 }
 
 export function NavBar({
     pages: { page, setPage },
-    extended: { extended, extendedToggle },
+    extended: { extended, extendedToggle, navbarOpen, navbarClose },
     responsivity: { responsive, triggerSize },
+    drawers: { addMoney, createBudget },
+    headerTitle,
 }: NavbarProps) {
     const { classes } = useStyles();
 
@@ -202,6 +225,9 @@ export function NavBar({
             key={link.label}
             className={classes.mainLink}
             onClick={() => setPage(link.page)}
+            onMouseUp={() => setPage(link.page)}
+            pb={15}
+            pt={15}
             sx={(theme) => ({
                 background:
                     page == link.page
@@ -210,6 +236,7 @@ export function NavBar({
                             : theme.colors.gray[4]
                         : "transparent",
                 "&:hover": {
+                    color: "inherit",
                     backgroundColor:
                         theme.colorScheme === "dark"
                             ? theme.colors.dark[4]
@@ -230,19 +257,20 @@ export function NavBar({
 
     const collectionLinks = collections.map((collection) => {
         return (
-            <Container
-                key={collection.label}
-                className={classes.collectionLink}
-            >
+            <Container key={collection.id} className={classes.collectionLink}>
                 <Container w="20%">
-                    <span style={{ marginRight: rem(9), fontSize: rem(16) }}>
+                    <Text
+                        style={{ marginRight: rem(9), fontSize: rem(16) }}
+                        color="green"
+                        p={0}
+                    >
                         {collection.emoji}
-                    </span>
+                    </Text>
                 </Container>
                 <Container w="80%">{collection.label}</Container>
-                <Container>
+                {/* <Container>
                     <Badge>SAVINGS</Badge>
-                </Container>
+                </Container> */}
             </Container>
         );
     });
@@ -254,15 +282,16 @@ export function NavBar({
         if (loggedin) setLoading(false);
     }, [loggedin]);
 
-    let moveLength = 329;
+    let MaxMoveLength = 329;
 
     return (
-        <animated.div
+        <Box
             onClick={() => (extended ? null : extendedToggle())}
+            // w={extended ? MaxMoveLength : MaxMoveLength - currentMove + "px"}
             style={{
-                width: extended ? "330px" : "0px",
                 transition: "width 0.2s",
-                zIndex: 9999,
+                width: extended ? MaxMoveLength + "px" : "0px",
+                overflow: "hidden",
             }}
         >
             <Flex
@@ -270,7 +299,8 @@ export function NavBar({
                     position: "absolute",
                     transition: "left 0.2s",
                 })}
-                left={extended ? 0 : -moveLength}
+                // left={extended ? 0 : -currentMove}
+                left={extended ? 0 : -MaxMoveLength}
             >
                 <Navbar
                     w={330}
@@ -278,12 +308,15 @@ export function NavBar({
                         opacity: extended ? 1 : 0.2,
                         transition: "opacity 0.2s",
                         pointerEvents: responsive && !extended ? "none" : "all",
+                        overflowY: "auto",
+                        overflowX: "hidden",
                     })}
                     p="md"
                     pt={0}
+                    h="100vh"
                     className={classes.navbar}
                 >
-                    <LoadingOverlay visible={loading} overlayBlur={8} />
+                    {/* <LoadingOverlay visible={loading} overlayBlur={8} /> */}
                     <Navbar.Section
                         className={classes.section}
                         sx={(theme) => ({
@@ -324,40 +357,69 @@ export function NavBar({
                                 </Accordion.Control>
                                 <Accordion.Panel>
                                     <NavLink
+                                        unselectable="off"
                                         label="Add money"
+                                        onClick={() => {
+                                            addMoney.open();
+                                            console.log("132");
+                                        }}
+                                        pb={15}
+                                        pt={15}
                                         rightSection={
                                             <IconChevronRight
                                                 size="0.8rem"
                                                 stroke={1.5}
                                             />
                                         }
+                                        sx={(theme) => ({
+                                            borderRadius: theme.radius.sm,
+                                        })}
                                     />
                                     <NavLink
+                                        unselectable="off"
                                         label="Do Transaction"
+                                        pb={15}
+                                        pt={15}
                                         rightSection={
                                             <IconChevronRight
                                                 size="0.8rem"
                                                 stroke={1.5}
                                             />
                                         }
+                                        sx={(theme) => ({
+                                            borderRadius: theme.radius.sm,
+                                        })}
                                     />
                                     <NavLink
+                                        unselectable="off"
                                         label="Create Budget"
+                                        pb={15}
+                                        pt={15}
+                                        onClick={() => createBudget.open()}
                                         rightSection={
                                             <IconChevronRight
                                                 size="0.8rem"
                                                 stroke={1.5}
                                             />
                                         }
+                                        sx={(theme) => ({
+                                            borderRadius: theme.radius.sm,
+                                        })}
                                     />
                                     <NavLink
+                                        unselectable="off"
                                         label="Create Goal"
+                                        pb={15}
+                                        pt={15}
                                         rightSection={
                                             <IconChevronRight
                                                 size="0.8rem"
                                                 stroke={1.5}
                                             />
                                         }
+                                        sx={(theme) => ({
+                                            borderRadius: theme.radius.sm,
+                                        })}
                                     />
                                 </Accordion.Panel>
                             </Accordion.Item>
@@ -414,20 +476,17 @@ export function NavBar({
                         </div>
                     </Navbar.Section>
                 </Navbar>
-
                 <Box
                     onClick={() => {
                         responsive && extendedToggle();
                     }}
                     sx={() => ({
-                        // outline: "2px solid gray",
-                        zIndex: 9999,
+                        zIndex: 1000,
                         visibility: "hidden",
-                        position: "fixed",
-                        left: !extended ? 0 : moveLength,
+                        position: "absolute",
+                        left: MaxMoveLength + "px",
                         transition: "left 0.2s",
-                        top: "10px",
-                        height: "100vh",
+                        top: "0px",
                         [`@media (max-width: ${triggerSize}px)`]: {
                             visibility: "visible",
                         },
@@ -435,20 +494,43 @@ export function NavBar({
                 >
                     <Container
                         sx={(theme) => ({
-                            border: "1px solid" + theme.colors.gray[8],
+                            borderBottom:
+                                "1px solid " +
+                                (theme.colorScheme == "dark"
+                                    ? theme.colors.gray[8]
+                                    : theme.colors.gray[3]),
                             borderLeft: "0px",
-                            opacity: "0.7",
+                            opacity: extended ? "0.7" : "1",
                             borderTopRightRadius: "5px",
                             borderBottomRightRadius: "5px",
-                            // background: "red",
                         })}
                         p={0}
                         m={0}
                     >
-                        <Burger opened={extended} />
+                        <Group
+                            position="left"
+                            w="100vw"
+                            pl={5}
+                            pb={5}
+                            pt={5}
+                            sx={(theme) => ({
+                                background:
+                                    theme.colorScheme == "dark"
+                                        ? theme.colors.dark[8]
+                                        : theme.colors.gray[2],
+                            })}
+                        >
+                            <Burger opened={extended} />
+
+                            <Center>
+                                <Text size="xl" weight={700}>
+                                    {headerTitle}
+                                </Text>
+                            </Center>
+                        </Group>
                     </Container>
                 </Box>
             </Flex>
-        </animated.div>
+        </Box>
     );
 }

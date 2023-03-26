@@ -1,14 +1,9 @@
-import { useUser } from "@/providers/userAuthProvider";
 import {
-    Badge,
     Box,
-    Card,
     Container,
     Divider,
     Flex,
     Grid,
-    Group,
-    MediaQuery,
     SegmentedControl,
     Space,
     Text,
@@ -19,11 +14,24 @@ import {
 import { TransactionsGraph } from "./home/transGraph/transGraph";
 import { LastestTransactions } from "./home/ActivityHistory/LastestTransactions";
 import { LastestMoneyAdded } from "./home/ActivityHistory/LastestMoneyAdded";
+import currency from "currency.js";
+import { MoneyTransactionDocType } from "@/collections/types";
+import { useRef, useState } from "react";
 
-function Header() {
+function Header({
+    totalMoney,
+    activityTimeRange,
+    setActivityTimeRange,
+}: {
+    totalMoney: number;
+    activityTimeRange: "week" | "month";
+    setActivityTimeRange: React.Dispatch<
+        React.SetStateAction<"week" | "month">
+    >;
+}) {
     return (
         <>
-            <Flex>
+            <Flex justify={"center"}>
                 <Grid>
                     <Grid.Col>
                         <Space mt="xl" h={10}></Space>
@@ -31,9 +39,14 @@ function Header() {
                             // bg={"red"}
                             justify={"center"}
                         >
-                            <Text size={50} weight={700}>
-                                $70.00
-                            </Text>
+                            <Box>
+                                <Text size={50} weight={700} align="center">
+                                    {currency(totalMoney).format()}
+                                </Text>
+                                <Text size={"sm"} align="center">
+                                    WELCOME BACK, USER!
+                                </Text>
+                            </Box>
                         </Flex>
                     </Grid.Col>
                     <Space w="md" />
@@ -41,8 +54,11 @@ function Header() {
                         <Flex align={"center"} justify={"center"}>
                             <Box>
                                 <SegmentedControl
+                                    value={activityTimeRange}
+                                    onChange={setActivityTimeRange as any}
+                                    radius="md"
+                                    size="md"
                                     data={[
-                                        { label: "Day", value: "day" },
                                         { label: "Week", value: "week" },
                                         { label: "Month", value: "month" },
                                     ]}
@@ -56,10 +72,26 @@ function Header() {
     );
 }
 
-export default function Home() {
-    let user = useUser();
+interface Props {
+    walletMoney: number;
+    transactions: any;
+    moneyTransactions: Array<MoneyTransactionDocType>;
+    setMoneyTransactions: React.Dispatch<
+        React.SetStateAction<Array<MoneyTransactionDocType>>
+    >;
+    setWalleyMoney: React.Dispatch<React.SetStateAction<number>>;
+}
 
+export default function Home({
+    walletMoney,
+    moneyTransactions,
+    setMoneyTransactions,
+    setWalleyMoney,
+}: Props) {
     let { breakpoints, fontSizes } = useMantineTheme();
+    const [activityTimeRange, setActivityTimeRange] = useState<
+        "week" | "month"
+    >("week");
 
     return (
         <Container
@@ -89,15 +121,15 @@ export default function Home() {
                         [`@media (max-width: ${500}px)`]: {
                             minWidth: "100%",
                             width: "100%",
-                            // background: "red",
                         },
                     })}
-                    // bg={"green"}
                 >
-                    <Box
-                    //  bg={"blue"}
-                    >
-                        <Header />
+                    <Box>
+                        <Header
+                            totalMoney={walletMoney}
+                            activityTimeRange={activityTimeRange}
+                            setActivityTimeRange={setActivityTimeRange}
+                        />
 
                         <Divider mb="lg" />
 
@@ -107,7 +139,14 @@ export default function Home() {
                                     <LastestTransactions />
                                 </Grid.Col>
                                 <Grid.Col>
-                                    <LastestMoneyAdded />
+                                    <LastestMoneyAdded
+                                        setWalletMoney={setWalleyMoney}
+                                        walletMoney={walletMoney}
+                                        transactions={moneyTransactions}
+                                        setMoneyTransactions={
+                                            setMoneyTransactions
+                                        }
+                                    />
                                 </Grid.Col>
                             </Grid>
                         </Flex>
@@ -123,10 +162,11 @@ export default function Home() {
                         },
                     }}
                 >
-                    <Box
-                    //  bg="gray"
-                    >
-                        <TransactionsGraph />
+                    <Box>
+                        <TransactionsGraph
+                            activityType={activityTimeRange}
+                            moneyTransactions={moneyTransactions}
+                        />
                     </Box>
                 </Grid.Col>
             </Grid>

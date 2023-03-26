@@ -4,9 +4,14 @@ import { useEffect, useState } from "react";
 import { db } from "@/firebase.config";
 import { getDoc, getDocs, collection, query, where } from "firebase/firestore";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function Home() {
     let router = useRouter();
 
-    return <div> </div>;
+    return (
+        <div>
+            <Link href="/login">Login</Link>
+        </div>
+    );
 }

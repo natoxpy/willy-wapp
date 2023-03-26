@@ -9,6 +9,9 @@ import { UserAuthProvider } from "../providers/userAuthProvider";
 import { useEffect, useState } from "react";
 import { serialize } from "cookie";
 import Head from "next/head";
+import { ModalsProvider } from "@mantine/modals";
+import { Notifications } from "@mantine/notifications";
+import { DatesProvider } from "@mantine/dates";
 
 function App({ Component, pageProps }: AppProps) {
     const [colorScheme, setColorScheme] = useState<ColorScheme>(
@@ -24,35 +27,59 @@ function App({ Component, pageProps }: AppProps) {
     }, [colorScheme]);
 
     return (
-        <ColorSchemeProvider
-            colorScheme={colorScheme}
-            toggleColorScheme={toggleColorScheme}
-        >
+        <div style={{}}>
             <Head>
+                <link
+                    rel="shortcut icon"
+                    href="favicon.ico"
+                    type="image/x-icon"
+                />
+                <link rel="manifest" href="/manifest.json" />
                 <meta
                     name="viewport"
                     content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
                 />
+                <meta
+                    name="viewport"
+                    content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0"
+                />
             </Head>
-            <MantineProvider
-                withGlobalStyles
-                withNormalizeCSS
-                theme={{
-                    colorScheme,
-                    breakpoints: {
-                        xs: "30em",
-                        sm: "48em",
-                        md: "64em",
-                        lg: "74em",
-                        xl: "90em",
-                    },
-                }}
+
+            <ColorSchemeProvider
+                colorScheme={colorScheme}
+                toggleColorScheme={toggleColorScheme}
             >
                 <UserAuthProvider>
-                    <Component {...pageProps} />
+                    <MantineProvider
+                        withGlobalStyles
+                        withNormalizeCSS
+                        theme={{
+                            colorScheme,
+                            breakpoints: {
+                                xs: "30em",
+                                sm: "48em",
+                                md: "64em",
+                                lg: "74em",
+                                xl: "90em",
+                            },
+                        }}
+                    >
+                        <Notifications zIndex={999999} position="top-right" />
+
+                        <ModalsProvider>
+                            <DatesProvider
+                                settings={{
+                                    locale: "en-US",
+                                    weekendDays: [],
+                                }}
+                            >
+                                <Component {...pageProps} />
+                            </DatesProvider>
+                        </ModalsProvider>
+                    </MantineProvider>
                 </UserAuthProvider>
-            </MantineProvider>
-        </ColorSchemeProvider>
+            </ColorSchemeProvider>
+        </div>
     );
 }
 

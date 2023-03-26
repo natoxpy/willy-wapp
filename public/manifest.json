@@ -1,10 +1,11 @@
 {
     "theme_color": "#000000",
     "background_color": "#b02729",
-    "display": "fullscreen",
+    "display": "standalone",
     "scope": "/",
-    "start_url": "/dashboard",
+    "start_url": "/dashboard/home",
     "name": "GPayApp",
+    "orientation": "portrait",
     "short_name": "GPay",
     "icons": [
         {
