@@ -37,14 +37,18 @@ interface RenderCardProps {
     tags: Array<string>;
     progress: number;
     goal: number;
-    expireDate: string | undefined;
+    expireDate: string | undefined | "no-limit";
+    openView: (id: string) => void;
+    id: string;
 }
 
 export function RenderCard({
     expireDate,
+    id,
     goal,
     progress,
     title,
+    openView,
 }: RenderCardProps) {
     return (
         <Card
@@ -58,20 +62,24 @@ export function RenderCard({
                         : theme.white,
             })}
         >
-            <Group grow>
+            <Group position="apart">
                 <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
                     {title}
                 </Text>
-                {expireDate ? (
+                {expireDate && expireDate != "no-limit" ? (
                     <Badge color="cyan">ends {expireDate} </Badge>
-                ) : null}
+                ) : expireDate == "no-limit" ? (
+                    <Badge color="teal">No time limit</Badge>
+                ) : (
+                    <Badge color="red">Ended</Badge>
+                )}
             </Group>
             <Space h={16} />
             <Group position="apart">
                 <Text fz="lg" fw={500}>
                     {currency(progress).format()} / {currency(goal).format()}
                 </Text>
-                <Button>View</Button>
+                <Button onClick={() => openView(id)}>View</Button>
             </Group>
             <Progress
                 value={(progress / goal) * 100}
@@ -198,7 +206,12 @@ function ApplyFilter(goal: GoalDocType, filterProps: FilterProps) {
     return true;
 }
 
-export default function GoalsPage({ goals }: { goals: GoalDocType[] }) {
+interface GoalsPageProps {
+    goals: GoalDocType[];
+    openView: (id: string) => void;
+}
+
+export default function GoalsPage({ goals, openView }: GoalsPageProps) {
     let { breakpoints, fontSizes } = useMantineTheme();
 
     let [filterTags, setFilterTags] = useState<Array<string>>([]);
@@ -248,22 +261,31 @@ export default function GoalsPage({ goals }: { goals: GoalDocType[] }) {
         return goals.length > 0 ? (
             goals.map((goal) => (
                 <RenderCard
+                    id={goal.id}
                     description={goal.description}
+                    // expireDate={
+                    //     goal.expirationDate
+                    //         ? dayjs(goal.expirationDate).fromNow()
+                    //         : undefined
+                    // }
                     expireDate={
-                        goal.expirationDate
-                            ? dayjs(goal.expirationDate).fromNow()
-                            : undefined
+                        goal.expirationDate != undefined
+                            ? dayjs(goal.expirationDate).isBefore(dayjs())
+                                ? undefined
+                                : dayjs(goal.expirationDate).fromNow()
+                            : "no-limit"
                     }
                     goal={goal.targetAmount}
                     progress={goal.progression}
                     title={goal.title}
                     tags={goal.tags}
                     key={goal.id}
+                    openView={openView}
                 />
             ))
         ) : (
             <Center>
-                <Text>No Goals found</Text>
+                <Text>No goals found</Text>
             </Center>
         );
     };

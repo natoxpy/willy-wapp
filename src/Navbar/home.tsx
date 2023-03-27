@@ -15,7 +15,10 @@ import { TransactionsGraph } from "./home/transGraph/transGraph";
 import { LastestTransactions } from "./home/ActivityHistory/LastestTransactions";
 import { LastestMoneyAdded } from "./home/ActivityHistory/LastestMoneyAdded";
 import currency from "currency.js";
-import { MoneyTransactionDocType } from "@/collections/types";
+import {
+    MoneyTransactionDocType,
+    TransactionDocType,
+} from "@/collections/types";
 import { useRef, useState } from "react";
 
 function Header({
@@ -74,7 +77,7 @@ function Header({
 
 interface Props {
     walletMoney: number;
-    transactions: any;
+    transactions: Array<TransactionDocType>;
     moneyTransactions: Array<MoneyTransactionDocType>;
     setMoneyTransactions: React.Dispatch<
         React.SetStateAction<Array<MoneyTransactionDocType>>
@@ -86,6 +89,7 @@ export default function Home({
     walletMoney,
     moneyTransactions,
     setMoneyTransactions,
+    transactions,
     setWalleyMoney,
 }: Props) {
     let { breakpoints, fontSizes } = useMantineTheme();
@@ -136,7 +140,9 @@ export default function Home({
                         <Flex>
                             <Grid>
                                 <Grid.Col>
-                                    <LastestTransactions />
+                                    <LastestTransactions
+                                        transactions={transactions}
+                                    />
                                 </Grid.Col>
                                 <Grid.Col>
                                     <LastestMoneyAdded
@@ -153,19 +159,19 @@ export default function Home({
                     </Box>
                 </Grid.Col>
                 <Grid.Col
-                    style={{
-                        // minWidth: breakpoints.xs,
-                        // maxWidth: "calc(50vw - 400px)",
-                        // background: "red",
-                        [`@media (max-width: ${breakpoints.lg})`]: {
-                            // minWidth: `100%`,
-                        },
-                    }}
+                    style={
+                        {
+                            // minWidth: breakpoints.xs,
+                            // maxWidth: "calc(50vw - 400px)",
+                            // background: "red",
+                        }
+                    }
                 >
                     <Box>
                         <TransactionsGraph
                             activityType={activityTimeRange}
                             moneyTransactions={moneyTransactions}
+                            transactions={transactions}
                         />
                     </Box>
                 </Grid.Col>

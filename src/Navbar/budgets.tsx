@@ -39,7 +39,8 @@ interface RenderCardProps {
     progress: number;
     budget: number;
     budgetType: "recurrent" | "one-time";
-    expireDate: string;
+    expireDate?: string;
+    openView: () => void;
 }
 
 export function RenderCard({
@@ -50,6 +51,7 @@ export function RenderCard({
     tags,
     title,
     budgetType,
+    openView,
 }: RenderCardProps) {
     return (
         <Card
@@ -70,7 +72,9 @@ export function RenderCard({
                 {budgetType == "recurrent" ? (
                     <Badge color="cyan">resets {expireDate} </Badge>
                 ) : (
-                    <Badge color="red">Expires {expireDate} </Badge>
+                    <Badge color={expireDate ? "blue" : "red"}>
+                        {expireDate ? expireDate : "expired"}
+                    </Badge>
                 )}
             </Group>
             <Space h={16} />
@@ -78,7 +82,7 @@ export function RenderCard({
                 <Text fz="lg" fw={500}>
                     {currency(progress).format()} / {currency(budget).format()}
                 </Text>
-                <Button>View</Button>
+                <Button onClick={() => openView()}>View</Button>
             </Group>
             <Progress
                 value={(progress / budget) * 100}
@@ -205,7 +209,12 @@ function ApplyFilter(budget: BudgetDocType, filterProps: FilterProps) {
     return true;
 }
 
-export default function Budgets({ budgets }: { budgets: BudgetDocType[] }) {
+interface BudgetsProps {
+    budgets: BudgetDocType[];
+    openView: (id: string) => void;
+}
+
+export default function Budgets({ budgets, openView }: BudgetsProps) {
     let { breakpoints, fontSizes } = useMantineTheme();
 
     let [filterTags, setFilterTags] = useState<Array<string>>([]);
@@ -258,11 +267,16 @@ export default function Budgets({ budgets }: { budgets: BudgetDocType[] }) {
                     budget={budget.amount}
                     budgetType={budget.budgetType}
                     description={budget.description}
-                    expireDate={dayjs(budget.expirationDate).fromNow()}
+                    expireDate={
+                        dayjs(budget.expirationDate).isBefore(dayjs())
+                            ? undefined
+                            : dayjs(budget.expirationDate).fromNow()
+                    }
                     progress={budget.progression}
                     title={budget.title}
                     tags={budget.tags}
                     key={budget.id}
+                    openView={() => openView(budget.id)}
                 />
             ))
         ) : (

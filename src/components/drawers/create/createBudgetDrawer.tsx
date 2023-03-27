@@ -45,20 +45,34 @@ export const CreateBudgetDrawer = ({
 }: Props) => {
     const theme = useMantineTheme();
     const [selectedExpirationDate, setSelectedExpirationDate] = useState([
-        dayjs(new Date()).add(1, "day").toDate(),
+        dayjs(new Date()).add(1, "day").startOf("day").toDate(),
         null,
     ]);
 
-    const compareDates = (date: Date, date2: Date) => {
+    let [timeAccordionError, setTimeAccordionError] = useState("");
+
+    const compareDates = (date: Date, date2: Date | undefined) => {
+        if (!date2) return false;
         return date.getDate() == date2.getDate();
     };
 
     const handleChange = (value: any) => {
-        const startDate = dayjs(new Date()).add(1, "day").toDate();
+        const startDate = dayjs(new Date())
+            .add(1, "day")
+            .startOf("day")
+            .toDate();
+
+        setTimeAccordionError("");
 
         if (value[1]) {
             setSelectedExpirationDate([startDate, dayjs(value[1]).toDate()]);
         } else {
+            console.log(value);
+            if (value[0] == null) {
+                setSelectedExpirationDate([startDate, startDate]);
+                return;
+            }
+
             if (compareDates(startDate, value[0])) {
                 setSelectedExpirationDate([value[0], value[0]]);
             } else {
@@ -66,7 +80,6 @@ export const CreateBudgetDrawer = ({
             }
         }
     };
-
     let [tags, setTags] = useState<Array<string>>([]);
     let [processing, setProcessing] = useState(false);
 
@@ -110,9 +123,18 @@ export const CreateBudgetDrawer = ({
                                 ).format()}
                         </Text>
                         <Text size="sm">
+                            This will also remove
+                            {" " +
+                                currency(
+                                    TotalAmountRef.current?.value ?? 0
+                                ).format() +
+                                " "}
+                            from your wallet
+                        </Text>
+                        <Text size="sm">
                             {budgetType == "recurrent" ? (
                                 <Flex justify="left" align="center">
-                                    This will reset every
+                                    This budget will reset every
                                     <Space w={5} />
                                     <Badge>{budgetRecurrentType}</Badge>
                                 </Flex>
@@ -135,7 +157,7 @@ export const CreateBudgetDrawer = ({
                 setProcessing(true);
                 setTimeout(() => {
                     setMucWalletMoney(
-                        mucWalletMoney + Number(TotalAmountRef.current?.value)
+                        mucWalletMoney - Number(TotalAmountRef.current?.value)
                     );
 
                     const getNextDate = (
@@ -160,6 +182,7 @@ export const CreateBudgetDrawer = ({
                         tags: tags,
                         budgetType: budgetType,
                         creationDate: new Date().toISOString(),
+                        budgetRecurrence: budgetRecurrentType,
                         expirationDate:
                             budgetType == "one-time"
                                 ? (selectedExpirationDate[1]?.toISOString() as string)
@@ -209,14 +232,29 @@ export const CreateBudgetDrawer = ({
                         <Accordion>
                             <Accordion.Item value="type">
                                 <Accordion.Control>
-                                    <Text>Type</Text>
+                                    <Text
+                                        sx={(theme) => ({
+                                            color:
+                                                timeAccordionError.trim() != ""
+                                                    ? theme.colorScheme ==
+                                                      "dark"
+                                                        ? theme.colors.red[5]
+                                                        : theme.colors.red[7]
+                                                    : "",
+                                        })}
+                                    >
+                                        Type
+                                    </Text>
                                 </Accordion.Control>
                                 <Divider />
                                 <Accordion.Panel>
                                     <Stack justify="center" align="center">
                                         <Box>
                                             <SegmentedControl
-                                                onChange={setBudgetType as any}
+                                                onChange={(val) => {
+                                                    setTimeAccordionError("");
+                                                    setBudgetType(val as any);
+                                                }}
                                                 value={budgetType}
                                                 radius="md"
                                                 size="sm"
@@ -286,13 +324,14 @@ export const CreateBudgetDrawer = ({
                                 <Accordion.Panel>
                                     <Stack mb="sm">
                                         <TextInput
-                                            label="Tag"
                                             type="text"
+                                            mt={"sm"}
                                             error={tagNameError}
                                             onChange={() => {
                                                 setTagNameError("");
                                             }}
-                                            placeholder="unnamed"
+                                            placeholder="Tag name"
+                                            autoComplete="organization"
                                             ref={tagNameRef}
                                         />
                                         <Button
@@ -448,6 +487,13 @@ export const CreateBudgetDrawer = ({
                                             return;
                                         }
 
+                                        if (mucWalletMoney < intAmount) {
+                                            setAmountError(
+                                                "You do not have enough money in your wallet"
+                                            );
+                                            return;
+                                        }
+
                                         return true;
                                     };
 
@@ -474,18 +520,20 @@ export const CreateBudgetDrawer = ({
                                         return;
                                     }
 
+                                    if (!checkAmount()) return;
+
                                     // check date
 
                                     if (budgetType == "one-time") {
                                         if (selectedExpirationDate[1] == null) {
+                                            setTimeAccordionError("type");
+
                                             setExpirationDateError(
                                                 "Expiration date cannot be empty"
                                             );
                                             return;
                                         }
                                     }
-
-                                    if (!checkAmount()) return;
 
                                     confirmModal();
                                 }}

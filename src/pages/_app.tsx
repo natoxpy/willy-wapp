@@ -4,6 +4,7 @@ import {
     ColorScheme,
     ColorSchemeProvider,
     MantineProvider,
+    createStyles,
 } from "@mantine/core";
 import { UserAuthProvider } from "../providers/userAuthProvider";
 import { useEffect, useState } from "react";
@@ -12,6 +13,10 @@ import Head from "next/head";
 import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { DatesProvider } from "@mantine/dates";
+
+interface MantineTheme {
+    colorScheme: ColorScheme | "gray";
+}
 
 function App({ Component, pageProps }: AppProps) {
     const [colorScheme, setColorScheme] = useState<ColorScheme>(

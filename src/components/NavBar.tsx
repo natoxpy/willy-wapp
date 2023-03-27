@@ -206,6 +206,16 @@ interface NavbarProps {
             close: () => void;
             open: () => void;
         };
+        createGoal: {
+            active: boolean;
+            close: () => void;
+            open: () => void;
+        };
+        doTransaction: {
+            active: boolean;
+            close: () => void;
+            open: () => void;
+        };
     };
 
     headerTitle: string;
@@ -215,7 +225,7 @@ export function NavBar({
     pages: { page, setPage },
     extended: { extended, extendedToggle, navbarOpen, navbarClose },
     responsivity: { responsive, triggerSize },
-    drawers: { addMoney, createBudget },
+    drawers: { addMoney, createBudget, createGoal, doTransaction },
     headerTitle,
 }: NavbarProps) {
     const { classes } = useStyles();
@@ -316,7 +326,6 @@ export function NavBar({
                     h="100vh"
                     className={classes.navbar}
                 >
-                    {/* <LoadingOverlay visible={loading} overlayBlur={8} /> */}
                     <Navbar.Section
                         className={classes.section}
                         sx={(theme) => ({
@@ -346,7 +355,7 @@ export function NavBar({
                             borderBottom: "10px",
                         })}
                     >
-                        <Accordion>
+                        <Accordion defaultValue={"tags"} chevronPosition="left">
                             <Accordion.Item value="tags">
                                 <Accordion.Control>
                                     <Flex>
@@ -361,7 +370,6 @@ export function NavBar({
                                         label="Add money"
                                         onClick={() => {
                                             addMoney.open();
-                                            console.log("132");
                                         }}
                                         pb={15}
                                         pt={15}
@@ -380,6 +388,7 @@ export function NavBar({
                                         label="Do Transaction"
                                         pb={15}
                                         pt={15}
+                                        onClick={() => doTransaction.open()}
                                         rightSection={
                                             <IconChevronRight
                                                 size="0.8rem"
@@ -411,6 +420,7 @@ export function NavBar({
                                         label="Create Goal"
                                         pb={15}
                                         pt={15}
+                                        onClick={() => createGoal.open()}
                                         rightSection={
                                             <IconChevronRight
                                                 size="0.8rem"
@@ -466,13 +476,6 @@ export function NavBar({
                         {/* Transactions list */}
                         <div className={classes.collections}>
                             {collectionLinks}
-                        </div>
-                        <div>
-                            <Container>
-                                <Center>
-                                    <Button>View all transactions</Button>
-                                </Center>
-                            </Container>
                         </div>
                     </Navbar.Section>
                 </Navbar>

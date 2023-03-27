@@ -207,45 +207,43 @@ export const AddMoneyDrawer = ({
                                                     </Badge>
                                                 ) : (
                                                     <List mb="sm">
-                                                        {tags.map(
-                                                            (tag, index) => (
-                                                                <List.Item
-                                                                    key={tag}
-                                                                >
-                                                                    <Badge
-                                                                        rightSection={
-                                                                            <ActionIcon
-                                                                                size="xs"
-                                                                                color="blue"
-                                                                                radius="xl"
-                                                                                variant="transparent"
-                                                                                onClick={() => {
-                                                                                    let newTags =
-                                                                                        tags.filter(
-                                                                                            (
-                                                                                                t
-                                                                                            ) =>
-                                                                                                t !=
-                                                                                                tag
-                                                                                        );
-                                                                                    setTags(
-                                                                                        newTags
+                                                        {tags.map((tag) => (
+                                                            <List.Item
+                                                                key={tag}
+                                                            >
+                                                                <Badge
+                                                                    rightSection={
+                                                                        <ActionIcon
+                                                                            size="xs"
+                                                                            color="blue"
+                                                                            radius="xl"
+                                                                            variant="transparent"
+                                                                            onClick={() => {
+                                                                                let newTags =
+                                                                                    tags.filter(
+                                                                                        (
+                                                                                            t
+                                                                                        ) =>
+                                                                                            t !=
+                                                                                            tag
                                                                                     );
-                                                                                }}
-                                                                            >
-                                                                                <IconX
-                                                                                    size={rem(
-                                                                                        16
-                                                                                    )}
-                                                                                />
-                                                                            </ActionIcon>
-                                                                        }
-                                                                    >
-                                                                        {tag}
-                                                                    </Badge>
-                                                                </List.Item>
-                                                            )
-                                                        )}
+                                                                                setTags(
+                                                                                    newTags
+                                                                                );
+                                                                            }}
+                                                                        >
+                                                                            <IconX
+                                                                                size={rem(
+                                                                                    16
+                                                                                )}
+                                                                            />
+                                                                        </ActionIcon>
+                                                                    }
+                                                                >
+                                                                    {tag}
+                                                                </Badge>
+                                                            </List.Item>
+                                                        ))}
                                                     </List>
                                                 )}
                                             </Accordion.Panel>

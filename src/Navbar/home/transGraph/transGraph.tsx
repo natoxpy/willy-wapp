@@ -5,7 +5,10 @@ import OptionsLight from "./optionsLight.json";
 import OptionsDark from "./optionsDark.json";
 import Day from "dayjs";
 import dayjs from "dayjs";
-import { MoneyTransactionDocType } from "@/collections/types";
+import {
+    MoneyTransactionDocType,
+    TransactionDocType,
+} from "@/collections/types";
 
 function loadTotalData(
     moneyTransactions: MoneyTransactionDocType[],
@@ -26,19 +29,65 @@ function loadTotalData(
     return total;
 }
 
-function loadWeekData(
+function loadTransactionData(
+    type: "budget" | "goal",
+    transactions: Array<TransactionDocType>,
+    day: number,
+    month: number
+) {
+    let total = 0;
+    if (type == "budget") {
+        transactions.forEach((transaction) => {
+            if (transaction.type == "budget") {
+                if (
+                    new Date(transaction.createdAt).getMonth() == month &&
+                    new Date(transaction.createdAt).getDate() == day
+                ) {
+                    total += transaction.amount;
+                }
+            }
+        });
+    } else {
+        transactions.forEach((transaction) => {
+            if (transaction.type == "goal") {
+                if (
+                    new Date(transaction.createdAt).getMonth() == month &&
+                    new Date(transaction.createdAt).getDate() == day
+                ) {
+                    total += transaction.amount;
+                }
+            }
+        });
+    }
+
+    return total;
+}
+
+function loadData(
     activityType: "week" | "month",
-    moneyTransactions: MoneyTransactionDocType[]
+    moneyTransactions: MoneyTransactionDocType[],
+    transactions: TransactionDocType[]
 ): [string, number, number, number][] {
     let data: Array<[string, number, number, number]> = [];
 
     for (let day = activityType == "week" ? 6 : 29; day >= 0; day--) {
         let previousDates = new Date();
         previousDates.setDate(previousDates.getDate() - day);
+
         data.push([
             dayjs(previousDates).format("MMM D"),
-            0,
-            0,
+            loadTransactionData(
+                "goal",
+                transactions,
+                previousDates.getDate(),
+                previousDates.getMonth()
+            ),
+            loadTransactionData(
+                "budget",
+                transactions,
+                previousDates.getDate(),
+                previousDates.getMonth()
+            ),
             loadTotalData(
                 moneyTransactions,
                 previousDates.getMonth(),
@@ -53,9 +102,11 @@ function loadWeekData(
 export function TransactionsGraph({
     activityType,
     moneyTransactions,
+    transactions,
 }: {
     activityType: "week" | "month";
-    moneyTransactions: MoneyTransactionDocType[];
+    moneyTransactions: Array<MoneyTransactionDocType>;
+    transactions: Array<TransactionDocType>;
 }) {
     let { colorScheme } = useMantineColorScheme();
     let [loading, setLoading] = useState(true);
@@ -70,7 +121,7 @@ export function TransactionsGraph({
     }, [colorScheme]);
 
     let header = [["Year", "Saving", "Spending", "Added"]];
-    let data = loadWeekData(activityType, moneyTransactions);
+    let data = loadData(activityType, moneyTransactions, transactions);
 
     return (
         <>

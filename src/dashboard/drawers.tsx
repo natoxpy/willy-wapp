@@ -13,7 +13,7 @@ interface Props {
         active: boolean;
         close: () => void;
         open: () => void;
-        title: string;
+        title: ReactNode;
         body: ReactNode;
     }>;
 }
@@ -41,11 +41,7 @@ export default function Drawers({ drawers, extendedHandler, extended }: Props) {
                         closeButtonProps={{
                             size: "lg",
                         }}
-                        title={
-                            <Text size="1.5rem" weight={"bold"}>
-                                {drawer.title}
-                            </Text>
-                        }
+                        title={drawer.title}
                         size="90%"
                     >
                         {drawer.body}

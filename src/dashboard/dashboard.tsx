@@ -10,6 +10,7 @@ import {
     ScrollArea,
     Loader,
     LoadingOverlay,
+    Badge,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useUser } from "@/providers/userAuthProvider";
@@ -26,16 +27,36 @@ import { useGesture } from "@use-gesture/react";
 const HomePage = dynamic(() => import("@/Navbar/home"));
 const BudgetsPage = dynamic(() => import("@/Navbar/budgets"));
 const Goalspage = dynamic(() => import("@/Navbar/goals"));
-const ActionsPage = dynamic(() => import("@/Navbar/transactions"));
+const TransactionsPage = dynamic(() => import("@/Navbar/transactions"));
 
 // Import drawers
-import { AddMoneyDrawer } from "../components/drawers/addMoneyDrawer";
-import { CreateBudgetDrawer } from "../components/drawers/createBudgetDrawer";
+import { AddMoneyDrawer } from "../components/drawers/create/addMoneyDrawer";
+import { CreateBudgetDrawer } from "../components/drawers/create/createBudgetDrawer";
+import { CreateGoalDrawer } from "../components/drawers/create/createGoalDrawer";
+
+import {
+    BudgetViewDrawer,
+    BudgetDynamicData,
+} from "../components/drawers/views/budgetViewDrawer";
+import {
+    GoalViewDrawer,
+    GoalDynamicData,
+} from "../components/drawers/views/goalViewDrawer";
+
+import {
+    TransactionsViewDrawer,
+    TransactionDynamicData,
+} from "@/components/drawers/views/transactionViewDrawer";
+
+import { DoTransactionDrawer } from "../components/drawers/create/doTransactionsDrawer";
+
 import {
     BudgetDocType,
     GoalDocType,
     MoneyTransactionDocType,
+    TransactionDocType,
 } from "@/collections/types";
+import dayjs from "dayjs";
 
 let useStyles = createStyles((theme) => ({
     baseContainer: {
@@ -89,13 +110,41 @@ export default function MyDashboard({ startingRoute }: Props) {
     }, [loggedin, router]);
 
     // Muc data
-    let [mucWallet, setMucWallet] = useState(0);
-    let [mucTransactions, setMucTransactions] = useState(0);
+    let [mucWallet, setMucWallet] = useState(13);
+    let [mucTransactions, setMucTransactions] = useState<
+        Array<TransactionDocType>
+    >([]);
+
     let [mucMoneyTransactions, setMucMoneyTransactions] = useState<
         Array<MoneyTransactionDocType>
     >([]);
-    let [mucBudgets, setMucBudgets] = useState<Array<BudgetDocType>>([]);
-    let [mucGoals, setMucGoals] = useState<Array<GoalDocType>>([]);
+    let [mucBudgets, setMucBudgets] = useState<Array<BudgetDocType>>([
+        {
+            id: "1",
+            title: "test",
+            description: "test",
+            creationDate: new Date().toISOString(),
+            expirationDate: dayjs().add(4, "day").toDate().toISOString(),
+            tags: ["as", "quedao", "gura", "test"],
+            progression: 60,
+            amount: 100,
+            budgetType: "recurrent",
+        },
+    ]);
+    let [mucGoals, setMucGoals] = useState<Array<GoalDocType>>([
+        {
+            id: "1",
+            description: "test",
+            progression: 0,
+            targetAmount: 100,
+            creationDate: new Date().toISOString(),
+            expirationDate: dayjs().add(4, "day").toDate().toISOString(),
+            tags: ["as", "quedao", "gura", "test"],
+            title: "test",
+            completionDate: null,
+            dropped: null,
+        },
+    ]);
 
     // Drawers
 
@@ -126,6 +175,24 @@ export default function MyDashboard({ startingRoute }: Props) {
     let [addMoneyDrawerState, addMoneyDrawerHandler] = useDisclosure(false);
     let [createBudgetDrawerState, createBudgetDrawerHandler] =
         useDisclosure(false);
+    let [createGoalDrawerState, createGoalDrawerHandler] = useDisclosure(false);
+    let [doTransactionDrawerState, doTransactionDrawerHandler] =
+        useDisclosure(false);
+
+    let [budgetViewDrawerState, budgetViewDrawerHandler] = useDisclosure(false);
+    let [budgetViewData, setBudgetViewData] = useState<BudgetDynamicData>({});
+
+    let [goalViewDrawerState, goalViewDrawerHandler] = useDisclosure(false);
+    let [goalViewData, setGoalViewData] = useState<GoalDynamicData>({
+        goal: undefined,
+    });
+
+    let [transactionsViewDrawerState, transactionsViewDrawerHandler] =
+        useDisclosure(false);
+    let [transactionViewData, setTransactionViewData] =
+        useState<TransactionDynamicData>({
+            transaction: undefined,
+        });
 
     return (
         <div>
@@ -150,7 +217,11 @@ export default function MyDashboard({ startingRoute }: Props) {
                         active: createBudgetDrawerState,
                         close: () => createBudgetDrawerHandler.close(),
                         open: () => createBudgetDrawerHandler.open(),
-                        title: "Create Budget",
+                        title: (
+                            <Text size="1.5rem" weight={"bold"}>
+                                Create Budget
+                            </Text>
+                        ),
                     },
                     {
                         body: (
@@ -174,7 +245,126 @@ export default function MyDashboard({ startingRoute }: Props) {
                         active: addMoneyDrawerState,
                         close: () => addMoneyDrawerHandler.close(),
                         open: () => addMoneyDrawerHandler.open(),
-                        title: "Add money",
+                        title: (
+                            <Text size="1.5rem" weight={"bold"}>
+                                Add money
+                            </Text>
+                        ),
+                    },
+                    {
+                        body: (
+                            <CreateGoalDrawer
+                                mucWalletMoney={mucWallet}
+                                close={() => {
+                                    drawersStateHandler.close();
+                                    createGoalDrawerHandler.close();
+                                }}
+                                setMucWalletMoney={setMucWallet}
+                                createNewGoal={(goal: GoalDocType) => {
+                                    setMucGoals((old) => [goal, ...old]);
+                                }}
+                            />
+                        ),
+                        active: createGoalDrawerState,
+                        close: () => createGoalDrawerHandler.close(),
+                        open: () => createGoalDrawerHandler.open(),
+                        title: (
+                            <Text size="1.5rem" weight={"bold"}>
+                                Create Goal
+                            </Text>
+                        ),
+                    },
+                    {
+                        body: (
+                            <BudgetViewDrawer
+                                data={budgetViewData}
+                                transactions={mucTransactions}
+                            />
+                        ),
+                        active: budgetViewDrawerState,
+                        close: () => budgetViewDrawerHandler.close(),
+                        open: () => budgetViewDrawerHandler.open(),
+                        title: (
+                            <Text size="1.5rem" weight={"bold"}>
+                                Budget &#39;{budgetViewData.budget?.title}&#39;
+                            </Text>
+                        ),
+                    },
+                    {
+                        body: (
+                            <GoalViewDrawer
+                                data={goalViewData}
+                                transactions={mucTransactions}
+                            />
+                        ),
+                        active: goalViewDrawerState,
+                        close: () => goalViewDrawerHandler.close(),
+                        open: () => goalViewDrawerHandler.open(),
+                        title: (
+                            <Text size="1.5rem" weight={"bold"}>
+                                Goal &#39;{goalViewData.goal?.title}&#39;
+                            </Text>
+                        ),
+                    },
+                    {
+                        body: (
+                            <DoTransactionDrawer
+                                close={() => doTransactionDrawerHandler.close()}
+                                createTransaction={(transaction) => {
+                                    setMucTransactions((old) => [
+                                        transaction,
+                                        ...old,
+                                    ]);
+                                }}
+                                budgets={mucBudgets}
+                                goals={mucGoals}
+                                mucWalletMoney={mucWallet}
+                                setMucWalletMoney={setMucWallet}
+                                updateBudget={(id, newBudget) => {
+                                    setMucBudgets(
+                                        mucBudgets.map((budget) => {
+                                            if (budget.id == id)
+                                                return newBudget;
+                                            return budget;
+                                        })
+                                    );
+                                }}
+                                updateGoal={(id, newGoal) => {
+                                    setMucGoals(
+                                        mucGoals.map((goal) => {
+                                            if (goal.id == id) return newGoal;
+                                            return goal;
+                                        })
+                                    );
+                                }}
+                            />
+                        ),
+                        active: doTransactionDrawerState,
+                        close: () => {
+                            console.log("tried to close");
+                            doTransactionDrawerHandler.close();
+                        },
+                        open: () => doTransactionDrawerHandler.open(),
+                        title: (
+                            <Text size="1.5rem" weight={"bold"}>
+                                Do Transaction
+                            </Text>
+                        ),
+                    },
+                    {
+                        body: (
+                            <TransactionsViewDrawer
+                                data={transactionViewData}
+                            />
+                        ),
+                        active: transactionsViewDrawerState,
+                        close: () => transactionsViewDrawerHandler.close(),
+                        open: () => transactionsViewDrawerHandler.open(),
+                        title: (
+                            <Text size="1.5rem" weight={"bold"}>
+                                Transaction
+                            </Text>
+                        ),
                     },
                 ]}
             />
@@ -186,7 +376,6 @@ export default function MyDashboard({ startingRoute }: Props) {
                     })}
                 />
 
-                {/* <div className={classes.baseContainer}> */}
                 <Head>
                     <title>Dashboard</title>
                 </Head>
@@ -234,9 +423,30 @@ export default function MyDashboard({ startingRoute }: Props) {
                                         createBudgetDrawerHandler.close();
                                     },
                                     open: () => {
-                                        console.log("a");
                                         drawersStateHandler.open();
                                         createBudgetDrawerHandler.open();
+                                    },
+                                },
+                                createGoal: {
+                                    active: createGoalDrawerState,
+                                    close: () => {
+                                        drawersStateHandler.close();
+                                        createGoalDrawerHandler.close();
+                                    },
+                                    open: () => {
+                                        drawersStateHandler.open();
+                                        createGoalDrawerHandler.open();
+                                    },
+                                },
+                                doTransaction: {
+                                    active: doTransactionDrawerState,
+                                    close: () => {
+                                        drawersStateHandler.close();
+                                        doTransactionDrawerHandler.close();
+                                    },
+                                    open: () => {
+                                        drawersStateHandler.open();
+                                        doTransactionDrawerHandler.open();
                                     },
                                 },
                             }}
@@ -244,7 +454,7 @@ export default function MyDashboard({ startingRoute }: Props) {
                                 page == 0
                                     ? "Home"
                                     : page == 1
-                                    ? "Budget"
+                                    ? "Budgets"
                                     : page == 2
                                     ? "Goals"
                                     : page == 3
@@ -290,12 +500,60 @@ export default function MyDashboard({ startingRoute }: Props) {
                                         />
                                     )}
                                     {page == 1 && (
-                                        <BudgetsPage budgets={mucBudgets} />
+                                        <BudgetsPage
+                                            budgets={mucBudgets}
+                                            openView={(id) => {
+                                                mucBudgets.forEach((budget) => {
+                                                    if (budget.id == id) {
+                                                        setBudgetViewData({
+                                                            budget,
+                                                        });
+                                                    }
+                                                });
+
+                                                drawersStateHandler.open();
+                                                budgetViewDrawerHandler.open();
+                                            }}
+                                        />
                                     )}
                                     {page == 2 && (
-                                        <Goalspage goals={mucGoals} />
+                                        <Goalspage
+                                            goals={mucGoals}
+                                            openView={(id) => {
+                                                mucGoals.forEach((goal) => {
+                                                    if (goal.id == id) {
+                                                        setGoalViewData({
+                                                            goal,
+                                                        });
+                                                    }
+                                                });
+
+                                                drawersStateHandler.open();
+                                                goalViewDrawerHandler.open();
+                                            }}
+                                        />
                                     )}
-                                    {page == 3 && <ActionsPage />}
+                                    {page == 3 && (
+                                        <TransactionsPage
+                                            transactions={mucTransactions}
+                                            openView={(id) => {
+                                                mucTransactions.forEach(
+                                                    (transaction) => {
+                                                        if (
+                                                            transaction.id == id
+                                                        )
+                                                            setTransactionViewData(
+                                                                {
+                                                                    transaction,
+                                                                }
+                                                            );
+                                                    }
+                                                );
+                                                drawersStateHandler.open();
+                                                transactionsViewDrawerHandler.open();
+                                            }}
+                                        />
+                                    )}
                                 </Box>
                             )}
                         </ScrollArea>
