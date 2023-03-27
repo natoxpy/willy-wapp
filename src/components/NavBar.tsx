@@ -41,6 +41,8 @@ import { useEffect, useState } from "react";
 import { useUser } from "@/providers/userAuthProvider";
 import { useDisclosure } from "@mantine/hooks";
 import { animated } from "@react-spring/web";
+import { TransactionDocType } from "@/collections/types";
+import currency from "currency.js";
 
 const useStyles = createStyles((theme) => ({
     navbar: {
@@ -167,18 +169,18 @@ const links = [
     { icon: IconClipboardList, label: "Transactions", page: 3 },
 ];
 
-const collections = [
-    {
-        emoji: "$10",
-        label: "Untitled",
-        id: "1",
-    },
-    {
-        emoji: "$2000",
-        label: "Untitled",
-        id: "2",
-    },
-];
+// const collections = [
+//     {
+//         emoji: "$10",
+//         label: "Untitled",
+//         id: "1",
+//     },
+//     {
+//         emoji: "$2000",
+//         label: "Untitled",
+//         id: "2",
+//     },
+// ];
 
 interface NavbarProps {
     pages: {
@@ -216,17 +218,36 @@ interface NavbarProps {
             close: () => void;
             open: () => void;
         };
+        personalizeProfile: {
+            active: boolean;
+            close: () => void;
+            open: () => void;
+        };
+        faqDrawer: {
+            active: boolean;
+            close: () => void;
+            open: () => void;
+        };
     };
 
     headerTitle: string;
+    transactions: Array<TransactionDocType>;
 }
 
 export function NavBar({
     pages: { page, setPage },
     extended: { extended, extendedToggle, navbarOpen, navbarClose },
     responsivity: { responsive, triggerSize },
-    drawers: { addMoney, createBudget, createGoal, doTransaction },
+    drawers: {
+        addMoney,
+        createBudget,
+        createGoal,
+        doTransaction,
+        personalizeProfile,
+        faqDrawer,
+    },
     headerTitle,
+    transactions,
 }: NavbarProps) {
     const { classes } = useStyles();
 
@@ -265,19 +286,21 @@ export function NavBar({
         </UnstyledButton>
     ));
 
-    const collectionLinks = collections.map((collection) => {
+    const TransactionsList = transactions.map((transaction) => {
         return (
-            <Container key={collection.id} className={classes.collectionLink}>
+            <Container key={transaction.id} className={classes.collectionLink}>
                 <Container w="20%">
                     <Text
                         style={{ marginRight: rem(9), fontSize: rem(16) }}
                         color="green"
                         p={0}
                     >
-                        {collection.emoji}
+                        {currency(transaction.amount).format()}
                     </Text>
                 </Container>
-                <Container w="80%">{collection.label}</Container>
+                <Container w="80%">
+                    <Text fs={rem(16)}>{transaction.title}</Text>
+                </Container>
                 {/* <Container>
                     <Badge>SAVINGS</Badge>
                 </Container> */}
@@ -336,6 +359,8 @@ export function NavBar({
                             image="/img/default-avatar.jpg"
                             email="test@gmail.com"
                             name="test"
+                            personalizeProfile={personalizeProfile}
+                            faqDrawer={faqDrawer}
                         />
                     </Navbar.Section>
                     <Navbar.Section className={classes.section} mb={0}>
@@ -445,11 +470,11 @@ export function NavBar({
                                 size="md"
                                 icon={<IconSearch size="0.8rem" stroke={1.5} />}
                                 rightSectionWidth={70}
-                                rightSection={
-                                    <Code className={classes.searchCode}>
-                                        Ctrl + K
-                                    </Code>
-                                }
+                                // rightSection={
+                                //     <Code className={classes.searchCode}>
+                                //         Ctrl + K
+                                //     </Code>
+                                // }
                                 styles={{
                                     rightSection: { pointerEvents: "none" },
                                 }}
@@ -463,19 +488,16 @@ export function NavBar({
                             <Text size="md" weight={500} color="dimmed">
                                 Transactions
                             </Text>
-                            <Tooltip
-                                label="Create transaction"
-                                withArrow
-                                position="right"
-                            >
-                                <ActionIcon variant="default" size={18}>
-                                    <IconPlus size="0.8rem" stroke={1.5} />
-                                </ActionIcon>
-                            </Tooltip>
                         </Group>
                         {/* Transactions list */}
                         <div className={classes.collections}>
-                            {collectionLinks}
+                            {transactions.length > 0 ? (
+                                TransactionsList
+                            ) : (
+                                <Text align="center">
+                                    You don&apos;t have any transactions yet.
+                                </Text>
+                            )}
                         </div>
                     </Navbar.Section>
                 </Navbar>

@@ -50,13 +50,15 @@ import {
 
 import { DoTransactionDrawer } from "../components/drawers/create/doTransactionsDrawer";
 
+import { PersonalizeProfileViewDrawer } from "../components/drawers/views/PersonalizeProfileViewDrawer";
+import { FAQViewDrawer } from "../components/drawers/views/FAQViewDrawer";
+
 import {
     BudgetDocType,
     GoalDocType,
     MoneyTransactionDocType,
     TransactionDocType,
 } from "@/collections/types";
-import dayjs from "dayjs";
 
 let useStyles = createStyles((theme) => ({
     baseContainer: {
@@ -74,6 +76,8 @@ interface Props {
 
 export default function MyDashboard({ startingRoute }: Props) {
     let [page, setPage] = useState(startingRoute);
+    let theme = useMantineTheme();
+
     let { loggedin } = useUser();
     let router = useRouter();
     let { width } = useWindowSize();
@@ -110,7 +114,7 @@ export default function MyDashboard({ startingRoute }: Props) {
     }, [loggedin, router]);
 
     // Muc data
-    let [mucWallet, setMucWallet] = useState(13);
+    let [mucWallet, setMucWallet] = useState(0);
     let [mucTransactions, setMucTransactions] = useState<
         Array<TransactionDocType>
     >([]);
@@ -119,31 +123,31 @@ export default function MyDashboard({ startingRoute }: Props) {
         Array<MoneyTransactionDocType>
     >([]);
     let [mucBudgets, setMucBudgets] = useState<Array<BudgetDocType>>([
-        {
-            id: "1",
-            title: "test",
-            description: "test",
-            creationDate: new Date().toISOString(),
-            expirationDate: dayjs().add(4, "day").toDate().toISOString(),
-            tags: ["as", "quedao", "gura", "test"],
-            progression: 60,
-            amount: 100,
-            budgetType: "recurrent",
-        },
+        // {
+        //     id: "1",
+        //     title: "test",
+        //     description: "test",
+        //     creationDate: new Date().toISOString(),
+        //     expirationDate: dayjs().add(4, "day").toDate().toISOString(),
+        //     tags: ["as", "quedao", "gura", "test"],
+        //     progression: 60,
+        //     amount: 100,
+        //     budgetType: "recurrent",
+        // },
     ]);
     let [mucGoals, setMucGoals] = useState<Array<GoalDocType>>([
-        {
-            id: "1",
-            description: "test",
-            progression: 0,
-            targetAmount: 100,
-            creationDate: new Date().toISOString(),
-            expirationDate: dayjs().add(4, "day").toDate().toISOString(),
-            tags: ["as", "quedao", "gura", "test"],
-            title: "test",
-            completionDate: null,
-            dropped: null,
-        },
+        // {
+        //     id: "1",
+        //     description: "test",
+        //     progression: 0,
+        //     targetAmount: 100,
+        //     creationDate: new Date().toISOString(),
+        //     expirationDate: dayjs().add(4, "day").toDate().toISOString(),
+        //     tags: ["as", "quedao", "gura", "test"],
+        //     title: "test",
+        //     completionDate: null,
+        //     dropped: null,
+        // },
     ]);
 
     // Drawers
@@ -193,6 +197,13 @@ export default function MyDashboard({ startingRoute }: Props) {
         useState<TransactionDynamicData>({
             transaction: undefined,
         });
+
+    let [
+        personalizeProfileViewDrawerState,
+        personalizeProfileViewDrawerHandler,
+    ] = useDisclosure(false);
+
+    let [FAQViewDrawerState, FAQViewDrawerHandler] = useDisclosure(false);
 
     return (
         <div>
@@ -366,6 +377,29 @@ export default function MyDashboard({ startingRoute }: Props) {
                             </Text>
                         ),
                     },
+                    {
+                        body: <PersonalizeProfileViewDrawer />,
+                        active: personalizeProfileViewDrawerState,
+                        close: () =>
+                            personalizeProfileViewDrawerHandler.close(),
+                        open: () => personalizeProfileViewDrawerHandler.open(),
+                        title: (
+                            <Text size="1.5rem" weight={"bold"}>
+                                Personalize Profile
+                            </Text>
+                        ),
+                    },
+                    {
+                        body: <FAQViewDrawer />,
+                        active: FAQViewDrawerState,
+                        close: () => FAQViewDrawerHandler.close(),
+                        open: () => FAQViewDrawerHandler.open(),
+                        title: (
+                            <Text size="1.5rem" weight={"bold"}>
+                                FAQ
+                            </Text>
+                        ),
+                    },
                 ]}
             />
             <div {...bind()} className={classes.baseContainer}>
@@ -390,6 +424,7 @@ export default function MyDashboard({ startingRoute }: Props) {
                 >
                     <animated.div>
                         <NavBar
+                            transactions={mucTransactions}
                             pages={{
                                 page: page,
                                 setPage: setPage,
@@ -447,6 +482,28 @@ export default function MyDashboard({ startingRoute }: Props) {
                                     open: () => {
                                         drawersStateHandler.open();
                                         doTransactionDrawerHandler.open();
+                                    },
+                                },
+                                personalizeProfile: {
+                                    active: personalizeProfileViewDrawerState,
+                                    close: () => {
+                                        drawersStateHandler.close();
+                                        personalizeProfileViewDrawerHandler.close();
+                                    },
+                                    open: () => {
+                                        drawersStateHandler.open();
+                                        personalizeProfileViewDrawerHandler.open();
+                                    },
+                                },
+                                faqDrawer: {
+                                    active: FAQViewDrawerState,
+                                    close: () => {
+                                        drawersStateHandler.close();
+                                        FAQViewDrawerHandler.close();
+                                    },
+                                    open: () => {
+                                        drawersStateHandler.open();
+                                        FAQViewDrawerHandler.open();
                                     },
                                 },
                             }}

@@ -38,6 +38,9 @@
         },
         "1": {
             "color": "#e74c3c"
+        },
+        "2": {
+            "color": "#98FB98"
         }
     },
     "backgroundColor": "transparent",

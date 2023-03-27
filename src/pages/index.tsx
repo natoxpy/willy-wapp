@@ -1,4 +1,3 @@
-import DashBoard from "./_dashboard.404";
 import { useUser } from "../providers/userAuthProvider";
 import { useEffect, useState } from "react";
 import { db } from "@/firebase.config";

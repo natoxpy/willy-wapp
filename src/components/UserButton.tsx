@@ -11,8 +11,12 @@ import {
 } from "@mantine/core";
 import {
     IconChevronDown,
+    IconInfoOctagon,
     IconLogout,
     IconMoonFilled,
+    IconSettings,
+    IconSquareRounded,
+    IconUserCircle,
 } from "@tabler/icons-react";
 import { signOut } from "firebase/auth";
 
@@ -37,6 +41,16 @@ interface UserButtonProps extends UnstyledButtonProps {
     name: string;
     email: string;
     icon?: React.ReactNode;
+    personalizeProfile: {
+        active: boolean;
+        close: () => void;
+        open: () => void;
+    };
+    faqDrawer: {
+        active: boolean;
+        close: () => void;
+        open: () => void;
+    };
 }
 
 function updateOnDocument() {}
@@ -46,6 +60,8 @@ export default function UserButton({
     name,
     email,
     icon,
+    personalizeProfile,
+    faqDrawer,
     ...others
 }: UserButtonProps) {
     const { classes } = useStyles();
@@ -93,12 +109,26 @@ export default function UserButton({
                 </Menu.Label>
 
                 <Menu.Item
+                    onClick={() => personalizeProfile.open()}
+                    icon={<IconUserCircle size={18} />}
+                >
+                    Profile
+                </Menu.Item>
+
+                <Menu.Item
                     onClick={() => {
                         toggleColorScheme();
                     }}
                     icon={<IconMoonFilled size={18} />}
                 >
                     Dark / Light
+                </Menu.Item>
+
+                <Menu.Item
+                    onClick={() => faqDrawer.open()}
+                    icon={<IconInfoOctagon size={18} />}
+                >
+                    FAQ
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item
