@@ -59,6 +59,7 @@ import {
     MoneyTransactionDocType,
     TransactionDocType,
 } from "@/collections/types";
+import dayjs from "dayjs";
 
 let useStyles = createStyles((theme) => ({
     baseContainer: {
@@ -114,40 +115,129 @@ export default function MyDashboard({ startingRoute }: Props) {
     }, [loggedin, router]);
 
     // Muc data
-    let [mucWallet, setMucWallet] = useState(0);
+    let [mucWallet, setMucWallet] = useState(156);
     let [mucTransactions, setMucTransactions] = useState<
         Array<TransactionDocType>
-    >([]);
+    >([
+        {
+            id: "1",
+            title: "untitled",
+            description: "test",
+            amount: 60,
+            createdAt: dayjs().subtract(2, "day").toDate().toISOString(),
+            tags: ["as", "quedao", "gura", "test"],
+            reverted: false,
+            targetId: "as1",
+            type: "budget",
+        },
+        {
+            id: "1sd",
+            title: "untitled",
+            description: "test",
+            amount: 25,
+            createdAt: dayjs().subtract(1, "day").toDate().toISOString(),
+            tags: ["as", "quedao", "gura", "test"],
+            reverted: false,
+            targetId: "as1",
+            type: "budget",
+        },
+        {
+            id: "1sd",
+            title: "untitled",
+            description: "test",
+            amount: 15,
+            createdAt: dayjs().subtract(0, "day").toDate().toISOString(),
+            tags: ["as", "quedao", "gura", "test"],
+            reverted: false,
+            targetId: "as1",
+            type: "budget",
+        },
+        {
+            id: "23",
+            title: "untitled",
+            description: "test",
+            amount: 100,
+            createdAt: dayjs().subtract(0, "day").toDate().toISOString(),
+            tags: ["as", "quedao", "gura", "test"],
+            reverted: false,
+            targetId: "1gf",
+            type: "goal",
+        },
+        {
+            id: "23s",
+            title: "untitled",
+            description: "test",
+            amount: 25,
+            createdAt: dayjs().subtract(1, "day").toDate().toISOString(),
+            tags: ["as", "quedao", "gura", "test"],
+            reverted: false,
+            targetId: "1gf",
+            type: "goal",
+        },
+    ]);
 
     let [mucMoneyTransactions, setMucMoneyTransactions] = useState<
         Array<MoneyTransactionDocType>
-    >([]);
+    >([
+        {
+            amount: 85,
+            date: dayjs().subtract(3, "day").toDate().toISOString(),
+            id: "1",
+            description: "test",
+            reverted: false,
+            tags: [],
+        },
+        {
+            amount: 35,
+            date: dayjs().subtract(2, "day").toDate().toISOString(),
+            id: "1",
+            description: "test",
+            reverted: false,
+            tags: [],
+        },
+        {
+            amount: 5,
+            date: dayjs().subtract(1, "day").toDate().toISOString(),
+            id: "1",
+            description: "test",
+            reverted: false,
+            tags: [],
+        },
+        {
+            amount: 50,
+            date: dayjs().subtract(0, "day").toDate().toISOString(),
+            id: "1",
+            description: "test",
+            reverted: false,
+            tags: [],
+        },
+    ]);
     let [mucBudgets, setMucBudgets] = useState<Array<BudgetDocType>>([
-        // {
-        //     id: "1",
-        //     title: "test",
-        //     description: "test",
-        //     creationDate: new Date().toISOString(),
-        //     expirationDate: dayjs().add(4, "day").toDate().toISOString(),
-        //     tags: ["as", "quedao", "gura", "test"],
-        //     progression: 60,
-        //     amount: 100,
-        //     budgetType: "recurrent",
-        // },
+        {
+            id: "as1",
+            title: "Spending",
+            description: "test",
+            creationDate: new Date().toISOString(),
+            expirationDate: dayjs().add(4, "day").toDate().toISOString(),
+            tags: ["as", "quedao", "gura", "test"],
+            progression: 60 + 25 + 15,
+            amount: 100,
+            budgetType: "recurrent",
+        },
     ]);
     let [mucGoals, setMucGoals] = useState<Array<GoalDocType>>([
-        // {
-        //     id: "1",
-        //     description: "test",
-        //     progression: 0,
-        //     targetAmount: 100,
-        //     creationDate: new Date().toISOString(),
-        //     expirationDate: dayjs().add(4, "day").toDate().toISOString(),
-        //     tags: ["as", "quedao", "gura", "test"],
-        //     title: "test",
-        //     completionDate: null,
-        //     dropped: null,
-        // },
+        {
+            id: "1gf",
+            description: "test",
+            progression: 125,
+            targetAmount: 700,
+            creationDate: new Date().toISOString(),
+            expirationDate: dayjs().add(4, "day").toDate().toISOString(),
+            tags: ["as", "quedao", "gura", "test"],
+            title: "Gaming pc",
+            completionDate: null,
+            dropped: null,
+        },
     ]);
 
     // Drawers
