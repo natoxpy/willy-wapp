@@ -173,7 +173,7 @@ export function UseAssistantRequest() {
                         amount: Number(assistantRes.actionContent.amount ?? 0),
                         tags: [],
                         date: new Date(),
-                        user_uid: user?.uid ?? "",
+                        userUid: user?.uid ?? "",
                     });
 
                     sendAddMoneyNotification(

@@ -62,6 +62,44 @@ export interface BaseTheme {
             textColor: string;
         };
     };
+
+    card: {
+        backgroundColor: string;
+        borderColor: string;
+        boxShadow: string;
+        titleColor: string;
+        subtitleColor: string;
+        contentColor: string;
+    };
+
+    progressBar: {
+        backgroundColor: string;
+        progressColor: string;
+    };
+
+    alerts: {
+        error: AlertStyles;
+        warning: AlertStyles;
+        info: AlertStyles;
+        success: AlertStyles;
+    };
+
+    badges: {
+        red: BadgeStyle;
+        green: BadgeStyle;
+        blue: BadgeStyle;
+    };
+}
+
+interface BadgeStyle {
+    backgroundColor: string;
+    textColor: string;
+}
+
+interface AlertStyles {
+    backgroundColor: string;
+    textColor: string;
+    titleColor: string;
 }
 
 // Notes for chatgpt,

@@ -479,7 +479,7 @@ export function AssistantProvider({ children }: { children: React.ReactNode }) {
         msgs[0].content = `
             Currently the time is ${new Date().toISOString()}. 
             The User current has ${currency(
-                userDoc?.wallet_money ?? 0
+                userDoc?.walletMoney ?? 0
             ).format()} in their wallet.
         `;
 

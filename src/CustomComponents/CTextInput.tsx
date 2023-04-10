@@ -6,13 +6,13 @@ interface CTextInputProps extends TextInputProps {
     Cref: Ref<HTMLInputElement>;
 }
 
-export function CTextInput(props: CTextInputProps) {
+export function CTextInput({ Cref, ...props }: CTextInputProps) {
     const { theme } = useTheme();
 
     return (
         <TextInput
             {...props}
-            ref={props.Cref}
+            ref={Cref}
             styles={{
                 input: {
                     backgroundColor: theme.backgroundColor,

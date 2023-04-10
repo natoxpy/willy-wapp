@@ -9,6 +9,7 @@
         "_**/dist": true,
         "_**/node_modules": true,
         "_**/target": true,
+        "**/__pycache__": true,
         "**/.gitignore": true,
         "**/.husky": true,
         "**/.vscode": true,

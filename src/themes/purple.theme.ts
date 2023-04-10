@@ -66,5 +66,19 @@ const PurpleTheme: BaseTheme = {
             textColor: "#5E5E5E",
         },
     },
+
+    card: {
+        backgroundColor: "#FFFFFF",
+        borderColor: "#E8E8E8",
+        boxShadow: "none",
+        titleColor: "#5E5E5E",
+        subtitleColor: "#BFBFBF",
+        contentColor: "#5E5E5E",
+    },
+
+    progressBar: {
+        backgroundColor: "#E8E8E8",
+        progressColor: "#AD6AAD",
+    },
 };
 export { PurpleTheme };

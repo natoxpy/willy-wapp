@@ -58,12 +58,12 @@ export function UsersFireStoreProvider({
                 let data = doc.data() as UserDocument;
 
                 updateDoc(doc.ref, {
-                    wallet_money: data.wallet_money + money,
+                    wallet_money: data.walletMoney + money,
                 });
 
                 setUserDoc({
                     ...data,
-                    wallet_money: data.wallet_money + money,
+                    walletMoney: data.walletMoney + money,
                 });
             })
         );

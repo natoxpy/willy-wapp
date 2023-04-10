@@ -2,6 +2,7 @@ import {
     CAccordionControl,
     CAccordionItem,
 } from "@/CustomComponents/CAccordion";
+import { CBadge } from "@/CustomComponents/CBadge";
 import { CText } from "@/CustomComponents/CText";
 import { CTextInput } from "@/CustomComponents/CTextInput";
 import {
@@ -9,6 +10,7 @@ import {
     ActionIcon,
     Badge,
     Button,
+    Center,
     Group,
     rem,
     Stack,
@@ -16,6 +18,7 @@ import {
 import { IconX } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import { ActionButton } from "./ActionButton";
+import { ActionIconBtn } from "./ActionIconBtn";
 
 interface Props {
     tags: Array<string>;
@@ -76,9 +79,11 @@ export function AccordionTagsAdder({
                         placeholder="unnamed"
                         Cref={tagNameRef}
                     />
-                    <ActionButton w="8em" onClick={addTag}>
-                        Add tag
-                    </ActionButton>
+                    <Group position="center">
+                        <ActionButton w="8em" onClick={addTag}>
+                            Add tag
+                        </ActionButton>
+                    </Group>
                 </Stack>
                 <Accordion defaultValue={"created_tags"}>
                     <CAccordionItem value="created_tags">
@@ -88,19 +93,25 @@ export function AccordionTagsAdder({
                         <Accordion.Panel>
                             {tags.length == 0 ? (
                                 <Group position="center" mt="sm">
-                                    <Badge color="red">No tags added</Badge>
+                                    <CBadge variant="red" color="red">
+                                        No tags added
+                                    </CBadge>
                                 </Group>
                             ) : (
                                 <Group position="center" mt="sm">
                                     {tags.map((tag) => (
-                                        <Badge
+                                        <CBadge
+                                            variant="green"
                                             key={tag}
                                             rightSection={
-                                                <ActionIcon
+                                                <ActionIconBtn
                                                     size="xs"
-                                                    color="blue"
                                                     radius="xl"
                                                     variant="transparent"
+                                                    style={{
+                                                        background:
+                                                            "transparent",
+                                                    }}
                                                     onClick={() => {
                                                         let newTags =
                                                             tags.filter(
@@ -110,11 +121,11 @@ export function AccordionTagsAdder({
                                                     }}
                                                 >
                                                     <IconX size={rem(16)} />
-                                                </ActionIcon>
+                                                </ActionIconBtn>
                                             }
                                         >
                                             {tag}
-                                        </Badge>
+                                        </CBadge>
                                     ))}
                                 </Group>
                             )}

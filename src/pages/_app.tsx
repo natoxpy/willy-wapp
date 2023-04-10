@@ -3,7 +3,6 @@ import type { AppContext, AppProps } from "next/app";
 import {
     ColorScheme,
     ColorSchemeProvider,
-    GlobalStyles,
     MantineProvider,
     MantineThemeOverride,
 } from "@mantine/core";
@@ -16,17 +15,34 @@ import { Notifications } from "@mantine/notifications";
 import { DatesProvider } from "@mantine/dates";
 import { NavbarProvider } from "@/spa/navbar/state";
 import { AssistantProvider } from "@/spa/pages/assistant/state";
-import { AddMoneyDrawerProvider } from "@/drawers/addMoney/state";
+import {
+    AddMoneyDrawerProvider,
+    CreateBudgetProvider,
+    CreateGoalProvider,
+    DoTransactionProvider,
+    ViewProviders,
+} from "@/drawers";
 import { ThemeProvider } from "@/themes";
 import {
     UsersFireStoreProvider,
     MoneyTransactionsProvider,
+    BudgetsProvider,
+    GoalsProvider,
+    TransactionsProvider,
 } from "@/firebase/firestore";
 
 function DrawerProviders({ children }: { children: React.ReactNode }) {
     return (
         <>
-            <AddMoneyDrawerProvider>{children}</AddMoneyDrawerProvider>
+            <AddMoneyDrawerProvider>
+                <DoTransactionProvider>
+                    <CreateBudgetProvider>
+                        <CreateGoalProvider>
+                            <ViewProviders>{children}</ViewProviders>
+                        </CreateGoalProvider>
+                    </CreateBudgetProvider>
+                </DoTransactionProvider>
+            </AddMoneyDrawerProvider>
         </>
     );
 }
@@ -36,7 +52,11 @@ function FirebaseProviders({ children }: { children: React.ReactNode }) {
         <>
             <UsersFireStoreProvider>
                 <MoneyTransactionsProvider>
-                    {children}
+                    <BudgetsProvider>
+                        <TransactionsProvider>
+                            <GoalsProvider>{children}</GoalsProvider>
+                        </TransactionsProvider>
+                    </BudgetsProvider>
                 </MoneyTransactionsProvider>
             </UsersFireStoreProvider>
         </>

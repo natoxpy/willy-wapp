@@ -65,6 +65,58 @@ const DarkTheme: BaseTheme = {
             textColor: "#FFFFFF",
         },
     },
+
+    card: {
+        backgroundColor: "#2F3136",
+        borderColor: "rgba(255, 255, 255, 0.1)",
+        boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.2)",
+        titleColor: "#FFFFFF",
+        subtitleColor: "#B9BBBE",
+        contentColor: "#FFFFFF",
+    },
+
+    progressBar: {
+        backgroundColor: "rgba(255, 255, 255, 0.1)",
+        progressColor: "#7289DA",
+    },
+
+    alerts: {
+        error: {
+            backgroundColor: "#F04747",
+            titleColor: "#FFFFFF",
+            textColor: "rgba(255, 255, 255, 0.8)",
+        },
+        warning: {
+            backgroundColor: "rgba(240, 140, 0, 0.4)",
+            titleColor: "rgb(255, 236, 153)",
+            textColor: "rgba(255, 255, 255, 0.8)",
+        },
+        info: {
+            backgroundColor: "#7289DA",
+            titleColor: "#FFFFFF",
+            textColor: "rgba(255, 255, 255, 0.8)",
+        },
+        success: {
+            backgroundColor: "#43B581",
+            titleColor: "#FFFFFF",
+            textColor: "rgba(255, 255, 255, 0.8)",
+        },
+    },
+
+    badges: {
+        red: {
+            backgroundColor: "#F04747",
+            textColor: "#FFFFFF",
+        },
+        green: {
+            backgroundColor: "#43B581",
+            textColor: "#FFFFFF",
+        },
+        blue: {
+            backgroundColor: "#7289DA",
+            textColor: "#FFFFFF",
+        },
+    },
 };
 
 export { DarkTheme };

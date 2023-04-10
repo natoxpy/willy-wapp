@@ -1,13 +1,23 @@
 import { useAuthUser } from "@/firebase/auth/authUser";
 import { db } from "@/firebase/firebase.config";
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import { uuid } from "@/utils";
+import {
+    addDoc,
+    collection,
+    getDocs,
+    query,
+    Timestamp,
+    where,
+} from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import { MoneyTransaction } from "../types";
 
 interface MoneyTransactionsContextType {
     moneyTransactions: MoneyTransaction[];
     moneyTransactionsLoaded: boolean | null;
-    addMoneyTransaction: (moneyTransaction: MoneyTransaction) => void;
+    addMoneyTransaction: (
+        moneyTransaction: Omit<MoneyTransaction, "creationDate" | "uid">
+    ) => void;
 }
 
 const MoneyTransactionsContext = createContext<MoneyTransactionsContextType>({
@@ -41,15 +51,16 @@ export function MoneyTransactionsProvider({
 
         setQueried(true);
         getDocs(
-            query(moneyTransactionsCol, where("user_uid", "==", user?.uid))
+            query(moneyTransactionsCol, where("userUid", "==", user?.uid))
         ).then((snap) => {
             setMoneyTransactions([]);
 
             snap.docs.forEach((doc) => {
                 let data = doc.data() as MoneyTransaction;
                 setMoneyTransactions((prev) => [...prev, data]);
-                setMoneyTransactionsLoaded(true);
             });
+
+            setMoneyTransactionsLoaded(true);
         });
     }, [loggedin, queried, user?.uid, moneyTransactionsCol]);
 
@@ -57,9 +68,21 @@ export function MoneyTransactionsProvider({
         moneyTransactions: moneyTransactions,
         moneyTransactionsLoaded: moneyTransactionsLoaded,
         addMoneyTransaction: async (moneyTransaction) => {
-            setMoneyTransactions([moneyTransaction, ...moneyTransactions]);
+            const creationDate = Timestamp.fromDate(new Date());
+            const uid = uuid();
+
+            setMoneyTransactions([
+                {
+                    creationDate: creationDate,
+                    uid,
+                    ...moneyTransaction,
+                },
+                ...moneyTransactions,
+            ]);
 
             await addDoc(moneyTransactionsCol, {
+                creationDate: creationDate,
+                uid,
                 ...moneyTransaction,
                 user_uid: user?.uid,
             });

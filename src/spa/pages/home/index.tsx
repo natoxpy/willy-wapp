@@ -16,6 +16,7 @@ import { useUserFireStore } from "@/firebase/firestore/users";
 import { useMoneyTransactions } from "@/firebase/firestore";
 import { ConfirmButton } from "@/CustomComponents/buttons/ConfirmButton";
 import { CancelButton } from "@/CustomComponents/buttons/CancelButton";
+import { CSegmentedControl } from "@/CustomComponents/CSegmentedControl";
 
 function Header({
     activityTimeRange,
@@ -50,7 +51,7 @@ function Header({
                                 weight={700}
                                 align="center"
                             >
-                                {currency(userDoc?.wallet_money ?? 0).format()}
+                                {currency(userDoc?.walletMoney ?? 0).format()}
                             </CText>
                             <CText size={"sm"} align="center">
                                 WELCOME BACK, USER!
@@ -59,22 +60,8 @@ function Header({
                     </Flex>
                     <Flex align={"center"} justify={"center"}>
                         <Box>
-                            <SegmentedControl
+                            <CSegmentedControl
                                 value={activityTimeRange}
-                                bg={theme.buttonBackgroundColor}
-                                color={theme.textColor}
-                                styles={{
-                                    label: {
-                                        color: theme.buttonLabelColor,
-                                        ":hover": {
-                                            color: theme.buttonActiveLabelColor,
-                                        },
-                                    },
-                                    indicator: {
-                                        background:
-                                            theme.buttonActiveBackgroundColor,
-                                    },
-                                }}
                                 onChange={setActivityTimeRange as any}
                                 radius="md"
                                 size="md"
@@ -89,16 +76,6 @@ function Header({
             </Flex>
         </>
     );
-}
-
-interface Props {
-    // walletMoney: number;
-    // transactions: Array<TransactionDocType>;
-    // moneyTransactions: Array<MoneyTransactionDocType>;
-    // setMoneyTransactions: React.Dispatch<
-    //     React.SetStateAction<Array<MoneyTransactionDocType>>
-    // >;
-    // setWalleyMoney: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function Home() {

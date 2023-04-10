@@ -20,6 +20,7 @@ import { useAddMoneyDrawer } from "./state";
 import { useNotifications } from "@/drySystems/Notification";
 import { IconCheck } from "@tabler/icons-react";
 import { useAuthUser } from "@/firebase/auth/authUser";
+import { Timestamp } from "firebase/firestore";
 
 export const sendAddMoneyNotification = (
     showNotification: (props: NotificationProps) => void,
@@ -38,7 +39,6 @@ export default function AddMoneyDrawer() {
     const [tagNameError, setTagNameError] = useState("");
     const amountRef = useRef<HTMLInputElement>(null);
     const [amountError, setAmountError] = useState("");
-    const [processing, setProcessing] = useState(false);
     const { increaseMoney } = useUserFireStore();
     const { showNotification } = useNotifications();
     const { addMoneyTransaction } = useMoneyTransactions();
@@ -65,8 +65,8 @@ export default function AddMoneyDrawer() {
                 addMoneyTransaction({
                     amount: Number(money),
                     tags: tags,
-                    date: new Date(),
-                    user_uid: user?.uid ?? "",
+                    date: Timestamp.fromDate(new Date()),
+                    userUid: user?.uid ?? "",
                 });
 
                 sendAddMoneyNotification(
@@ -80,7 +80,6 @@ export default function AddMoneyDrawer() {
 
     return (
         <Box>
-            <LoadingOverlay zIndex={9999999} h="100%" visible={processing} />
             <Container>
                 <Center>
                     <Stack w="18em">

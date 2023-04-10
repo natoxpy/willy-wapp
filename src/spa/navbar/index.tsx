@@ -20,7 +20,6 @@ import {
 } from "@mantine/core";
 import {
     IconSearch,
-    IconPlus,
     IconHome2,
     IconClipboardList,
     IconPencil,
@@ -37,6 +36,11 @@ import { useWindowSize, UseQuery } from "@/utils";
 import { useAddMoneyDrawer } from "@/drawers/addMoney/state";
 import { useTheme } from "@/themes";
 import { useThemeText } from "@/themeStyles/useTextStyles";
+import {
+    UseCreateBudgetDrawer,
+    UseCreateGoalDrawer,
+    UseDoTransactionDrawer,
+} from "@/drawers";
 
 const useStyles = createStyles((theme) => ({
     mainLinks: {
@@ -112,7 +116,10 @@ function NavPageLinks() {
                                 : theme.navbar.backgroundSelectedNavLinkColor,
                         color: theme.textColor,
                         "&:hover": {
-                            background: theme.navbar.hoverColor,
+                            background:
+                                navPage.link != currentRoute
+                                    ? theme.navbar.hoverColor
+                                    : "",
                         },
                     })}
                 >
@@ -137,6 +144,10 @@ function NavPageLinks() {
 
 function AccordActionsPanel() {
     const addMoneyDrawer = useAddMoneyDrawer();
+    const createBudgetDrawer = UseCreateBudgetDrawer();
+    const createGoalDrawer = UseCreateGoalDrawer();
+    const doTransactionDrawer = UseDoTransactionDrawer();
+
     const { theme } = useTheme();
     const { NavbarTextStyleClass } = useThemeText();
 
@@ -144,24 +155,22 @@ function AccordActionsPanel() {
         {
             key: "sdad",
             label: "Add money",
-            onClick: () => {
-                addMoneyDrawer.open();
-            },
+            onClick: () => addMoneyDrawer.open(),
         },
         {
             key: "sgfj",
             label: "Do Transaction",
-            onClick: () => {},
+            onClick: () => doTransactionDrawer.open(),
         },
         {
             key: "oecd",
             label: "Create Budget",
-            onClick: () => {},
+            onClick: () => createBudgetDrawer.open(),
         },
         {
             key: "olgf",
             label: "Create Goal",
-            onClick: () => {},
+            onClick: () => createGoalDrawer.open(),
         },
     ];
 

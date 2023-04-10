@@ -1,29 +1,31 @@
 import { CText } from "@/CustomComponents/CText";
-import { createContext, useContext, useState } from "react";
+import {
+    createContext,
+    ReactNode,
+    useContext,
+    useEffect,
+    useState,
+} from "react";
 import { CustomDrawer } from "../customDrawer";
-import AddMoneyDrawer from "./drawer";
+import DoTransactionDrawer from "./drawer";
 
 interface ContextType {
     close: () => void;
     open: () => void;
 }
 
-const AddMoneyDrawerContext = createContext<ContextType>({
+const DoTransactionContext = createContext<ContextType>({
     close: () => {},
     open: () => {},
 });
 
-export const useAddMoneyDrawer = () => useContext(AddMoneyDrawerContext);
+export const UseDoTransactionDrawer = () => useContext(DoTransactionContext);
 
-export function AddMoneyDrawerProvider({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export function DoTransactionProvider({ children }: { children: ReactNode }) {
     let [opened, setOpened] = useState(false);
 
     return (
-        <AddMoneyDrawerContext.Provider
+        <DoTransactionContext.Provider
             value={{
                 close: () => setOpened(false),
                 open: () => setOpened(true),
@@ -33,12 +35,12 @@ export function AddMoneyDrawerProvider({
                 close={() => setOpened(false)}
                 onClose={() => setOpened(false)}
                 opened={opened}
-                title={<CText size="24px">Add money</CText>}
+                title={<CText size="24px">Do transaction</CText>}
             >
-                <AddMoneyDrawer />
+                <DoTransactionDrawer />
             </CustomDrawer>
 
             {children}
-        </AddMoneyDrawerContext.Provider>
+        </DoTransactionContext.Provider>
     );
 }
