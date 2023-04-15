@@ -1,13 +1,28 @@
+import { CancelButton } from "@/CustomComponents/buttons/CancelButton";
 import { CProgress } from "@/CustomComponents/CProgress";
 import { CText } from "@/CustomComponents/CText";
+import { OpenConfirmationModal } from "@/CustomComponents/medals/ConfirmationModal";
 import { useGoals } from "@/firebase/firestore";
-import { Container, Space } from "@mantine/core";
+import { useTheme } from "@/themes";
+import { Center, Container, Space, Stack } from "@mantine/core";
 import currency from "currency.js";
 import { UseViewGoalDrawer } from "./state";
 
 export default function ViewGoalDrawer() {
-    const { uid } = UseViewGoalDrawer();
-    const { findById } = useGoals();
+    const { uid, close } = UseViewGoalDrawer();
+    const { findById, deleteGoal } = useGoals();
+    const { theme } = useTheme();
+
+    const deleteGoalClick = () => {
+        OpenConfirmationModal({
+            title: "Delete Goal",
+            theme,
+            onConfirm: async () => {
+                close();
+                await deleteGoal(uid);
+            },
+        });
+    };
 
     const goal = findById(uid);
 
@@ -28,6 +43,14 @@ export default function ViewGoalDrawer() {
                 size="lg"
                 radius="xl"
             />
+            <Space h={17} />
+            <Stack>
+                <Center>
+                    <CancelButton onClick={deleteGoalClick}>
+                        Delete
+                    </CancelButton>
+                </Center>
+            </Stack>
         </Container>
     );
 }

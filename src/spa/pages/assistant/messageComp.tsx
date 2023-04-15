@@ -99,6 +99,9 @@ export function Message({
                 sx={(mantineTheme) => ({
                     borderRadius: mantineTheme.radius.sm,
                     float: "right",
+                    color: leftUser
+                        ? theme.chatMessage.userMessage.textColor
+                        : theme.chatMessage.botMessage.textColor,
                 })}
                 w="100%"
             >

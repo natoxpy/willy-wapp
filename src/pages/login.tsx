@@ -12,16 +12,24 @@ import {
     LoadingOverlay,
     Box,
 } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import passwordValitator from "password-validator";
 import emailValitator from "email-validator";
 import { useRouter } from "next/router";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+} from "firebase/auth";
 // import { auth } from "@/firebase.config";
 // import { useUser } from "@/providers/userAuthProvider";
 import { auth } from "@/firebase/firebase.config";
 
 import { serialize } from "cookie";
+import { useTheme } from "@/themes";
+import { CTextInput } from "@/CustomComponents/CTextInput";
+import { CText } from "@/CustomComponents/CText";
+import { ConfirmButton } from "@/CustomComponents/buttons/ConfirmButton";
+import { ActionButton } from "@/drySystems/ActionButton";
 
 const passwordSchema = new passwordValitator()
     .has()
@@ -58,7 +66,6 @@ function attempLogin(
 
     signInWithEmailAndPassword(auth, email, password)
         .then((creds) => {
-            console.log("crets", creds);
             goHome();
         })
         .catch(() => {
@@ -68,19 +75,18 @@ function attempLogin(
         });
 }
 
-function LoginTab(
-    setLoadingForm: (state: boolean) => void,
-    goHome: () => void
-) {
+function LoginTab(goHome: () => void) {
+    const [loading, setLoading] = useState(false);
     let [password, setPassword] = useState("");
     let [email, setEmail] = useState("");
 
     let [passwordErr, setPasswordErr] = useState<string | boolean>("");
     let [emailErr, setEmailErr] = useState<string | boolean>("");
+    const { theme } = useTheme();
 
     return (
         <>
-            <TextInput
+            <CTextInput
                 label="Email"
                 placeholder="Your@gmail.com"
                 onChange={(event) => {
@@ -91,13 +97,13 @@ function LoginTab(
                 required
                 onKeyUp={(e) => {
                     if (e.key == "Enter") {
-                        setLoadingForm(true);
+                        setLoading(true);
                         attempLogin(
                             email,
                             password,
                             (e: string | boolean) => setEmailErr(e),
                             (e: string | boolean) => setPasswordErr(e),
-                            () => setLoadingForm(false),
+                            () => setLoading(false),
                             goHome
                         );
                     }
@@ -107,67 +113,232 @@ function LoginTab(
                 label="Password"
                 placeholder="Your password"
                 required
+                variant="filled"
                 onChange={(event) => {
                     setPasswordErr(false);
                     setPassword(event.currentTarget.value);
+                }}
+                sx={{
+                    color: "red",
+                }}
+                styles={{
+                    input: {
+                        backgroundColor: theme.backgroundColor,
+                        border: "1px solid " + theme.dividerColor,
+                    },
+                    visibilityToggle: {
+                        "&:hover": {
+                            backgroundColor: theme.hoverColor,
+                        },
+                    },
+                    innerInput: {
+                        color: theme.textColor,
+                        backgroundColor: theme.backgroundColor,
+                        "&:disabled": {
+                            backgroundColor: theme.backgroundColor,
+                            color: theme.segundaryTextColor,
+                            border: "1px solid " + theme.segundaryTextColor,
+                        },
+                    },
+                    label: {
+                        color: theme.segundaryTextColor,
+                    },
                 }}
                 error={passwordErr}
                 mt="md"
                 onKeyUp={(e) => {
                     if (e.key == "Enter") {
-                        setLoadingForm(true);
+                        setLoading(true);
                         attempLogin(
                             email,
                             password,
                             (e: string | boolean) => setEmailErr(e),
                             (e: string | boolean) => setPasswordErr(e),
-                            () => setLoadingForm(false),
+                            () => setLoading(false),
                             goHome
                         );
                     }
                 }}
             />
-            <Group position="apart" mt="lg">
-                <Container></Container>
-                <Anchor component="button" size="sm">
-                    Forgot password?
-                </Anchor>
-            </Group>
-            <Button
+            <ActionButton
                 fullWidth
                 mt="xl"
+                loading={loading}
                 onClick={() => {
-                    setLoadingForm(true);
+                    setLoading(true);
                     attempLogin(
                         email,
                         password,
                         (e: string | boolean) => setEmailErr(e),
                         (e: string | boolean) => setPasswordErr(e),
-                        () => setLoadingForm(false),
+                        () => setLoading(false),
                         goHome
                     );
                 }}
             >
                 Sign in
-            </Button>
+            </ActionButton>
+        </>
+    );
+}
+
+interface AttempSignUpProps {
+    name: string;
+    email: string;
+    password: string;
+
+    setNameErr: (a: string | boolean) => void;
+    setEmailErr: (a: string | boolean) => void;
+    setPasswordErr: (a: string | boolean) => void;
+
+    failedLogin: () => void;
+
+    goHome: () => void;
+}
+
+function attempSignUp({
+    email,
+    name,
+    password,
+    failedLogin,
+    goHome,
+    setEmailErr,
+    setNameErr,
+    setPasswordErr,
+}: AttempSignUpProps) {
+    let err = false;
+
+    if (name.length < 3) {
+        setNameErr("Name must be at least 3 characters long");
+        err = true;
+    }
+
+    if (!emailValitator.validate(email)) {
+        setEmailErr("Email not valid!");
+        err = true;
+    }
+
+    let passVal = passwordSchema.validate(password, {
+        details: true,
+    }) as any;
+    if (passVal.length != 0) {
+        setPasswordErr(passVal[0]["message"]);
+        err = true;
+    }
+
+    if (err) return failedLogin();
+
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((creds) => {
+            goHome();
+        })
+        .catch(() => {
+            setEmailErr("Email already in use");
+            setPasswordErr("Password not valid");
+            failedLogin();
+        });
+}
+
+function SignupTab(goHome: () => void) {
+    const [loading, setLoading] = useState(false);
+    const nameRef = useRef<HTMLInputElement>(null);
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+
+    const [errorName, setErrorName] = useState<string | boolean>("");
+    const [errorEmail, setErrorEmail] = useState<string | boolean>("");
+    const [errorPassword, setErrorPassword] = useState<string | boolean>("");
+
+    const { theme } = useTheme();
+
+    const attempSignUpBtnClick = (e: any) => {};
+
+    return (
+        <>
+            <CTextInput
+                label="Name"
+                placeholder="Your name"
+                required
+                onChange={() => {
+                    setErrorName("");
+                }}
+                error={errorName}
+                Cref={nameRef}
+            />
+            <CTextInput
+                label="Email Address"
+                placeholder="Your@gmail.com"
+                Cref={emailRef}
+                error={errorEmail}
+                required
+                mt="md"
+            />
+            <PasswordInput
+                styles={{
+                    input: {
+                        backgroundColor: theme.backgroundColor,
+                        border: "1px solid " + theme.dividerColor,
+                    },
+                    visibilityToggle: {
+                        "&:hover": {
+                            backgroundColor: theme.hoverColor,
+                        },
+                    },
+                    innerInput: {
+                        color: theme.textColor,
+                        backgroundColor: theme.backgroundColor,
+                        "&:disabled": {
+                            backgroundColor: theme.backgroundColor,
+                            color: theme.segundaryTextColor,
+                            border: "1px solid " + theme.segundaryTextColor,
+                        },
+                    },
+                    label: {
+                        color: theme.segundaryTextColor,
+                    },
+                }}
+                error={errorPassword}
+                onChange={(e) => {
+                    setErrorPassword("");
+                }}
+                ref={passwordRef}
+                label="Password"
+                placeholder="Your password"
+                required
+                mt="md"
+            />
+            <ActionButton
+                fullWidth
+                mt="xl"
+                onClick={() => {
+                    setLoading(true);
+                }}
+                loading={loading}
+            >
+                Create account
+            </ActionButton>
         </>
     );
 }
 
 export default function AuthenticationPage() {
     let router = useRouter();
-    // let { loggedin } = useUser();
-    const [loadingForm, setLoadingForm] = useState(false);
-
-    // useEffect(() => {
-    //     if (loggedin) router.push("/dashboard");
-    // }, [loggedin]);
+    const { theme } = useTheme();
 
     return (
         <Center w="100vw">
-            <Container size={450} my={30}>
-                <LoadingOverlay visible={loadingForm} overlayBlur={2} />
-                <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            <Container size={600} my={30}>
+                <Paper
+                    withBorder
+                    shadow="md"
+                    p={40}
+                    mt={30}
+                    radius="md"
+                    style={{
+                        background: theme.backgroundColor,
+                        border: "1px solid " + theme.dividerColor,
+                    }}
+                >
                     <Center mb="lg">
                         <Image
                             src="/img/BigLogo.png"
@@ -176,44 +347,70 @@ export default function AuthenticationPage() {
                         />
                     </Center>
 
-                    <Tabs defaultValue="login" variant="outline">
-                        <Tabs.List>
-                            <Tabs.Tab value="login">Login</Tabs.Tab>
-                            <Tabs.Tab value="signup">Signup</Tabs.Tab>
+                    <Tabs defaultValue="login" variant="default">
+                        <Tabs.List
+                            style={{
+                                borderBottom: "1px solid " + theme.dividerColor,
+                            }}
+                        >
+                            <Tabs.Tab
+                                value="login"
+                                sx={{
+                                    border: "none",
+                                    "&:hover": {
+                                        background: theme.hoverColor,
+                                        borderBotton:
+                                            "2px solid red !important",
+                                    },
+                                    "&[data-active]": {
+                                        borderBottom:
+                                            "2px solid " +
+                                            theme.buttonActiveBackgroundColor,
+                                    },
+                                    "&[data-active]:hover": {
+                                        borderBottom:
+                                            "2px solid " +
+                                            theme.buttonActiveBackgroundColor,
+                                    },
+                                }}
+                            >
+                                <CText>Login</CText>
+                            </Tabs.Tab>
+                            <Tabs.Tab
+                                value="signup"
+                                sx={{
+                                    border: "none",
+                                    "&:hover": {
+                                        background: theme.hoverColor,
+                                        borderBotton:
+                                            "2px solid red !important",
+                                    },
+                                    "&[data-active]": {
+                                        borderBottom:
+                                            "2px solid " +
+                                            theme.buttonActiveBackgroundColor,
+                                    },
+                                    "&[data-active]:hover": {
+                                        borderBottom:
+                                            "2px solid " +
+                                            theme.buttonActiveBackgroundColor,
+                                    },
+                                }}
+                            >
+                                <CText>Signup</CText>
+                            </Tabs.Tab>
                         </Tabs.List>
                         <Tabs.Panel value="login" pt="xl">
-                            {LoginTab(
-                                (state) => {
-                                    setLoadingForm(state);
-                                },
-                                () => {
-                                    router.push("/dashboard");
-                                }
-                            )}
+                            {LoginTab(() => {
+                                router.push("/dashboard");
+                            })}
                         </Tabs.Panel>
 
                         {/* TODO: Setup signup */}
                         <Tabs.Panel value="signup" pt="xl">
-                            <TextInput
-                                label="Name"
-                                placeholder="Your name"
-                                required
-                            />
-                            <TextInput
-                                label="Email Address"
-                                placeholder="Your@gmail.com"
-                                required
-                                mt="md"
-                            />
-                            <PasswordInput
-                                label="Password"
-                                placeholder="Your password"
-                                required
-                                mt="md"
-                            />
-                            <Button fullWidth mt="xl">
-                                Create account
-                            </Button>
+                            {SignupTab(() => {
+                                router.push("/dashboard");
+                            })}
                         </Tabs.Panel>
                     </Tabs>
                 </Paper>

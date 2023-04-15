@@ -3,7 +3,7 @@ import { TextInput, TextInputProps } from "@mantine/core";
 import { Ref, useState } from "react";
 
 interface CTextInputProps extends TextInputProps {
-    Cref: Ref<HTMLInputElement>;
+    Cref?: Ref<HTMLInputElement>;
 }
 
 export function CTextInput({ Cref, ...props }: CTextInputProps) {

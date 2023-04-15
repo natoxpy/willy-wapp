@@ -4,9 +4,9 @@
     "display": "standalone",
     "scope": "/",
     "start_url": "/dashboard/home",
-    "name": "GPayApp",
+    "name": "CurrencG",
     "orientation": "portrait",
-    "short_name": "GPay",
+    "short_name": "CurrencG",
     "icons": [
         {
             "src": "/icon-192x192.png",

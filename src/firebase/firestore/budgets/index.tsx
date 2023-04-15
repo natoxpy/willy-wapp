@@ -4,6 +4,7 @@ import { uuid } from "@/utils";
 import {
     addDoc,
     collection,
+    deleteDoc,
     doc,
     getDoc,
     getDocs,
@@ -22,6 +23,7 @@ interface BudgetsContextType {
         budget: Omit<Budget, "creationDate" | "userUid" | "uid" | "usedAmount">
     ) => void;
     findById: (uid: string) => Budget | undefined;
+    deleteBudget: (uid: string) => void;
     updateBudget: (budget: Budget) => void;
 }
 
@@ -30,6 +32,7 @@ const BudgetsContext = createContext<BudgetsContextType>({
     budgetsLoading: null,
     addBudget: () => {},
     findById: () => undefined,
+    deleteBudget: () => {},
     updateBudget: () => {},
 });
 
@@ -66,6 +69,16 @@ export function BudgetsProvider({ children }: { children: React.ReactNode }) {
         budgets: budgets,
         budgetsLoading: budgetsLoaded,
         findById: (uid) => budgets.find((b) => b.uid === uid),
+        deleteBudget: async (uid) => {
+            const q = query(budgetsCol, where("uid", "==", uid));
+            const snap = await getDocs(q);
+            if (snap.empty) return;
+            let doc = snap.docs[0];
+
+            setBudgets((prev) => prev.filter((b) => b.uid !== uid));
+
+            await deleteDoc(doc.ref);
+        },
         updateBudget: async (budget) => {
             const q = query(budgetsCol, where("uid", "==", budget.uid));
             const snap = await getDocs(q);

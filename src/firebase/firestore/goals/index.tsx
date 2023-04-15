@@ -4,6 +4,7 @@ import { uuid } from "@/utils";
 import {
     addDoc,
     collection,
+    deleteDoc,
     getDocs,
     query,
     setDoc,
@@ -20,6 +21,7 @@ interface GoalsContextType {
         goal: Omit<Goal, "creationDate" | "userUid" | "uid" | "filledAmount">
     ) => void;
     findById: (uid: string) => Goal | undefined;
+    deleteGoal: (uid: string) => void;
     updateGoal: (budget: Goal) => void;
 }
 
@@ -28,6 +30,7 @@ const GoalsContext = createContext<GoalsContextType>({
     goalsLoading: null,
     addGoal: () => {},
     findById: () => undefined,
+    deleteGoal: () => {},
     updateGoal: () => {},
 });
 
@@ -64,6 +67,16 @@ export function GoalsProvider({ children }: { children: React.ReactNode }) {
         goals: goals,
         goalsLoading: goalsLoaded,
         findById: (uid) => goals.find((g) => g.uid === uid),
+        deleteGoal: async (uid) => {
+            const q = query(goalsCol, where("uid", "==", uid));
+            const snap = await getDocs(q);
+            if (snap.empty) return;
+            let doc = snap.docs[0];
+
+            setGoals((prev) => prev.filter((g) => g.uid !== uid));
+
+            await deleteDoc(doc.ref);
+        },
         updateGoal: async (goal) => {
             const q = query(goalsCol, where("uid", "==", goal.uid));
             const snap = await getDocs(q);

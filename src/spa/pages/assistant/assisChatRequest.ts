@@ -2,6 +2,7 @@ import { sendAddMoneyNotification } from "@/drawers/addMoney/drawer";
 import { useNotifications } from "@/drySystems/Notification";
 import { useAuthUser } from "@/firebase/auth/authUser";
 import { useMoneyTransactions, useUserFireStore } from "@/firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 import Joi from "joi";
 import {
     ChatgptMessage,
@@ -172,7 +173,7 @@ export function UseAssistantRequest() {
                     addMoneyTransaction({
                         amount: Number(assistantRes.actionContent.amount ?? 0),
                         tags: [],
-                        date: new Date(),
+                        date: Timestamp.now(),
                         userUid: user?.uid ?? "",
                     });
 

@@ -169,7 +169,7 @@ export default function UserButton({
                 <Menu.Item
                     key="sdlmasl"
                     onClick={() => {
-                        if (themeSchema == "dark") switchTheme("purple");
+                        if (themeSchema == "dark") switchTheme("light");
                         else switchTheme("dark");
                     }}
                     sx={() => ({

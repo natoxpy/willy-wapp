@@ -1,10 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { DarkTheme } from "./dark.theme";
 import { LightTheme } from "./light.theme";
-import { babyPinkTheme } from "./pink.theme";
-import { PurpleTheme } from "./purple.theme";
+// import { babyPinkTheme } from "./pink.theme";
+// import { PurpleTheme } from "./purple.theme";
 
-type Themes = typeof DarkTheme | typeof LightTheme | typeof PurpleTheme;
+// type Themes = typeof DarkTheme | typeof LightTheme | typeof PurpleTheme;
+type Themes = typeof DarkTheme | typeof LightTheme;
 export type ThemeSchema = "dark" | "light" | "purple" | "pink";
 
 interface ContextType {
@@ -14,9 +15,9 @@ interface ContextType {
 }
 
 const ThemeContext = createContext<ContextType>({
-    themeSchema: "purple",
+    themeSchema: "dark",
     switchTheme: () => {},
-    theme: PurpleTheme,
+    theme: DarkTheme,
 });
 
 const useTheme = () => useContext(ThemeContext);
@@ -28,8 +29,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         if (themeSchema == "dark") setTheme(DarkTheme);
         if (themeSchema == "light") setTheme(LightTheme);
-        if (themeSchema == "purple") setTheme(PurpleTheme);
-        if (themeSchema == "pink") setTheme(babyPinkTheme);
+        // if (themeSchema == "purple") setTheme(PurpleTheme);
+        // if (themeSchema == "pink") setTheme(babyPinkTheme);
     }, [themeSchema]);
 
     return (

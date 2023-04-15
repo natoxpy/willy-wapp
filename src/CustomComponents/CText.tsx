@@ -5,10 +5,10 @@ interface PProps extends TextProps {
     loading?: boolean;
 }
 
-export function CText(props: PProps) {
+export function CText({ loading, ...props }: PProps) {
     const { theme } = useTheme();
 
-    let children = props.loading ? (
+    let children = loading ? (
         <Loader
             size={props.size}
             variant="dots"

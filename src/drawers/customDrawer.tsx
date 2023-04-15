@@ -54,6 +54,11 @@ export function CustomDrawer({
             }}
             closeButtonProps={{
                 size: "lg",
+                sx: {
+                    ":hover": {
+                        background: theme.hoverColor,
+                    },
+                },
             }}
             title={title}
             size={responsive ? "90%" : "400px"}
