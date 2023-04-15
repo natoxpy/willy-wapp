@@ -11,6 +11,9 @@ import {
     Tabs,
     LoadingOverlay,
     Box,
+    Loader,
+    Stack,
+    Flex,
 } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import passwordValitator from "password-validator";
@@ -30,6 +33,8 @@ import { CTextInput } from "@/CustomComponents/CTextInput";
 import { CText } from "@/CustomComponents/CText";
 import { ConfirmButton } from "@/CustomComponents/buttons/ConfirmButton";
 import { ActionButton } from "@/drySystems/ActionButton";
+import { GetServerSidePropsContext } from "next";
+import { useAuthUser } from "@/firebase/auth/authUser";
 
 const passwordSchema = new passwordValitator()
     .has()
@@ -75,8 +80,15 @@ function attempLogin(
         });
 }
 
-function LoginTab(goHome: () => void) {
-    const [loading, setLoading] = useState(false);
+function LoginTab({
+    goHome,
+    loading,
+    setLoading,
+}: {
+    goHome: () => void;
+    loading: boolean;
+    setLoading: (a: boolean) => void;
+}) {
     let [password, setPassword] = useState("");
     let [email, setEmail] = useState("");
 
@@ -239,8 +251,15 @@ function attempSignUp({
         });
 }
 
-function SignupTab(goHome: () => void) {
-    const [loading, setLoading] = useState(false);
+function SignupTab({
+    goHome,
+    loading,
+    setLoading,
+}: {
+    goHome: () => void;
+    loading: boolean;
+    setLoading: (a: boolean) => void;
+}) {
     const nameRef = useRef<HTMLInputElement>(null);
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
@@ -324,97 +343,119 @@ function SignupTab(goHome: () => void) {
 export default function AuthenticationPage() {
     let router = useRouter();
     const { theme } = useTheme();
+    const { loggedin } = useAuthUser();
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (loggedin) router.push("/dashboard/home");
+    });
 
     return (
         <Center w="100vw">
-            <Container size={600} my={30}>
-                <Paper
-                    withBorder
-                    shadow="md"
-                    p={40}
-                    mt={30}
-                    radius="md"
-                    style={{
-                        background: theme.backgroundColor,
-                        border: "1px solid " + theme.dividerColor,
-                    }}
-                >
-                    <Center mb="lg">
-                        <Image
-                            src="/img/BigLogo.png"
-                            alt="GPay logo"
-                            width={250}
-                        />
-                    </Center>
+            <Stack>
+                {loggedin == null && (
+                    <Flex justify={"center"} mt="30px">
+                        <Loader />
+                    </Flex>
+                )}
+                <Container size={600} my={10}>
+                    <Paper
+                        withBorder
+                        shadow="md"
+                        p={40}
+                        mt={30}
+                        radius="md"
+                        style={{
+                            background: theme.backgroundColor,
+                            border: "1px solid " + theme.dividerColor,
+                        }}
+                    >
+                        <Center mb="lg">
+                            <Image
+                                src="/img/BigLogo.png"
+                                alt="GPay logo"
+                                width={250}
+                            />
+                        </Center>
 
-                    <Tabs defaultValue="login" variant="default">
-                        <Tabs.List
-                            style={{
-                                borderBottom: "1px solid " + theme.dividerColor,
-                            }}
-                        >
-                            <Tabs.Tab
-                                value="login"
-                                sx={{
-                                    border: "none",
-                                    "&:hover": {
-                                        background: theme.hoverColor,
-                                        borderBotton:
-                                            "2px solid red !important",
-                                    },
-                                    "&[data-active]": {
-                                        borderBottom:
-                                            "2px solid " +
-                                            theme.buttonActiveBackgroundColor,
-                                    },
-                                    "&[data-active]:hover": {
-                                        borderBottom:
-                                            "2px solid " +
-                                            theme.buttonActiveBackgroundColor,
-                                    },
+                        <Tabs defaultValue="login" variant="default">
+                            <Tabs.List
+                                style={{
+                                    borderBottom:
+                                        "1px solid " + theme.dividerColor,
                                 }}
                             >
-                                <CText>Login</CText>
-                            </Tabs.Tab>
-                            <Tabs.Tab
-                                value="signup"
-                                sx={{
-                                    border: "none",
-                                    "&:hover": {
-                                        background: theme.hoverColor,
-                                        borderBotton:
-                                            "2px solid red !important",
+                                <Tabs.Tab
+                                    value="login"
+                                    sx={{
+                                        border: "none",
+                                        "&:hover": {
+                                            background: theme.hoverColor,
+                                            borderBotton:
+                                                "2px solid red !important",
+                                        },
+                                        "&[data-active]": {
+                                            borderBottom:
+                                                "2px solid " +
+                                                theme.buttonActiveBackgroundColor,
+                                        },
+                                        "&[data-active]:hover": {
+                                            borderBottom:
+                                                "2px solid " +
+                                                theme.buttonActiveBackgroundColor,
+                                        },
+                                    }}
+                                >
+                                    <CText>Login</CText>
+                                </Tabs.Tab>
+                                <Tabs.Tab
+                                    value="signup"
+                                    sx={{
+                                        border: "none",
+                                        "&:hover": {
+                                            background: theme.hoverColor,
+                                            borderBotton:
+                                                "2px solid red !important",
+                                        },
+                                        "&[data-active]": {
+                                            borderBottom:
+                                                "2px solid " +
+                                                theme.buttonActiveBackgroundColor,
+                                        },
+                                        "&[data-active]:hover": {
+                                            borderBottom:
+                                                "2px solid " +
+                                                theme.buttonActiveBackgroundColor,
+                                        },
+                                    }}
+                                >
+                                    <CText>Signup</CText>
+                                </Tabs.Tab>
+                            </Tabs.List>
+                            <Tabs.Panel value="login" pt="xl">
+                                {LoginTab({
+                                    goHome: () => {
+                                        router.push("/dashboard/home");
                                     },
-                                    "&[data-active]": {
-                                        borderBottom:
-                                            "2px solid " +
-                                            theme.buttonActiveBackgroundColor,
-                                    },
-                                    "&[data-active]:hover": {
-                                        borderBottom:
-                                            "2px solid " +
-                                            theme.buttonActiveBackgroundColor,
-                                    },
-                                }}
-                            >
-                                <CText>Signup</CText>
-                            </Tabs.Tab>
-                        </Tabs.List>
-                        <Tabs.Panel value="login" pt="xl">
-                            {LoginTab(() => {
-                                router.push("/dashboard");
-                            })}
-                        </Tabs.Panel>
+                                    loading,
+                                    setLoading,
+                                })}
+                            </Tabs.Panel>
 
-                        {/* TODO: Setup signup */}
-                        <Tabs.Panel value="signup" pt="xl">
-                            {SignupTab(() => {
-                                router.push("/dashboard");
-                            })}
-                        </Tabs.Panel>
-                    </Tabs>
-                </Paper>
-            </Container>
+                            {/* TODO: Setup signup */}
+                            <Tabs.Panel value="signup" pt="xl">
+                                {SignupTab({
+                                    goHome: () => {
+                                        router.push("/dashboard/home");
+                                    },
+                                    loading,
+                                    setLoading,
+                                })}
+                            </Tabs.Panel>
+                        </Tabs>
+                    </Paper>
+                </Container>
+            </Stack>
         </Center>
     );
 }

@@ -114,7 +114,7 @@ export function Message({
                                 color="red"
                                 onClick={async () => {
                                     await onClick(
-                                        "I do not give my approval for that actions to be performed."
+                                        "I do not give my approval for that action to be performed."
                                     );
                                 }}
                             >
@@ -125,7 +125,7 @@ export function Message({
                                 disabled={btnOff}
                                 onClick={async () => {
                                     await onClick(
-                                        "I give my approval for that actions to be performed."
+                                        "I give my approval for that action to be performed."
                                     );
                                 }}
                             >

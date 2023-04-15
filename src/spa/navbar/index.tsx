@@ -33,7 +33,7 @@ import { useNavbar } from "./state";
 import { useDashboard } from "../dashboardState";
 import UserButton from "./userButton";
 import { useWindowSize, UseQuery } from "@/utils";
-import { useAddMoneyDrawer } from "@/drawers/addMoney/state";
+import { useAddMoneyDrawer } from "@/drawers/actions/addMoney/state";
 import { useTheme } from "@/themes";
 import { useThemeText } from "@/themeStyles/useTextStyles";
 import {
@@ -81,7 +81,7 @@ function NavPageLinks() {
         { icon: IconHome2, label: "Home", link: "home" },
         {
             icon: IconMessageCircle2,
-            label: "Assistent Chat",
+            label: "Assistant Chat",
             link: "assistant",
         },
         { icon: IconListDetails, label: "Budgets", link: "budgets" },

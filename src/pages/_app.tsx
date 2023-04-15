@@ -16,11 +16,9 @@ import { DatesProvider } from "@mantine/dates";
 import { NavbarProvider } from "@/spa/navbar/state";
 import { AssistantProvider } from "@/spa/pages/assistant/state";
 import {
-    AddMoneyDrawerProvider,
-    CreateBudgetProvider,
-    CreateGoalProvider,
-    DoTransactionProvider,
     ViewProviders,
+    ActionsProviders,
+    UserDropdownProviders,
 } from "@/drawers";
 import { ThemeProvider } from "@/themes";
 import {
@@ -34,15 +32,11 @@ import {
 function DrawerProviders({ children }: { children: React.ReactNode }) {
     return (
         <>
-            <AddMoneyDrawerProvider>
-                <DoTransactionProvider>
-                    <CreateBudgetProvider>
-                        <CreateGoalProvider>
-                            <ViewProviders>{children}</ViewProviders>
-                        </CreateGoalProvider>
-                    </CreateBudgetProvider>
-                </DoTransactionProvider>
-            </AddMoneyDrawerProvider>
+            <ActionsProviders>
+                <UserDropdownProviders>
+                    <ViewProviders>{children}</ViewProviders>
+                </UserDropdownProviders>
+            </ActionsProviders>
         </>
     );
 }
@@ -152,7 +146,7 @@ function Mantine({
 function AppHead() {
     return (
         <Head>
-            <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+            <link rel="shortcut icon" href="/favicon.png" type="image/png" />
             <link rel="manifest" href="/manifest.json" />
             <meta
                 name="viewport"

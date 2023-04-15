@@ -1,25 +1,25 @@
 import { CText } from "@/CustomComponents/CText";
+import { CustomDrawer } from "@/drawers/customDrawer";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { CustomDrawer } from "../customDrawer";
-import CreateBudgetDrawer from "./drawer";
+import ProfileDrawer from "./drawer";
 
 interface ContextType {
     close: () => void;
     open: () => void;
 }
 
-const CreateBudgetContext = createContext<ContextType>({
+const ProfileContext = createContext<ContextType>({
     close: () => {},
     open: () => {},
 });
 
-export const UseCreateBudgetDrawer = () => useContext(CreateBudgetContext);
+export const UseProfile = () => useContext(ProfileContext);
 
-export function CreateBudgetProvider({ children }: { children: ReactNode }) {
-    let [opened, setOpened] = useState(false);
+export function ProfileProvider({ children }: { children: ReactNode }) {
+    const [opened, setOpened] = useState(false);
 
     return (
-        <CreateBudgetContext.Provider
+        <ProfileContext.Provider
             value={{
                 close: () => setOpened(false),
                 open: () => setOpened(true),
@@ -29,12 +29,12 @@ export function CreateBudgetProvider({ children }: { children: ReactNode }) {
                 close={() => setOpened(false)}
                 onClose={() => setOpened(false)}
                 opened={opened}
-                title={<CText size="24px">Create Budget</CText>}
+                title={<CText size="24px">User Profile</CText>}
             >
-                <CreateBudgetDrawer />
+                <ProfileDrawer />
             </CustomDrawer>
 
             {children}
-        </CreateBudgetContext.Provider>
+        </ProfileContext.Provider>
     );
 }

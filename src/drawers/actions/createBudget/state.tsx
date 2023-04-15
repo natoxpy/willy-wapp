@@ -1,25 +1,25 @@
 import { CText } from "@/CustomComponents/CText";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { CustomDrawer } from "../customDrawer";
-import CreateGoalDrawer from "./drawer";
+import { CustomDrawer } from "../../customDrawer";
+import CreateBudgetDrawer from "./drawer";
 
 interface ContextType {
     close: () => void;
     open: () => void;
 }
 
-const CreateGoalContext = createContext<ContextType>({
+const CreateBudgetContext = createContext<ContextType>({
     close: () => {},
     open: () => {},
 });
 
-export const UseCreateGoalDrawer = () => useContext(CreateGoalContext);
+export const UseCreateBudgetDrawer = () => useContext(CreateBudgetContext);
 
-export function CreateGoalProvider({ children }: { children: ReactNode }) {
+export function CreateBudgetProvider({ children }: { children: ReactNode }) {
     let [opened, setOpened] = useState(false);
 
     return (
-        <CreateGoalContext.Provider
+        <CreateBudgetContext.Provider
             value={{
                 close: () => setOpened(false),
                 open: () => setOpened(true),
@@ -29,12 +29,12 @@ export function CreateGoalProvider({ children }: { children: ReactNode }) {
                 close={() => setOpened(false)}
                 onClose={() => setOpened(false)}
                 opened={opened}
-                title={<CText size="24px">Create Goal</CText>}
+                title={<CText size="24px">Create Budget</CText>}
             >
-                <CreateGoalDrawer />
+                <CreateBudgetDrawer />
             </CustomDrawer>
 
             {children}
-        </CreateGoalContext.Provider>
+        </CreateBudgetContext.Provider>
     );
 }

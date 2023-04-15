@@ -1,4 +1,4 @@
-import { sendAddMoneyNotification } from "@/drawers/addMoney/drawer";
+import { sendAddMoneyNotification } from "@/drawers/actions/addMoney/drawer";
 import { useNotifications } from "@/drySystems/Notification";
 import { useAuthUser } from "@/firebase/auth/authUser";
 import { useMoneyTransactions, useUserFireStore } from "@/firebase/firestore";

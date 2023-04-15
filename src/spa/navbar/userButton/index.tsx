@@ -26,6 +26,7 @@ import { useUserFireStore } from "@/firebase/firestore/users";
 import { useRouter } from "next/router";
 import { useAuthUser } from "@/firebase/auth/authUser";
 import { CText } from "@/CustomComponents/CText";
+import { UseProfile } from "@/drawers";
 
 const useStyles = createStyles((theme) => ({
     user: {
@@ -62,7 +63,8 @@ export default function UserButton({
     const { classes } = useStyles();
     const { switchTheme, themeSchema } = useTheme();
     const { theme } = useTheme();
-    const { NavbarDimmedTextStyleClass, NavbarTextStyleClass } = useThemeText();
+    const { NavbarTextStyleClass } = useThemeText();
+    const profileDrawer = UseProfile();
     const router = useRouter();
 
     const { userDoc, userDocLoaded } = useUserFireStore();
@@ -97,7 +99,7 @@ export default function UserButton({
                     })}
                 >
                     <Group>
-                        <Avatar
+                        {/* <Avatar
                             src={!userDocLoaded ? null : image}
                             radius="lg"
                             size="lg"
@@ -109,7 +111,7 @@ export default function UserButton({
                             }}
                         >
                             <Loader variant="oval" />
-                        </Avatar>
+                        </Avatar> */}
 
                         <div style={{ flex: 1 }}>
                             {/* <Text
@@ -162,6 +164,7 @@ export default function UserButton({
                         backgroundColor: theme.navbar.backgroundColor,
                     }}
                     className={NavbarTextStyleClass}
+                    onClick={() => profileDrawer.open()}
                 >
                     <Text className={NavbarTextStyleClass}>Profile</Text>
                 </Menu.Item>
