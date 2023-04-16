@@ -3,11 +3,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { UserDocument } from "../types";
 import { db } from "@/firebase/firebase.config";
 import {
+    addDoc,
     collection,
-    getDoc,
     getDocs,
     query,
-    setDoc,
     updateDoc,
     where,
 } from "firebase/firestore";
@@ -16,12 +15,16 @@ interface ContextProps {
     userDoc: UserDocument | null;
     userDocLoaded: boolean | null;
     increaseMoney: (amount: number) => void;
+    changeName: (name: string) => void;
+    createNewUser: (name: string, uid: string) => void;
 }
 
 const Context = createContext<ContextProps>({
     userDoc: null,
     userDocLoaded: null,
     increaseMoney: () => {},
+    changeName: () => {},
+    createNewUser: () => {},
 });
 
 export const useUserFireStore = () => useContext(Context);
@@ -41,6 +44,8 @@ export function UsersFireStoreProvider({
         if (!loggedin) return;
         const users = collection(db, "users");
 
+        console.log("loading user...");
+
         getDocs(query(users, where("uid", "==", user?.uid))).then((snap) =>
             snap.docs.forEach((doc) => {
                 setUserDoc(doc.data() as UserDocument);
@@ -57,22 +62,56 @@ export function UsersFireStoreProvider({
             snap.docs.forEach((doc) => {
                 let data = doc.data() as UserDocument;
 
+                const newWalletMoney = Number(data.walletMoney) + Number(money);
+
                 updateDoc(doc.ref, {
-                    wallet_money: data.walletMoney + money,
+                    walletMoney: newWalletMoney,
                 });
 
                 setUserDoc({
                     ...data,
-                    walletMoney: data.walletMoney + money,
+                    walletMoney: newWalletMoney,
                 });
             })
         );
+    };
+
+    let changeName = (name: string) => {
+        if (!loggedin) return;
+        const users = collection(db, "users");
+
+        getDocs(query(users, where("uid", "==", user?.uid))).then((snap) =>
+            snap.docs.forEach((doc) => {
+                let data = doc.data() as UserDocument;
+
+                updateDoc(doc.ref, {
+                    name: name,
+                });
+
+                setUserDoc({
+                    ...data,
+                    name: name,
+                });
+            })
+        );
+    };
+
+    let createNewUser = async (name: string, uid: string) => {
+        const users = collection(db, "users");
+
+        await addDoc(users, {
+            name: name,
+            uid,
+            walletMoney: 0,
+        });
     };
 
     let contextData: ContextProps = {
         userDoc: userDoc,
         userDocLoaded: userDocLoaded,
         increaseMoney: increaseMoney,
+        changeName: changeName,
+        createNewUser: createNewUser,
     };
 
     return <Context.Provider value={contextData}>{children}</Context.Provider>;

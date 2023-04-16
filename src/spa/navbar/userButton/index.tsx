@@ -26,7 +26,7 @@ import { useUserFireStore } from "@/firebase/firestore/users";
 import { useRouter } from "next/router";
 import { useAuthUser } from "@/firebase/auth/authUser";
 import { CText } from "@/CustomComponents/CText";
-import { UseProfile } from "@/drawers";
+import { UseFAQ, UseProfile, UseThemeDrawer } from "@/drawers";
 
 const useStyles = createStyles((theme) => ({
     user: {
@@ -64,7 +64,11 @@ export default function UserButton({
     const { switchTheme, themeSchema } = useTheme();
     const { theme } = useTheme();
     const { NavbarTextStyleClass } = useThemeText();
+
     const profileDrawer = UseProfile();
+    const FAQDrawer = UseFAQ();
+    const ThemeDrawer = UseThemeDrawer();
+
     const router = useRouter();
 
     const { userDoc, userDocLoaded } = useUserFireStore();
@@ -99,28 +103,7 @@ export default function UserButton({
                     })}
                 >
                     <Group>
-                        {/* <Avatar
-                            src={!userDocLoaded ? null : image}
-                            radius="lg"
-                            size="lg"
-                            alt="Avatar"
-                            styles={{
-                                placeholder: {
-                                    background: theme.navbar.backgroundColor,
-                                },
-                            }}
-                        >
-                            <Loader variant="oval" />
-                        </Avatar> */}
-
                         <div style={{ flex: 1 }}>
-                            {/* <Text
-                                size="lg"
-                                weight={500}
-                                className={NavbarTextStyleClass}
-                            >
-                                {name}
-                            </Text> */}
                             <CText
                                 loading={!userDocLoaded}
                                 size="lg"
@@ -132,9 +115,6 @@ export default function UserButton({
                             <CText loading={!loggedin} size="md">
                                 {user?.email}
                             </CText>
-                            {/* <Text className={NavbarTextStyleClass} size="md">
-                                {email}
-                            </Text> */}
                         </div>
 
                         {icon || (
@@ -172,8 +152,7 @@ export default function UserButton({
                 <Menu.Item
                     key="sdlmasl"
                     onClick={() => {
-                        if (themeSchema == "dark") switchTheme("light");
-                        else switchTheme("dark");
+                        ThemeDrawer.open();
                     }}
                     sx={() => ({
                         ":hover": {
@@ -201,6 +180,7 @@ export default function UserButton({
                     style={{
                         backgroundColor: theme.navbar.backgroundColor,
                     }}
+                    onClick={() => FAQDrawer.open()}
                 >
                     <Text>FAQ</Text>
                 </Menu.Item>

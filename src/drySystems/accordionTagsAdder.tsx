@@ -16,9 +16,33 @@ import {
     Stack,
 } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { ActionButton } from "./ActionButton";
 import { ActionIconBtn } from "./ActionIconBtn";
+
+export function TagsBadges({
+    tags,
+    color,
+    noTagsText,
+}: {
+    tags: Array<string>;
+    color: "blue" | "green";
+    noTagsText?: string;
+}) {
+    return (
+        <>
+            {tags.length > 0 ? (
+                tags.map((tag) => (
+                    <CBadge variant={color} key={tag}>
+                        {tag}
+                    </CBadge>
+                ))
+            ) : (
+                <CBadge variant="red">{noTagsText ?? "No tags"}</CBadge>
+            )}
+        </>
+    );
+}
 
 interface Props {
     tags: Array<string>;
@@ -107,7 +131,6 @@ export function AccordionTagsAdder({
                                                 <ActionIconBtn
                                                     size="xs"
                                                     radius="xl"
-                                                    variant="transparent"
                                                     style={{
                                                         background:
                                                             "transparent",

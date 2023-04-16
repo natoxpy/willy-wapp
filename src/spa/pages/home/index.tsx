@@ -8,29 +8,23 @@ import {
 } from "@mantine/core";
 import { useTheme } from "@/themes";
 import currency from "currency.js";
-import { useEffect, useRef, useState } from "react";
-import { UseQuery, ContinuesMatchMaxWidth } from "@/utils";
+import { useState } from "react";
+import { ContinuesMatchMaxWidth } from "@/utils";
 import { CText } from "@/CustomComponents/CText";
 import { CDivider } from "@/CustomComponents/CDivider";
 import { useUserFireStore } from "@/firebase/firestore/users";
-import { useMoneyTransactions } from "@/firebase/firestore";
-import { ConfirmButton } from "@/CustomComponents/buttons/ConfirmButton";
-import { CancelButton } from "@/CustomComponents/buttons/CancelButton";
 import { CSegmentedControl } from "@/CustomComponents/CSegmentedControl";
+import { TransactionsHome } from "./transactionsHomeShow";
 
 function Header({
     activityTimeRange,
     setActivityTimeRange,
-}: // totalMoney,
-// activityTimeRange,
-// setActivityTimeRange,
-{
+}: {
     activityTimeRange: "week" | "month";
     setActivityTimeRange: React.Dispatch<
         React.SetStateAction<"week" | "month">
     >;
 }) {
-    const { theme } = useTheme();
     const { userDoc, userDocLoaded } = useUserFireStore();
 
     return (
@@ -103,33 +97,16 @@ export default function Home() {
                 >
                     <Box>
                         <Header
-                            // totalMoney={walletMoney}
                             activityTimeRange={activityTimeRange}
                             setActivityTimeRange={setActivityTimeRange}
                         />
-
-                        <CDivider mb="lg" mt="lg" w={"calc(100vw)"} />
-
-                        <Flex>
-                            <Grid>
-                                <Grid.Col>
-                                    {/* <LastestTransactions
-                                        transactions={transactions}
-                                    /> */}
-                                </Grid.Col>
-                                <Grid.Col>
-                                    {/* <LastestMoneyAdded
-                                        setWalletMoney={setWalleyMoney}
-                                        walletMoney={walletMoney}
-                                        transactions={moneyTransactions}
-                                        setMoneyTransactions={
-                                            setMoneyTransactions
-                                        }
-                                    /> */}
-                                </Grid.Col>
-                            </Grid>
-                        </Flex>
                     </Box>
+                </Grid.Col>
+                <Grid.Col>
+                    <TransactionsHome
+                        responsiveCalcChange={responsiveCalcChange}
+                        activityTimeRange={activityTimeRange}
+                    />
                 </Grid.Col>
                 <Grid.Col
                     sx={() => ({

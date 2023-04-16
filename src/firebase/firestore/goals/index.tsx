@@ -23,6 +23,7 @@ interface GoalsContextType {
     findById: (uid: string) => Goal | undefined;
     deleteGoal: (uid: string) => void;
     updateGoal: (budget: Goal) => void;
+    clear: () => void;
 }
 
 const GoalsContext = createContext<GoalsContextType>({
@@ -32,6 +33,7 @@ const GoalsContext = createContext<GoalsContextType>({
     findById: () => undefined,
     deleteGoal: () => {},
     updateGoal: () => {},
+    clear: () => {},
 });
 
 export const useGoals = () => useContext(GoalsContext);
@@ -48,6 +50,8 @@ export function GoalsProvider({ children }: { children: React.ReactNode }) {
         if (queried) return;
         if (!loggedin) return;
 
+        console.log("loading goals...");
+
         setQueried(true);
         getDocs(query(goalsCol, where("userUid", "==", user?.uid))).then(
             (snap) => {
@@ -61,7 +65,7 @@ export function GoalsProvider({ children }: { children: React.ReactNode }) {
                 setGoalsLoaded(true);
             }
         );
-    }, [loggedin, queried, user?.uid, goalsCol]);
+    }, [loggedin, queried, user?.uid, goalsCol, user]);
 
     const contextData: GoalsContextType = {
         goals: goals,
@@ -106,6 +110,11 @@ export function GoalsProvider({ children }: { children: React.ReactNode }) {
             setGoals((prev) => [goalComplete, ...prev]);
 
             await addDoc(goalsCol, goalComplete);
+        },
+        clear: () => {
+            setGoals([]);
+            setGoalsLoaded(null);
+            setQueried(false);
         },
     };
 

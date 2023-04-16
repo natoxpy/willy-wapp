@@ -40,7 +40,7 @@ export function ViewGoalProvider({ children }: { children: ReactNode }) {
                 close={() => setOpened(false)}
                 onClose={() => setOpened(false)}
                 opened={opened}
-                title={<CText size="24px">View goal {title}</CText>}
+                title={<CText size="24px">{title}</CText>}
             >
                 <ViewGoalDrawer />
             </CustomDrawer>

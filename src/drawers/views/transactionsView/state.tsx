@@ -1,7 +1,7 @@
 import { CText } from "@/CustomComponents/CText";
 import { createContext, ReactNode, useContext, useState } from "react";
 import { CustomDrawer } from "../../customDrawer";
-import ViewBudgetDrawer from "./drawer";
+import ViewTransactionDrawer from "./drawer";
 
 interface ContextType {
     close: () => void;
@@ -11,23 +11,24 @@ interface ContextType {
     setTitle: (title: string) => void;
 }
 
-const ViewBudgetContext = createContext<ContextType>({
+const ViewTransactionContext = createContext<ContextType>({
     close: () => {},
     open: () => {},
     uid: "",
-    setUid: () => {},
-    setTitle: () => {},
+    setUid: (uid: string) => {},
+    setTitle: (title: string) => {},
 });
 
-export const UseViewBudgetDrawer = () => useContext(ViewBudgetContext);
+export const UseViewTransactionDrawer = () =>
+    useContext(ViewTransactionContext);
 
-export function ViewBudgetProvider({ children }: { children: ReactNode }) {
+export function ViewTransactionProvider({ children }: { children: ReactNode }) {
     const [opened, setOpened] = useState(false);
     const [uid, setUid] = useState("");
     const [title, setTitle] = useState("");
 
     return (
-        <ViewBudgetContext.Provider
+        <ViewTransactionContext.Provider
             value={{
                 close: () => setOpened(false),
                 open: () => setOpened(true),
@@ -42,10 +43,10 @@ export function ViewBudgetProvider({ children }: { children: ReactNode }) {
                 opened={opened}
                 title={<CText size="24px">{title}</CText>}
             >
-                <ViewBudgetDrawer />
+                <ViewTransactionDrawer />
             </CustomDrawer>
 
             {children}
-        </ViewBudgetContext.Provider>
+        </ViewTransactionContext.Provider>
     );
 }

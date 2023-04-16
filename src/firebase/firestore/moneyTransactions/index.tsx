@@ -18,12 +18,14 @@ interface MoneyTransactionsContextType {
     addMoneyTransaction: (
         moneyTransaction: Omit<MoneyTransaction, "creationDate" | "uid">
     ) => void;
+    clear: () => void;
 }
 
 const MoneyTransactionsContext = createContext<MoneyTransactionsContextType>({
     moneyTransactions: [],
     moneyTransactionsLoaded: null,
     addMoneyTransaction: () => {},
+    clear: () => {},
 });
 
 export const useMoneyTransactions = () => useContext(MoneyTransactionsContext);
@@ -49,6 +51,8 @@ export function MoneyTransactionsProvider({
         if (queried) return;
         if (!loggedin) return;
 
+        console.log("loading money transactions...");
+
         setQueried(true);
         getDocs(
             query(moneyTransactionsCol, where("userUid", "==", user?.uid))
@@ -62,7 +66,7 @@ export function MoneyTransactionsProvider({
 
             setMoneyTransactionsLoaded(true);
         });
-    }, [loggedin, queried, user?.uid, moneyTransactionsCol]);
+    }, [loggedin, queried, user?.uid, moneyTransactionsCol, user]);
 
     const contextData: MoneyTransactionsContextType = {
         moneyTransactions: moneyTransactions,
@@ -86,6 +90,11 @@ export function MoneyTransactionsProvider({
                 ...moneyTransaction,
                 user_uid: user?.uid,
             });
+        },
+        clear: () => {
+            setMoneyTransactions([]);
+            setMoneyTransactionsLoaded(null);
+            setQueried(false);
         },
     };
 

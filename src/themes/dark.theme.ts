@@ -36,6 +36,38 @@ const DarkTheme: BaseTheme = {
         disabledLabelColor: "rgba(255, 255, 255, 0.5)",
     },
 
+    actionIcons: {
+        green: {
+            backgroundColor: "#43B581",
+            labelColor: "#FFFFFF",
+            activeBackgroundColor: "#85D2AF",
+            disabledBackgroundColor: "rgba(67, 181, 129, 0.5)",
+            disabledLabelColor: "rgba(255, 255, 255, 0.5)",
+        },
+        red: {
+            backgroundColor: "#F04747",
+            labelColor: "#FFFFFF",
+            activeBackgroundColor: "#DE5959",
+            disabledBackgroundColor: "rgba(240, 71, 71, 0.5)",
+            disabledLabelColor: "rgba(255, 255, 255, 0.5)",
+        },
+        blue: {
+            backgroundColor: "#7289DA",
+            labelColor: "#FFFFFF",
+            activeBackgroundColor: "#677BC4",
+
+            disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+            disabledLabelColor: "rgba(255, 255, 255, 0.5)",
+        },
+        primary: {
+            backgroundColor: "#7289DA",
+            labelColor: "#FFFFFF",
+            activeBackgroundColor: "#677BC4",
+            disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+            disabledLabelColor: "rgba(255, 255, 255, 0.5)",
+        },
+    },
+
     confirmButton: {
         backgroundColor: "#43B581",
         labelColor: "#FFFFFF",

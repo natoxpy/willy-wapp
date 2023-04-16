@@ -8,6 +8,7 @@ import { CTextInput } from "@/CustomComponents/CTextInput";
 import {
     Accordion,
     ActionIcon,
+    Center,
     Flex,
     Group,
     Space,
@@ -16,6 +17,34 @@ import {
 import { IconPlus, IconX } from "@tabler/icons-react";
 import { useRef, useState } from "react";
 import { ActionButton } from "./ActionButton";
+
+export function TagFiltersHeader({
+    filterTags,
+    setTags,
+}: {
+    filterTags: Array<string>;
+    setTags: (tags: Array<string>) => void;
+}) {
+    return (
+        <Accordion mb="sm" mx="lg">
+            <CAccordionItem value={"tags_filter"}>
+                <CAccordionControl>
+                    <CText>Tags filter</CText>
+                </CAccordionControl>
+                <Accordion.Panel>
+                    <Center mt="sm">
+                        <Group position="center">
+                            <FilterOptionsAccItem
+                                filterTags={filterTags}
+                                setTags={setTags}
+                            />
+                        </Group>
+                    </Center>
+                </Accordion.Panel>
+            </CAccordionItem>
+        </Accordion>
+    );
+}
 
 export function FilterOptionsAccItem({
     filterTags,
@@ -87,7 +116,6 @@ export function FilterOptionsAccItem({
                                             size="xs"
                                             color="red"
                                             radius="xl"
-                                            variant="transparent"
                                         >
                                             <IconX />
                                         </ActionIcon>

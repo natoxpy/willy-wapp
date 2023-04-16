@@ -13,6 +13,9 @@ export function ActionButton(props: Props) {
                 root: {
                     background: theme.actionButton.backgroundColor,
                     color: theme.actionButton.labelColor,
+                    ":disabled": {
+                        background: theme.actionButton.disabledBackgroundColor,
+                    },
                     ":hover": {
                         background: theme.actionButton.activeBackgroundColor,
                     },

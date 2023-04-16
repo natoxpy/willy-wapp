@@ -26,7 +26,6 @@ function AssistantMessagesArea({
     scrollToBottom();
 
     useEffect(() => {
-        console.log(messages);
         scrollToBottom();
     }, [messages]);
 
@@ -109,7 +108,6 @@ function AssistantChatbox({ scrollToBottom }: { scrollToBottom: () => void }) {
                     }}
                 ></CTextInput>
                 <ActionIconBtn
-                    variant="filled"
                     loading={loading}
                     size="2.5em"
                     radius="sm"

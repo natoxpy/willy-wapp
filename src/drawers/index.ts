@@ -23,6 +23,11 @@ export {
 export { UseViewGoalDrawer, ViewGoalProvider } from "./views/goalView/state";
 
 export { ProfileProvider, UseProfile } from "./userDropdown/profile/state";
+export { FAQProvider, UseFAQ } from "./userDropdown/faqSection/state";
+export {
+    ThemeDrawerProvider,
+    UseThemeDrawer,
+} from "./userDropdown/themesSelection/state";
 
 export { ViewProviders } from "./views/providers";
 export { ActionsProviders } from "./actions/providers";

@@ -4,6 +4,7 @@ import { uuid } from "@/utils";
 import {
     addDoc,
     collection,
+    deleteDoc,
     getDocs,
     query,
     Timestamp,
@@ -18,12 +19,18 @@ interface TransactionsContextType {
     addTransaction: (
         transaction: Omit<Transaction, "uid" | "userUid" | "creationDate">
     ) => void;
+    findById: (uid: string) => Transaction | undefined;
+    deleteTransaction: (uid: string) => void;
+    clear: () => void;
 }
 
 const TransactionsContext = createContext<TransactionsContextType>({
     transactions: [],
     transactionsLoaded: null,
     addTransaction: () => {},
+    findById: () => undefined,
+    deleteTransaction: () => {},
+    clear: () => {},
 });
 
 export const useTransactions = () => useContext(TransactionsContext);
@@ -46,6 +53,8 @@ export function TransactionsProvider({
         if (queried) return;
         if (!loggedin) return;
 
+        console.log("loading transactions...");
+
         setQueried(true);
         getDocs(
             query(transactionsCol, where("user_uid", "==", user?.uid))
@@ -59,7 +68,7 @@ export function TransactionsProvider({
 
             setTransactionsLoaded(true);
         });
-    }, [loggedin, queried, user?.uid, transactionsCol]);
+    }, [loggedin, queried, user?.uid, transactionsCol, user]);
 
     const contextData: TransactionsContextType = {
         transactions: transactions,
@@ -78,6 +87,22 @@ export function TransactionsProvider({
                 ...transactionComplete,
                 user_uid: user?.uid,
             });
+        },
+        findById: (uid) => transactions.find((t) => t.uid === uid),
+        deleteTransaction: async (uid) => {
+            const q = query(transactionsCol, where("uid", "==", uid));
+            const snap = await getDocs(q);
+            if (snap.empty) return;
+            let doc = snap.docs[0];
+
+            setTransactions((prev) => prev.filter((b) => b.uid !== uid));
+
+            await deleteDoc(doc.ref);
+        },
+        clear: () => {
+            setTransactions([]);
+            setTransactionsLoaded(null);
+            setQueried(false);
         },
     };
 

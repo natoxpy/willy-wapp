@@ -3,16 +3,14 @@ import {
     CAccordionControl,
     CAccordionItem,
 } from "@/CustomComponents/CAccordion";
-import { CAlert } from "@/CustomComponents/CAlert";
 import { CProgress } from "@/CustomComponents/CProgress";
 import { CText } from "@/CustomComponents/CText";
 import { OpenConfirmationModal } from "@/CustomComponents/medals/ConfirmationModal";
 import { TagsBadges } from "@/drySystems/accordionTagsAdder";
-import { useBudgets } from "@/firebase/firestore";
+import { useGoals, useTransactions } from "@/firebase/firestore";
 import { useTheme } from "@/themes";
 import {
     Accordion,
-    Alert,
     Center,
     Container,
     Group,
@@ -20,56 +18,44 @@ import {
     Stack,
 } from "@mantine/core";
 import currency from "currency.js";
-import { UseViewBudgetDrawer } from "./state";
+import { UseViewTransactionDrawer } from "./state";
 
-export default function ViewBudgetDrawer() {
-    const { uid, close } = UseViewBudgetDrawer();
-    const { findById, deleteBudget } = useBudgets();
+export default function ViewGoalDrawer() {
+    const { uid, close } = UseViewTransactionDrawer();
+    const { findById, deleteTransaction } = useTransactions();
     const { theme } = useTheme();
 
-    const deleteBudgetClick = () => {
+    const deleteTransactionClick = () => {
         OpenConfirmationModal({
             title: "Delete Goal",
             theme,
             onConfirm: async () => {
                 close();
-                await deleteBudget(uid);
+                await deleteTransaction(uid);
             },
         });
     };
 
-    const budget = findById(uid);
+    const transaction = findById(uid);
 
     return (
         <Container>
             <Space h={17} />
             <CText size="xl" ta="center">
-                {currency(budget?.usedAmount ?? 0).format()} /{" "}
-                {currency(budget?.amount ?? 0).format()}
+                {currency(transaction?.amount ?? 0).format()}
             </CText>
-            <CProgress
-                value={
-                    budget?.amount
-                        ? ((budget?.usedAmount ?? 0) / budget?.amount) * 100
-                        : 0
-                }
-                mt="md"
-                size="lg"
-                radius="xl"
-            />
-
             <Space h={17} />
 
             <Accordion>
                 <CAccordionItem value="tags">
                     <CAccordionControl>
-                        <CText>Budget tags</CText>
+                        <CText>Transaction tags</CText>
                     </CAccordionControl>
                     <Accordion.Panel>
                         <Space h={6} />
                         <Group position="center">
                             <TagsBadges
-                                tags={budget?.tags ?? []}
+                                tags={transaction?.tags ?? []}
                                 color="blue"
                             />
                         </Group>
@@ -78,10 +64,9 @@ export default function ViewBudgetDrawer() {
             </Accordion>
 
             <Space h={17} />
-
             <Stack>
                 <Center>
-                    <CancelButton onClick={deleteBudgetClick}>
+                    <CancelButton onClick={deleteTransactionClick}>
                         Delete
                     </CancelButton>
                 </Center>

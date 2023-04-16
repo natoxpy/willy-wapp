@@ -34,6 +34,13 @@ export interface BaseTheme {
         disabledLabelColor: string;
     };
 
+    actionIcons: {
+        green: ActionIconButton;
+        red: ActionIconButton;
+        blue: ActionIconButton;
+        primary: ActionIconButton;
+    };
+
     confirmButton: {
         backgroundColor: string;
         labelColor: string;
@@ -100,6 +107,14 @@ interface AlertStyles {
     backgroundColor: string;
     textColor: string;
     titleColor: string;
+}
+
+interface ActionIconButton {
+    backgroundColor: string;
+    labelColor: string;
+    activeBackgroundColor: string;
+    disabledBackgroundColor: string;
+    disabledLabelColor: string;
 }
 
 // Notes for chatgpt,

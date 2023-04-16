@@ -25,6 +25,7 @@ interface BudgetsContextType {
     findById: (uid: string) => Budget | undefined;
     deleteBudget: (uid: string) => void;
     updateBudget: (budget: Budget) => void;
+    clear: () => void;
 }
 
 const BudgetsContext = createContext<BudgetsContextType>({
@@ -34,6 +35,7 @@ const BudgetsContext = createContext<BudgetsContextType>({
     findById: () => undefined,
     deleteBudget: () => {},
     updateBudget: () => {},
+    clear: () => {},
 });
 
 export const useBudgets = () => useContext(BudgetsContext);
@@ -50,6 +52,8 @@ export function BudgetsProvider({ children }: { children: React.ReactNode }) {
         if (queried) return;
         if (!loggedin) return;
 
+        console.log("loading budgets...");
+
         setQueried(true);
         getDocs(query(budgetsCol, where("userUid", "==", user?.uid))).then(
             (snap) => {
@@ -63,7 +67,7 @@ export function BudgetsProvider({ children }: { children: React.ReactNode }) {
                 setBudgetsLoaded(true);
             }
         );
-    }, [loggedin, queried, user?.uid, budgetsCol]);
+    }, [loggedin, queried, user?.uid, budgetsCol, user]);
 
     const contextData: BudgetsContextType = {
         budgets: budgets,
@@ -110,6 +114,11 @@ export function BudgetsProvider({ children }: { children: React.ReactNode }) {
             setBudgets([budgetComplete, ...budgets]);
 
             await addDoc(budgetsCol, budgetComplete);
+        },
+        clear: () => {
+            setBudgets([]);
+            setBudgetsLoaded(null);
+            setQueried(false);
         },
     };
 

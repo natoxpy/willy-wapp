@@ -36,6 +36,37 @@ const LightTheme: BaseTheme = {
         disabledLabelColor: "rgba(255, 255, 255, 0.5)",
     },
 
+    actionIcons: {
+        blue: {
+            backgroundColor: "#7289DA",
+            activeBackgroundColor: "#677BC4",
+            disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+            disabledLabelColor: "rgba(255, 255, 255, 0.5)",
+            labelColor: "#FFFFFF",
+        },
+        red: {
+            backgroundColor: "#E74C3C",
+            activeBackgroundColor: "#C0392B",
+            disabledBackgroundColor: "rgba(231, 76, 60, 0.5)",
+            disabledLabelColor: "rgba(255, 255, 255, 0.5)",
+            labelColor: "#FFFFFF",
+        },
+        green: {
+            backgroundColor: "#2ECC71",
+            activeBackgroundColor: "#27AE60",
+            disabledBackgroundColor: "rgba(46, 204, 113, 0.5)",
+            disabledLabelColor: "rgba(255, 255, 255, 0.5)",
+            labelColor: "#FFFFFF",
+        },
+        primary: {
+            backgroundColor: "#333333",
+            activeBackgroundColor: "#555555",
+            disabledBackgroundColor: "rgba(51, 51, 51, 0.5)",
+            disabledLabelColor: "rgba(255, 255, 255, 0.5)",
+            labelColor: "#FFFFFF",
+        },
+    },
+
     confirmButton: {
         backgroundColor: "#43B581",
         labelColor: "#FFFFFF",

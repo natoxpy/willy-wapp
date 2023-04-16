@@ -58,26 +58,28 @@ export default function DoTransactionDrawer() {
     const { budgets, findById: findBudget, updateBudget } = useBudgets();
     const { goals, findById: findGoal, updateGoal } = useGoals();
 
-    const getTitle = (uid: string) => {
-        if (transactionTargetType == "budget") {
-            return findBudget(uid)?.title;
-        } else {
-            return findGoal(uid)?.title;
-        }
-    };
-
     const confirmModal = () => {
         OpenConfirmationModal({
             theme: theme,
             title: (
                 <>
                     Confirm that{" "}
-                    {currency(amountRef.current?.value ?? 0).format()}
-                    will be used for this transaction
+                    {currency(amountRef.current?.value ?? 0).format()} will be
+                    used for this transaction
                 </>
             ),
             children:
-                "The amount will be deducted from your wallet and added to the selected target",
+                transactionTargetType == "budget" ? (
+                    <CText>
+                        {currency(amountRef.current?.value ?? 0).format()} will
+                        be taken from the selected budget
+                    </CText>
+                ) : (
+                    <CText>
+                        {currency(amountRef.current?.value ?? 0).format()} will
+                        be taken from your wallet and added to the selected goal
+                    </CText>
+                ),
             onConfirm: () => {
                 const money = amountRef.current?.value ?? 0;
 

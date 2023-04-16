@@ -35,6 +35,13 @@ import { ConfirmButton } from "@/CustomComponents/buttons/ConfirmButton";
 import { ActionButton } from "@/drySystems/ActionButton";
 import { GetServerSidePropsContext } from "next";
 import { useAuthUser } from "@/firebase/auth/authUser";
+import {
+    useBudgets,
+    useGoals,
+    useMoneyTransactions,
+    useTransactions,
+    useUserFireStore,
+} from "@/firebase/firestore";
 
 const passwordSchema = new passwordValitator()
     .has()
@@ -205,6 +212,8 @@ interface AttempSignUpProps {
 
     failedLogin: () => void;
 
+    createUser: (name: string, uid: string) => Promise<void>;
+
     goHome: () => void;
 }
 
@@ -217,6 +226,7 @@ function attempSignUp({
     setEmailErr,
     setNameErr,
     setPasswordErr,
+    createUser,
 }: AttempSignUpProps) {
     let err = false;
 
@@ -242,9 +252,16 @@ function attempSignUp({
 
     createUserWithEmailAndPassword(auth, email, password)
         .then((creds) => {
-            goHome();
+            createUser(name, creds.user.uid)
+                .then(() => {
+                    goHome();
+                })
+                .catch((e) => {
+                    failedLogin();
+                    console.log(e);
+                });
         })
-        .catch(() => {
+        .catch((e) => {
             setEmailErr("Email already in use");
             setPasswordErr("Password not valid");
             failedLogin();
@@ -268,9 +285,26 @@ function SignupTab({
     const [errorEmail, setErrorEmail] = useState<string | boolean>("");
     const [errorPassword, setErrorPassword] = useState<string | boolean>("");
 
+    const { createNewUser } = useUserFireStore();
+
     const { theme } = useTheme();
 
-    const attempSignUpBtnClick = (e: any) => {};
+    const attempSignUpBtnClick = () => {
+        setLoading(true);
+        attempSignUp({
+            email: emailRef.current?.value || "",
+            name: nameRef.current?.value || "",
+            password: passwordRef.current?.value || "",
+            failedLogin: () => setLoading(false),
+            goHome,
+            setEmailErr: (e: string | boolean) => setErrorEmail(e),
+            setNameErr: (e: string | boolean) => setErrorName(e),
+            setPasswordErr: (e: string | boolean) => setErrorPassword(e),
+            createUser: async (name: string, uid: string) => {
+                await createNewUser(name, uid);
+            },
+        });
+    };
 
     return (
         <>
@@ -281,6 +315,11 @@ function SignupTab({
                 onChange={() => {
                     setErrorName("");
                 }}
+                onKeyUp={(e) => {
+                    if (e.key == "Enter") {
+                        attempSignUpBtnClick();
+                    }
+                }}
                 error={errorName}
                 Cref={nameRef}
             />
@@ -288,6 +327,11 @@ function SignupTab({
                 label="Email Address"
                 placeholder="Your@gmail.com"
                 Cref={emailRef}
+                onKeyUp={(e) => {
+                    if (e.key == "Enter") {
+                        attempSignUpBtnClick();
+                    }
+                }}
                 error={errorEmail}
                 required
                 mt="md"
@@ -320,6 +364,11 @@ function SignupTab({
                 onChange={(e) => {
                     setErrorPassword("");
                 }}
+                onKeyUp={(e) => {
+                    if (e.key == "Enter") {
+                        attempSignUpBtnClick();
+                    }
+                }}
                 ref={passwordRef}
                 label="Password"
                 placeholder="Your password"
@@ -329,9 +378,7 @@ function SignupTab({
             <ActionButton
                 fullWidth
                 mt="xl"
-                onClick={() => {
-                    setLoading(true);
-                }}
+                onClick={attempSignUpBtnClick}
                 loading={loading}
             >
                 Create account
@@ -346,8 +393,20 @@ export default function AuthenticationPage() {
     const { loggedin } = useAuthUser();
     const [loading, setLoading] = useState(false);
 
+    const budgets = useBudgets();
+    const goals = useGoals();
+    const transactions = useTransactions();
+    const moneyTransactions = useMoneyTransactions();
+
     useEffect(() => {
         if (loggedin) router.push("/dashboard/home");
+
+        if (loggedin == false) {
+            budgets.clear();
+            goals.clear();
+            transactions.clear();
+            moneyTransactions.clear();
+        }
     });
 
     return (

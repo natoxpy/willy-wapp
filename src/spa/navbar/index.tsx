@@ -41,6 +41,8 @@ import {
     UseCreateGoalDrawer,
     UseDoTransactionDrawer,
 } from "@/drawers";
+import { CText } from "@/CustomComponents/CText";
+import { TransactionsNavSearch } from "./transactionsSearc";
 
 const useStyles = createStyles((theme) => ({
     mainLinks: {
@@ -232,18 +234,10 @@ export default function NavBar() {
         },
     });
 
-    // (let)[(loading, setLoading)] = useState(true);
-    // let { loggedin } = useUser();
-
-    // useEffect(() => {
-    //     if (loggedin) setLoading(false);
-    // }, [loggedin]);
-
     let MaxMoveLength = 329;
 
     return (
         <Box
-            // onClick={() => (extended ? null : extendedToggle())}
             style={{
                 transition: "width 0.2s",
                 width:
@@ -258,13 +252,11 @@ export default function NavBar() {
                     position: "absolute",
                     transition: "left 0.2s",
                 })}
-                // left={extended ? 0 : -currentMove}
                 left={navbar.opened ? 0 : -MaxMoveLength}
             >
                 <Navbar
                     w={330}
                     sx={() => ({
-                        // opacity: extended ? 1 : 0.2,
                         transition: "opacity 0.2s",
                         pointerEvents: !navbar.opened ? "none" : "all",
                         overflowY: "auto",
@@ -336,85 +328,7 @@ export default function NavBar() {
                     {/* Actions */}
 
                     <Navbar.Section sx={sectionSxStyle}>
-                        <Container>
-                            <TextInput
-                                placeholder="Search transactions"
-                                size="md"
-                                icon={<IconSearch size="0.8rem" stroke={1.5} />}
-                                rightSectionWidth={70}
-                                styles={{
-                                    rightSection: {
-                                        pointerEvents: "none",
-                                    },
-
-                                    input: {
-                                        background:
-                                            theme.navbar.backgroundColor,
-                                        color: theme.textColor,
-                                        textShadow:
-                                            "0 1px 1px " +
-                                            theme.textShadowColor,
-                                        border:
-                                            "1px solid " +
-                                            theme.navbar.borderColor,
-                                        ":focus": {
-                                            border:
-                                                "1px solid " +
-                                                theme.navbar.borderColor,
-                                        },
-                                        "::placeholder": {
-                                            color: theme.segundaryTextColor,
-                                        },
-                                    },
-                                    icon: {
-                                        color: theme.navbar.iconColor,
-                                    },
-                                }}
-                                mb="sm"
-                            />
-                        </Container>
-                        <Group
-                            sx={(mantineTheme) => ({
-                                paddingLeft: `calc(${
-                                    mantineTheme.spacing.md
-                                } + ${rem(2)})`,
-                                paddingRight: mantineTheme.spacing.md,
-                                marginBottom: rem(5),
-                            })}
-                            position="apart"
-                        >
-                            <Text
-                                size="md"
-                                weight={500}
-                                className={NavbarTextStyleClass}
-                            >
-                                Transactions
-                            </Text>
-                        </Group>
-                        {/* Transactions list */}
-                        <Container
-                            sx={(mantineTheme) => ({
-                                paddingLeft: `calc(${
-                                    mantineTheme.spacing.md
-                                } - ${rem(6)})`,
-                                paddingRight: `calc(${
-                                    mantineTheme.spacing.md
-                                } - ${rem(6)})`,
-                                paddingBottom: mantineTheme.spacing.md,
-                            })}
-                        >
-                            <Text
-                                align="center"
-                                className={NavbarTextStyleClass}
-                            >
-                                You don&apos;t have any transactions yet.
-                            </Text>
-                            {/* {transactions.length > 0 ? (
-                                TransactionsList
-                            ) : (
-
-                            )} */}
-                        </Container>
+                        <TransactionsNavSearch />
                     </Navbar.Section>
                 </Navbar>
                 <Hambuger MaxMoveLength={MaxMoveLength} />
