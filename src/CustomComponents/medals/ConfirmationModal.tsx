@@ -46,6 +46,9 @@ export function OpenConfirmationModal(props: ConfirmationModalProps) {
                 ":active": {
                     background: props.theme.hoverColor,
                 },
+                ":hover": {
+                    background: props.theme.hoverColor,
+                },
             },
         },
 

@@ -97,12 +97,12 @@ export default function CreateGoalDrawer() {
             theme: theme,
             title: (
                 <>
-                    Confirm creatino of goal for{" "}
+                    Confirm goal for{" "}
                     {currency(amountRef.current?.value ?? 0).format()}
                 </>
             ),
             children:
-                "This action will not affect you wallets balance, but will create a goal for you to reach",
+                "This action will not affect your wallet balance, and will create a goal for you to reach",
             onConfirm: () => {
                 const money = amountRef.current?.value ?? 0;
 

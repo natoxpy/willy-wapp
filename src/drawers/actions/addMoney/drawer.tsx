@@ -50,9 +50,8 @@ export default function AddMoneyDrawer() {
             theme: theme,
             title: (
                 <>
-                    Confirm that{" "}
                     {currency(amountRef.current?.value ?? 0).format()} will be
-                    added to your account
+                    added to your wallet
                 </>
             ),
             children:
