@@ -102,7 +102,7 @@ export default function CreateGoalDrawer() {
                 </>
             ),
             children:
-                "This action will not affect your wallet balance, and will create a goal for you to reach",
+                "This action will create a goal for you to reach. This action will not affect your wallet balance",
             onConfirm: () => {
                 const money = amountRef.current?.value ?? 0;
 

@@ -55,7 +55,7 @@ export default function AddMoneyDrawer() {
                 </>
             ),
             children:
-                "This action will add the total amount specify to your account.",
+                "This action will add the total amount specified to your account.",
             onConfirm: () => {
                 const money = amountRef.current?.value ?? 0;
 

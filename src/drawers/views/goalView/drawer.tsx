@@ -27,7 +27,7 @@ export default function ViewGoalDrawer() {
 
     const deleteGoalClick = () => {
         OpenConfirmationModal({
-            title: "Delete Goal",
+            title: "Delete Goal?",
             theme,
             onConfirm: async () => {
                 close();
