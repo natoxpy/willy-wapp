@@ -25,17 +25,6 @@ export default function ViewGoalDrawer() {
     const { findById, deleteTransaction } = useTransactions();
     const { theme } = useTheme();
 
-    const deleteTransactionClick = () => {
-        OpenConfirmationModal({
-            title: "Delete Goal",
-            theme,
-            onConfirm: async () => {
-                close();
-                await deleteTransaction(uid);
-            },
-        });
-    };
-
     const transaction = findById(uid);
 
     return (
@@ -62,15 +51,6 @@ export default function ViewGoalDrawer() {
                     </Accordion.Panel>
                 </CAccordionItem>
             </Accordion>
-
-            <Space h={17} />
-            <Stack>
-                <Center>
-                    <CancelButton onClick={deleteTransactionClick}>
-                        Delete
-                    </CancelButton>
-                </Center>
-            </Stack>
         </Container>
     );
 }

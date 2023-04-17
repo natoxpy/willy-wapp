@@ -113,11 +113,11 @@ export default function CreateBudgetDrawer() {
                 <>
                     Confirm that{" "}
                     {currency(amountRef.current?.value ?? 0).format()} will be
-                    remove to your account
+                    removed from your wallet
                 </>
             ),
             children:
-                "This action will remove the total amount specify to your account to create a budget.",
+                "This action will remove the total amount specified from your wallet to create a budget.",
             onConfirm: () => {
                 const money = amountRef.current?.value ?? 0;
 
