@@ -6,6 +6,7 @@ import {
     ScrollArea,
     Image,
     Container,
+    Space,
 } from "@mantine/core";
 import { IconSend } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
@@ -16,6 +17,8 @@ import { Message } from "./messageComp";
 import { ContinuesMatchMaxWidth } from "@/utils";
 import { CTextInput } from "@/CustomComponents/CTextInput";
 import { ActionIconBtn } from "@/drySystems/ActionIconBtn";
+import { CText } from "@/CustomComponents/CText";
+import { CBadge } from "@/CustomComponents/CBadge";
 
 function AssistantMessagesArea({
     scrollToBottom,
@@ -30,7 +33,7 @@ function AssistantMessagesArea({
     }, [messages]);
 
     return (
-        <Box h="calc(100vh - calc(170px + 0px))">
+        <Box h="calc(100vh - calc(210px + 0px))">
             {messages.map((message, index) => {
                 if (!message.content) return;
                 if (message.role == "system") return;
@@ -91,6 +94,14 @@ function AssistantChatbox({ scrollToBottom }: { scrollToBottom: () => void }) {
 
     return (
         <Box>
+            <CText>
+                <CBadge variant="red">
+                    there is many problem we are working hard to fix
+                </CBadge>
+            </CText>
+
+            <Space h={10} />
+
             <Flex justify={"center"} align="center">
                 <CTextInput
                     placeholder="Message for assistant"
@@ -144,7 +155,7 @@ export default function PersonalAssistant() {
                 maxWidth: "100vw",
                 padding: "25px",
                 overflow: "hidden",
-                height: "calc(100vh - 55px)",
+                height: "calc(100vh - 50px)",
             })}
         >
             {/* <Flex justify={"center"}>
