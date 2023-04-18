@@ -30,7 +30,7 @@ import {
 } from "@/firebase/firestore";
 import { GetServerSideProps } from "next";
 import { InferGetServerSidePropsType } from "next";
-
+import { Analytics } from "@vercel/analytics/react";
 function DrawerProviders({ children }: { children: React.ReactNode }) {
     return (
         <>
@@ -150,6 +150,7 @@ function App({ Component, pageProps }: AppProps) {
                     <Component {...pageProps} />
                 </Providers>
             </Mantine>
+            <Analytics />
         </div>
     );
 }
