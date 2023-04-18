@@ -93,9 +93,6 @@ export default function ViewGoalDrawer() {
                     <CancelButton ml="lg" onClick={deleteGoalClick}>
                         Give up
                     </CancelButton>
-                    {/* <CancelButton ml="lg" onClick={deleteGoalClick}>
-                        Delete
-                    </CancelButton> */}
                 </Center>
             </Stack>
         </Container>
