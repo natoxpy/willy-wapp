@@ -1,38 +1,38 @@
 import { BaseTheme } from "./base.theme";
 
-export const babyPinkTheme: BaseTheme = {
+const PinkTheme: BaseTheme = {
     textColor: "#333333",
     textShadowColor: "rgba(255, 255, 255, 0.5)",
-    segundaryTextColor: "#555555",
+    secondaryTextColor: "#555555",
     dividerColor: "rgba(0, 0, 0, 0.1)",
     hoverColor: "rgba(0, 0, 0, 0.1)",
-    backgroundColor: "#FFFFFF",
-    buttonBackgroundColor: "#333333",
+    backgroundColor: "#FCEFF1",
+    buttonBackgroundColor: "#FFC1CC",
     buttonLabelColor: "#FFFFFF",
-    buttonActiveBackgroundColor: "#555555",
+    buttonActiveBackgroundColor: "#FFA7B9",
     buttonActiveLabelColor: "#FFFFFF",
-    loadingDotsColor: "#333333",
+    loadingDotsColor: "#FFC1CC",
 
     navbar: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#FCEFF1",
         iconColor: "#555555",
-        borderColor: "rgba(0, 0, 0, 0.1)",
-        hoverColor: "rgba(0, 0, 0, 0.1)",
-        backgroundSelectedNavLinkColor: "#7289DA",
-        NavbarOpenCoverPageOverlayBackgroundColor: "rgba(255, 255, 255, 0.3)",
+        borderColor: "rgba(255, 192, 205, 0.3)",
+        hoverColor: "rgba(255, 192, 205, 0.3)",
+        backgroundSelectedNavLinkColor: "#FFC1CC",
+        NavbarOpenCoverPageOverlayBackgroundColor: "rgba(252, 239, 241, 0.3)",
         userDropdown: {
             logout: {
                 textColor: "#333333",
-                hoverColor: "rgba(0, 0, 0, 0.1)",
+                hoverColor: "rgba(255, 192, 205, 0.3)",
             },
         },
     },
 
     actionButton: {
-        backgroundColor: "#333333",
+        backgroundColor: "#F06292",
         labelColor: "#FFFFFF",
-        activeBackgroundColor: "#677BC4",
-        disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+        activeBackgroundColor: "#FF8A80",
+        disabledBackgroundColor: "rgba(240, 98, 146, 0.5)",
         disabledLabelColor: "rgba(255, 255, 255, 0.5)",
     },
 
@@ -48,7 +48,6 @@ export const babyPinkTheme: BaseTheme = {
             backgroundColor: "#E74C3C",
             activeBackgroundColor: "#C0392B",
             disabledBackgroundColor: "rgba(231, 76, 60, 0.5)",
-
             disabledLabelColor: "rgba(255, 255, 255, 0.5)",
             labelColor: "#FFFFFF",
         },
@@ -60,9 +59,9 @@ export const babyPinkTheme: BaseTheme = {
             labelColor: "#FFFFFF",
         },
         primary: {
-            backgroundColor: "#7289DA",
-            activeBackgroundColor: "#677BC4",
-            disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+            backgroundColor: "#FFB6C1",
+            activeBackgroundColor: "#FF69B4",
+            disabledBackgroundColor: "rgba(255, 182, 193, 0.5)",
             disabledLabelColor: "rgba(255, 255, 255, 0.5)",
             labelColor: "#FFFFFF",
         },
@@ -79,30 +78,30 @@ export const babyPinkTheme: BaseTheme = {
     },
 
     cancelButton: {
-        backgroundColor: "#7289DA",
+        backgroundColor: "#FF6961",
         labelColor: "#FFFFFF",
         boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.2)",
-        activeBackgroundColor: "#677BC4",
-        hoverBackgroundColor: "#7289DA",
-        disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+        activeBackgroundColor: "#E85850",
+        hoverBackgroundColor: "#FF6961",
+        disabledBackgroundColor: "rgba(255, 105, 97, 0.5)",
         disabledLabelColor: "rgba(255, 255, 255, 0.5)",
     },
 
     chatMessage: {
         userMessage: {
-            backgroundColor: "#333333",
+            backgroundColor: "#F699B8",
             textColor: "#FFFFFF",
         },
         botMessage: {
-            backgroundColor: "#333333",
-            textColor: "#FFFFFF",
+            backgroundColor: "#FFD1D1",
+            textColor: "#333333",
         },
     },
 
     card: {
-        backgroundColor: "#FFFFFF",
-        borderColor: "rgba(0, 0, 0, 0.1)",
-        boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.2)",
+        backgroundColor: "#FFF4F4",
+        borderColor: "#FECFD7",
+        boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.1)",
         titleColor: "#333333",
         subtitleColor: "#555555",
         contentColor: "#333333",
@@ -115,39 +114,41 @@ export const babyPinkTheme: BaseTheme = {
 
     alerts: {
         error: {
-            backgroundColor: "#FFB6B6",
-            titleColor: "#B22222",
+            backgroundColor: "#FCD7D7",
+            titleColor: "#E53E3E",
             textColor: "#555555",
         },
         warning: {
-            backgroundColor: "#F0E68C",
-            titleColor: "#555555",
+            backgroundColor: "#FEEBC8",
+            titleColor: "#CA8A04",
             textColor: "#555555",
         },
         info: {
-            backgroundColor: "#6B8E23",
-            titleColor: "#FFFFFF",
+            backgroundColor: "#A7F3D0",
+            titleColor: "#1F9D55",
             textColor: "#555555",
         },
         success: {
-            backgroundColor: "#90EE90",
-            titleColor: "#555555",
+            backgroundColor: "#C6F6D5",
+            titleColor: "#059669",
             textColor: "#555555",
         },
     },
 
     badges: {
         red: {
-            backgroundColor: "#FFB6B6",
-            textColor: "#555555",
+            backgroundColor: "#FFEBEE",
+            textColor: "#E53935",
         },
         green: {
-            backgroundColor: "#90EE90",
-            textColor: "#555555",
+            backgroundColor: "#E8F5E9",
+            textColor: "#43A047",
         },
         blue: {
-            backgroundColor: "#6B8E23",
-            textColor: "#555555",
+            backgroundColor: "#E3F2FD",
+            textColor: "#2196F3",
         },
     },
 };
+
+export { PinkTheme };

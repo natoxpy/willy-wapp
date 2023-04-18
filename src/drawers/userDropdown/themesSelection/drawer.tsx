@@ -42,6 +42,8 @@ export default function ThemesDrawer() {
             <Stack>
                 <ThemeBtn name="dark" />
                 <ThemeBtn name="light" />
+                <ThemeBtn name="pink" />
+                <ThemeBtn name="purple" />
                 <Center>
                     <CText>More themes coming soon.</CText>
                 </Center>

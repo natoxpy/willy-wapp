@@ -3,7 +3,7 @@ import { BaseTheme } from "./base.theme";
 const DarkTheme: BaseTheme = {
     textColor: "#E5E5E5",
     textShadowColor: "rgba(0, 0, 0, 0.5)",
-    segundaryTextColor: "#B9BBBE",
+    secondaryTextColor: "#B9BBBE",
     dividerColor: "rgba(255, 255, 255, 0.1)",
     hoverColor: "rgba(255, 255, 255, 0.1)",
     backgroundColor: "#36393F",

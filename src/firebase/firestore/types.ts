@@ -35,6 +35,8 @@ export interface Budget {
     time_limit: Timestamp | null;
 
     uid: string;
+
+    status: "active" | "completed" | "timeLimitReached";
 }
 
 export interface Goal {
@@ -51,6 +53,8 @@ export interface Goal {
     timeLimit: Timestamp;
 
     uid: string;
+
+    status: "active" | "completed" | "givenUp" | "timeLimitReached";
 }
 
 export interface Transaction {

@@ -50,8 +50,6 @@ export function GoalsProvider({ children }: { children: React.ReactNode }) {
         if (queried) return;
         if (!loggedin) return;
 
-        console.log("loading goals...");
-
         setQueried(true);
         getDocs(query(goalsCol, where("userUid", "==", user?.uid))).then(
             (snap) => {

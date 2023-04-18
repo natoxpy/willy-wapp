@@ -3,36 +3,36 @@ import { BaseTheme } from "./base.theme";
 const PurpleTheme: BaseTheme = {
     textColor: "#333333",
     textShadowColor: "rgba(255, 255, 255, 0.5)",
-    segundaryTextColor: "#555555",
+    secondaryTextColor: "#555555",
     dividerColor: "rgba(0, 0, 0, 0.1)",
     hoverColor: "rgba(0, 0, 0, 0.1)",
-    backgroundColor: "#FFFFFF",
-    buttonBackgroundColor: "#333333",
+    backgroundColor: "#F2EBF6",
+    buttonBackgroundColor: "#9C27B0",
     buttonLabelColor: "#FFFFFF",
-    buttonActiveBackgroundColor: "#555555",
+    buttonActiveBackgroundColor: "#7B1FA2",
     buttonActiveLabelColor: "#FFFFFF",
-    loadingDotsColor: "#333333",
+    loadingDotsColor: "#9C27B0",
 
     navbar: {
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#F2EBF6",
         iconColor: "#555555",
-        borderColor: "rgba(0, 0, 0, 0.1)",
-        hoverColor: "rgba(0, 0, 0, 0.1)",
-        backgroundSelectedNavLinkColor: "#7289DA",
-        NavbarOpenCoverPageOverlayBackgroundColor: "rgba(255, 255, 255, 0.3)",
+        borderColor: "rgba(156, 39, 176, 0.4)",
+        hoverColor: "rgba(156, 39, 176, 0.4)",
+        backgroundSelectedNavLinkColor: "#C552D9",
+        NavbarOpenCoverPageOverlayBackgroundColor: "rgba(242, 235, 246, 0.3)",
         userDropdown: {
             logout: {
                 textColor: "#333333",
-                hoverColor: "rgba(0, 0, 0, 0.1)",
+                hoverColor: "rgba(156, 39, 176, 0.3)",
             },
         },
     },
 
     actionButton: {
-        backgroundColor: "#333333",
+        backgroundColor: "#9C27B0",
         labelColor: "#FFFFFF",
-        activeBackgroundColor: "#677BC4",
-        disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+        activeBackgroundColor: "#7B1FA2",
+        disabledBackgroundColor: "rgba(156, 39, 176, 0.5)",
         disabledLabelColor: "rgba(255, 255, 255, 0.5)",
     },
 
@@ -59,9 +59,9 @@ const PurpleTheme: BaseTheme = {
             labelColor: "#FFFFFF",
         },
         primary: {
-            backgroundColor: "#7289DA",
-            activeBackgroundColor: "#677BC4",
-            disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+            backgroundColor: "#9C27B0",
+            activeBackgroundColor: "#7B1FA2",
+            disabledBackgroundColor: "rgba(156, 39, 176, 0.5)",
             disabledLabelColor: "rgba(255, 255, 255, 0.5)",
             labelColor: "#FFFFFF",
         },
@@ -78,30 +78,30 @@ const PurpleTheme: BaseTheme = {
     },
 
     cancelButton: {
-        backgroundColor: "#7289DA",
+        backgroundColor: "#FF6961",
         labelColor: "#FFFFFF",
         boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.2)",
-        activeBackgroundColor: "#677BC4",
-        hoverBackgroundColor: "#7289DA",
-        disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+        activeBackgroundColor: "#E85850",
+        hoverBackgroundColor: "#FF6961",
+        disabledBackgroundColor: "rgba(255, 105, 97, 0.5)",
         disabledLabelColor: "rgba(255, 255, 255, 0.5)",
     },
 
     chatMessage: {
         userMessage: {
-            backgroundColor: "#333333",
-            textColor: "#FFFFFF",
+            backgroundColor: "#D074E1",
+            textColor: "#F9EEFB",
         },
         botMessage: {
-            backgroundColor: "#333333",
-            textColor: "#FFFFFF",
+            backgroundColor: "#9C27B0",
+            textColor: "#F9EEFB",
         },
     },
 
     card: {
-        backgroundColor: "#FFFFFF",
-        borderColor: "rgba(0, 0, 0, 0.1)",
-        boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.2)",
+        backgroundColor: "#F2EBF6",
+        borderColor: "#D074E1",
+        boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.1)",
         titleColor: "#333333",
         subtitleColor: "#555555",
         contentColor: "#333333",
@@ -114,39 +114,39 @@ const PurpleTheme: BaseTheme = {
 
     alerts: {
         error: {
-            backgroundColor: "#FFB6B6",
-            titleColor: "#B22222",
+            backgroundColor: "#FCD7D7",
+            titleColor: "#E53E3E",
             textColor: "#555555",
         },
         warning: {
-            backgroundColor: "#F0E68C",
-            titleColor: "#555555",
+            backgroundColor: "#FEEBC8",
+            titleColor: "#CA8A04",
             textColor: "#555555",
         },
         info: {
-            backgroundColor: "#6B8E23",
-            titleColor: "#FFFFFF",
+            backgroundColor: "#A7F3D0",
+            titleColor: "#1F9D55",
             textColor: "#555555",
         },
         success: {
-            backgroundColor: "#90EE90",
-            titleColor: "#555555",
+            backgroundColor: "#C6F6D5",
+            titleColor: "#059669",
             textColor: "#555555",
         },
     },
 
     badges: {
         red: {
-            backgroundColor: "#FFB6B6",
-            textColor: "#555555",
+            backgroundColor: "#FFEBEE",
+            textColor: "#E53935",
         },
         green: {
-            backgroundColor: "#90EE90",
-            textColor: "#555555",
+            backgroundColor: "#E8F5E9",
+            textColor: "#43A047",
         },
         blue: {
-            backgroundColor: "#6B8E23",
-            textColor: "#555555",
+            backgroundColor: "#E3F2FD",
+            textColor: "#2196F3",
         },
     },
 };

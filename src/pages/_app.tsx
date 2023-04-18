@@ -28,6 +28,8 @@ import {
     GoalsProvider,
     TransactionsProvider,
 } from "@/firebase/firestore";
+import { GetServerSideProps } from "next";
+import { InferGetServerSidePropsType } from "next";
 
 function DrawerProviders({ children }: { children: React.ReactNode }) {
     return (
@@ -57,10 +59,16 @@ function FirebaseProviders({ children }: { children: React.ReactNode }) {
     );
 }
 
-function Providers({ children }: { children: React.ReactNode }) {
+function Providers({
+    children,
+    themeStored,
+}: {
+    children: React.ReactNode;
+    themeStored: string;
+}) {
     return (
         <div>
-            <ThemeProvider>
+            <ThemeProvider themeStored={themeStored}>
                 <FirebaseProviders>
                     <AssistantProvider>
                         <DrawerProviders>
@@ -88,10 +96,6 @@ function Mantine({
         setColorScheme(value || (colorScheme === "dark" ? "light" : "dark"));
     };
 
-    useEffect(() => {
-        document.cookie = serialize("theme", colorScheme);
-    }, [colorScheme]);
-
     const myTheme: MantineThemeOverride = {};
 
     return (
@@ -100,31 +104,7 @@ function Mantine({
             toggleColorScheme={toggleColorScheme}
         >
             <UserAuthProvider>
-                <MantineProvider
-                    withGlobalStyles
-                    withNormalizeCSS
-                    theme={{
-                        colors: {
-                            hoverColor: ["green"],
-                        },
-                    }}
-
-                    // theme={{
-                    //     colorScheme,
-                    //     breakpoints: {
-                    //         // xs: "480px",
-                    //         // sm: "768px",
-                    //         // md: "1024px",
-                    //         // lg: "1184px",
-                    //         // xl: "1440px",
-                    //         xs: "30em",
-                    //         sm: "48em",
-                    //         md: "64em",
-                    //         lg: "74em",
-                    //         xl: "90em",
-                    //     },
-                    // }}
-                >
+                <MantineProvider withGlobalStyles withNormalizeCSS>
                     <Notifications zIndex={999999} position="top-right" />
 
                     <ModalsProvider>
@@ -166,7 +146,7 @@ function App({ Component, pageProps }: AppProps) {
             <AppHead />
 
             <Mantine pageProps={pageProps}>
-                <Providers>
+                <Providers themeStored={pageProps.theme}>
                     <Component {...pageProps} />
                 </Providers>
             </Mantine>

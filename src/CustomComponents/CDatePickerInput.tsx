@@ -49,7 +49,7 @@ export function CDatePickerInput(props: DatePickerInputProps) {
                     border: "1px solid " + theme.navbar.borderColor,
                 },
                 label: {
-                    color: theme.segundaryTextColor,
+                    color: theme.secondaryTextColor,
                 },
                 required: {
                     color: theme.cancelButton.backgroundColor,
@@ -84,7 +84,7 @@ export function CDatePickerInput(props: DatePickerInputProps) {
                         background: theme.hoverColor,
                     },
                     "&[data-disabled]": {
-                        color: theme.segundaryTextColor,
+                        color: theme.secondaryTextColor,
                     },
                 },
             }}

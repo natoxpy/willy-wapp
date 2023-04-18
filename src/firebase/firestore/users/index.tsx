@@ -44,8 +44,6 @@ export function UsersFireStoreProvider({
         if (!loggedin) return;
         const users = collection(db, "users");
 
-        console.log("loading user...");
-
         getDocs(query(users, where("uid", "==", user?.uid))).then((snap) =>
             snap.docs.forEach((doc) => {
                 setUserDoc(doc.data() as UserDocument);

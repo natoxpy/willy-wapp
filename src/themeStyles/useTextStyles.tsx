@@ -10,7 +10,7 @@ export function useThemeText() {
             textShadow: "0 1.3px 1.5px " + theme.textShadowColor,
         },
         textStylesDimmed: {
-            color: theme.segundaryTextColor,
+            color: theme.secondaryTextColor,
             textShadow: "0 1.3px 1.5px " + theme.textShadowColor,
         },
     }));

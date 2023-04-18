@@ -7,7 +7,9 @@ import { CProgress } from "@/CustomComponents/CProgress";
 import { CText } from "@/CustomComponents/CText";
 import { OpenConfirmationModal } from "@/CustomComponents/medals/ConfirmationModal";
 import { TagsBadges } from "@/drySystems/accordionTagsAdder";
-import { useGoals } from "@/firebase/firestore";
+import { ActionButton } from "@/drySystems/ActionButton";
+import { useAuthUser } from "@/firebase/auth/authUser";
+import { useGoals, useUserFireStore } from "@/firebase/firestore";
 import { useTheme } from "@/themes";
 import {
     Accordion,
@@ -23,14 +25,27 @@ import { UseViewGoalDrawer } from "./state";
 export default function ViewGoalDrawer() {
     const { uid, close } = UseViewGoalDrawer();
     const { findById, deleteGoal } = useGoals();
+    const { increaseMoney } = useUserFireStore();
     const { theme } = useTheme();
 
     const deleteGoalClick = () => {
         OpenConfirmationModal({
-            title: "Delete Goal?",
+            title: "Give up on Goal?",
+            children: (
+                <>
+                    <CText>
+                        Are you sure you want to give up on this goal?
+                    </CText>
+                    <CText>
+                        {currency(findById(uid)?.filledAmount ?? 0).format()}{" "}
+                        will be added back to your wallet.
+                    </CText>
+                </>
+            ),
             theme,
             onConfirm: async () => {
                 close();
+                increaseMoney(findById(uid)?.filledAmount ?? 0);
                 await deleteGoal(uid);
             },
         });
@@ -75,9 +90,12 @@ export default function ViewGoalDrawer() {
             <Space h={17} />
             <Stack>
                 <Center>
-                    <CancelButton onClick={deleteGoalClick}>
-                        Delete
+                    <CancelButton ml="lg" onClick={deleteGoalClick}>
+                        Give up
                     </CancelButton>
+                    {/* <CancelButton ml="lg" onClick={deleteGoalClick}>
+                        Delete
+                    </CancelButton> */}
                 </Center>
             </Stack>
         </Container>

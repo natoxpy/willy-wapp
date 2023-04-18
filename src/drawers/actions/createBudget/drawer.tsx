@@ -127,6 +127,7 @@ export default function CreateBudgetDrawer() {
                     amount: Number(money),
                     title: titleRef.current?.value ?? "",
                     tags: tags,
+                    status: "active",
                     type: budgetType,
                     nextRecurrencyReset:
                         budgetType == "recurrent"

@@ -52,8 +52,6 @@ export function BudgetsProvider({ children }: { children: React.ReactNode }) {
         if (queried) return;
         if (!loggedin) return;
 
-        console.log("loading budgets...");
-
         setQueried(true);
         getDocs(query(budgetsCol, where("userUid", "==", user?.uid))).then(
             (snap) => {

@@ -1,7 +1,7 @@
 export interface BaseTheme {
     textColor: string;
     textShadowColor: string;
-    segundaryTextColor: string;
+    secondaryTextColor: string;
     dividerColor: string;
     hoverColor: string;
     backgroundColor: string;

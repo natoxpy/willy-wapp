@@ -3,15 +3,15 @@ import { BaseTheme } from "./base.theme";
 const LightTheme: BaseTheme = {
     textColor: "#333333",
     textShadowColor: "rgba(255, 255, 255, 0.5)",
-    segundaryTextColor: "#555555",
+    secondaryTextColor: "#555555",
     dividerColor: "rgba(0, 0, 0, 0.1)",
     hoverColor: "rgba(0, 0, 0, 0.1)",
     backgroundColor: "#FFFFFF",
-    buttonBackgroundColor: "#333333",
+    buttonBackgroundColor: "#7289DA",
     buttonLabelColor: "#FFFFFF",
-    buttonActiveBackgroundColor: "#555555",
+    buttonActiveBackgroundColor: "#677BC4",
     buttonActiveLabelColor: "#FFFFFF",
-    loadingDotsColor: "#333333",
+    loadingDotsColor: "#7289DA",
 
     navbar: {
         backgroundColor: "#FFFFFF",
@@ -29,10 +29,10 @@ const LightTheme: BaseTheme = {
     },
 
     actionButton: {
-        backgroundColor: "#333333",
+        backgroundColor: "#677BC4",
         labelColor: "#FFFFFF",
-        activeBackgroundColor: "#677BC4",
-        disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+        activeBackgroundColor: "#90a9e0",
+        disabledBackgroundColor: "rgba(103, 123, 196, 0.5)",
         disabledLabelColor: "rgba(255, 255, 255, 0.5)",
     },
 
@@ -59,9 +59,9 @@ const LightTheme: BaseTheme = {
             labelColor: "#FFFFFF",
         },
         primary: {
-            backgroundColor: "#333333",
-            activeBackgroundColor: "#555555",
-            disabledBackgroundColor: "rgba(51, 51, 51, 0.5)",
+            backgroundColor: "#7289DA",
+            activeBackgroundColor: "#677BC4",
+            disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
             disabledLabelColor: "rgba(255, 255, 255, 0.5)",
             labelColor: "#FFFFFF",
         },
@@ -78,30 +78,30 @@ const LightTheme: BaseTheme = {
     },
 
     cancelButton: {
-        backgroundColor: "#7289DA",
+        backgroundColor: "#FF6961",
         labelColor: "#FFFFFF",
         boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.2)",
-        activeBackgroundColor: "#677BC4",
-        hoverBackgroundColor: "#7289DA",
-        disabledBackgroundColor: "rgba(114, 137, 218, 0.5)",
+        activeBackgroundColor: "#E85850",
+        hoverBackgroundColor: "#FF6961",
+        disabledBackgroundColor: "rgba(255, 105, 97, 0.5)",
         disabledLabelColor: "rgba(255, 255, 255, 0.5)",
     },
 
     chatMessage: {
         userMessage: {
-            backgroundColor: "#333333",
+            backgroundColor: "#2196F3",
             textColor: "#FFFFFF",
         },
         botMessage: {
-            backgroundColor: "#333333",
-            textColor: "#FFFFFF",
+            backgroundColor: "#e3e3e3",
+            textColor: "#242424",
         },
     },
 
     card: {
-        backgroundColor: "#FFFFFF",
-        borderColor: "rgba(0, 0, 0, 0.1)",
-        boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.2)",
+        backgroundColor: "#F8F8F8",
+        borderColor: "#E1E1E1",
+        boxShadow: "0px 1px 5px rgba(0, 0, 0, 0.1)",
         titleColor: "#333333",
         subtitleColor: "#555555",
         contentColor: "#333333",
@@ -114,39 +114,39 @@ const LightTheme: BaseTheme = {
 
     alerts: {
         error: {
-            backgroundColor: "#FFB6B6",
-            titleColor: "#B22222",
+            backgroundColor: "#FCD7D7",
+            titleColor: "#E53E3E",
             textColor: "#555555",
         },
         warning: {
-            backgroundColor: "#F0E68C",
-            titleColor: "#555555",
+            backgroundColor: "#FEEBC8",
+            titleColor: "#CA8A04",
             textColor: "#555555",
         },
         info: {
-            backgroundColor: "#6B8E23",
-            titleColor: "#FFFFFF",
+            backgroundColor: "#A7F3D0",
+            titleColor: "#1F9D55",
             textColor: "#555555",
         },
         success: {
-            backgroundColor: "#90EE90",
-            titleColor: "#555555",
+            backgroundColor: "#C6F6D5",
+            titleColor: "#059669",
             textColor: "#555555",
         },
     },
 
     badges: {
         red: {
-            backgroundColor: "#FFB6B6",
-            textColor: "#555555",
+            backgroundColor: "#FFEBEE",
+            textColor: "#E53935",
         },
         green: {
-            backgroundColor: "#90EE90",
-            textColor: "#555555",
+            backgroundColor: "#E8F5E9",
+            textColor: "#43A047",
         },
         blue: {
-            backgroundColor: "#6B8E23",
-            textColor: "#555555",
+            backgroundColor: "#E3F2FD",
+            textColor: "#2196F3",
         },
     },
 };

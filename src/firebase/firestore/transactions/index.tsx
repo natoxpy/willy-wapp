@@ -53,8 +53,6 @@ export function TransactionsProvider({
         if (queried) return;
         if (!loggedin) return;
 
-        console.log("loading transactions...");
-
         setQueried(true);
         getDocs(
             query(transactionsCol, where("user_uid", "==", user?.uid))

@@ -20,12 +20,12 @@ export function CTextInput({ Cref, ...props }: CTextInputProps) {
                     border: "1px solid " + theme.dividerColor,
                     "&:disabled": {
                         backgroundColor: theme.backgroundColor,
-                        color: theme.segundaryTextColor,
-                        border: "1px solid " + theme.segundaryTextColor,
+                        color: theme.secondaryTextColor,
+                        border: "1px solid " + theme.secondaryTextColor,
                     },
                 },
                 label: {
-                    color: theme.segundaryTextColor,
+                    color: theme.secondaryTextColor,
                 },
             }}
         />

@@ -1,11 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { DarkTheme } from "./dark.theme";
 import { LightTheme } from "./light.theme";
-// import { babyPinkTheme } from "./pink.theme";
-// import { PurpleTheme } from "./purple.theme";
+import { PinkTheme } from "./pink.theme";
+import { PurpleTheme } from "./purple.theme";
 
 // type Themes = typeof DarkTheme | typeof LightTheme | typeof PurpleTheme;
-type Themes = typeof DarkTheme | typeof LightTheme;
+type Themes = typeof DarkTheme | typeof LightTheme | typeof PinkTheme;
 export type ThemeSchema = "dark" | "light" | "purple" | "pink";
 
 interface ContextType {
@@ -22,15 +22,38 @@ const ThemeContext = createContext<ContextType>({
 
 const useTheme = () => useContext(ThemeContext);
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    let [themeSchema, setThemeSchema] = useState<ThemeSchema>("dark");
-    let [theme, setTheme] = useState(DarkTheme);
+export function ThemeProvider({
+    children,
+    themeStored,
+}: {
+    children: React.ReactNode;
+    themeStored: string;
+}) {
+    if (themeStored == undefined) themeStored = "dark";
+
+    let [themeSchema, setThemeSchema] = useState<ThemeSchema>(
+        themeStored as ThemeSchema
+    );
+
+    let [theme, setTheme] = useState(
+        themeStored == "dark"
+            ? DarkTheme
+            : themeStored == "light"
+            ? LightTheme
+            : themeStored == "pink"
+            ? PinkTheme
+            : themeStored == "purple"
+            ? PurpleTheme
+            : DarkTheme
+    );
 
     useEffect(() => {
         if (themeSchema == "dark") setTheme(DarkTheme);
         if (themeSchema == "light") setTheme(LightTheme);
-        // if (themeSchema == "purple") setTheme(PurpleTheme);
-        // if (themeSchema == "pink") setTheme(babyPinkTheme);
+        if (themeSchema == "pink") setTheme(PinkTheme);
+        if (themeSchema == "purple") setTheme(PurpleTheme);
+
+        window.document.cookie = `theme=${themeSchema};path=/;max-age=31536000`;
     }, [themeSchema]);
 
     return (

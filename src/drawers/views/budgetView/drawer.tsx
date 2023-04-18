@@ -29,7 +29,7 @@ export default function ViewBudgetDrawer() {
 
     const deleteBudgetClick = () => {
         OpenConfirmationModal({
-            title: "Delete Goal?",
+            title: "Delete Budget?",
             theme,
             onConfirm: async () => {
                 close();

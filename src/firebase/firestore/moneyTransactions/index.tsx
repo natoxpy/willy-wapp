@@ -51,8 +51,6 @@ export function MoneyTransactionsProvider({
         if (queried) return;
         if (!loggedin) return;
 
-        console.log("loading money transactions...");
-
         setQueried(true);
         getDocs(
             query(moneyTransactionsCol, where("userUid", "==", user?.uid))

@@ -10,7 +10,7 @@ function showNotification(theme: BaseTheme, notisProps: NotificationProps) {
                 color: theme.textColor,
             },
             description: {
-                color: theme.segundaryTextColor,
+                color: theme.secondaryTextColor,
             },
         },
         sx: () => ({

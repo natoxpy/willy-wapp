@@ -155,12 +155,12 @@ function LoginTab({
                         backgroundColor: theme.backgroundColor,
                         "&:disabled": {
                             backgroundColor: theme.backgroundColor,
-                            color: theme.segundaryTextColor,
-                            border: "1px solid " + theme.segundaryTextColor,
+                            color: theme.secondaryTextColor,
+                            border: "1px solid " + theme.secondaryTextColor,
                         },
                     },
                     label: {
-                        color: theme.segundaryTextColor,
+                        color: theme.secondaryTextColor,
                     },
                 }}
                 error={passwordErr}
@@ -352,12 +352,12 @@ function SignupTab({
                         backgroundColor: theme.backgroundColor,
                         "&:disabled": {
                             backgroundColor: theme.backgroundColor,
-                            color: theme.segundaryTextColor,
-                            border: "1px solid " + theme.segundaryTextColor,
+                            color: theme.secondaryTextColor,
+                            border: "1px solid " + theme.secondaryTextColor,
                         },
                     },
                     label: {
-                        color: theme.segundaryTextColor,
+                        color: theme.secondaryTextColor,
                     },
                 }}
                 error={errorPassword}

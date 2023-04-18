@@ -114,6 +114,7 @@ export default function CreateGoalDrawer() {
                 addGoal({
                     title: titleRef.current?.value ?? "untitled",
                     amount: Number(money),
+                    status: "active",
                     tags: tags,
                     timeLimit: Timestamp.fromDate(timeLimitDate[1]),
                 });
