@@ -25,6 +25,7 @@
         "@types/cookie": "^0.5.1",
         "@types/react": "18.0.28",
         "@use-gesture/react": "^10.2.24",
+        "@vercel/analytics": "^0.1.11",
         "cookie": "^0.5.0",
         "currency.js": "^2.0.4",
         "dayjs": "^1.11.7",
