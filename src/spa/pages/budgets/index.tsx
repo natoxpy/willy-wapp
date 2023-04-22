@@ -265,23 +265,35 @@ export default function BudgetsPage() {
     };
 
     return (
-        <Box
+        <ScrollArea
+            h="100vh"
             sx={() => ({
                 overflow: "hidden",
-                width: `calc(100vw - ${responsiveCalcChange}px)`,
-                maxWidth: `100vw`,
+                position: "relative",
             })}
         >
-            <TagFiltersHeader filterTags={filterTags} setTags={setFilterTags} />
-            <ScrollArea mb="xl">
-                {budgetsLoading == null ? (
-                    <Center>
-                        <Loader size={40} />
-                    </Center>
-                ) : (
-                    <RenderFilterBudgets />
-                )}
-            </ScrollArea>
-        </Box>
+            <Box
+                sx={() => ({
+                    overflow: "hidden",
+                    width: `calc(100vw - ${responsiveCalcChange}px)`,
+                    maxWidth: `100vw`,
+                    marginBottom: "50px",
+                })}
+            >
+                <TagFiltersHeader
+                    filterTags={filterTags}
+                    setTags={setFilterTags}
+                />
+                <ScrollArea mb="xl">
+                    {budgetsLoading == null ? (
+                        <Center>
+                            <Loader size={40} />
+                        </Center>
+                    ) : (
+                        <RenderFilterBudgets />
+                    )}
+                </ScrollArea>
+            </Box>
+        </ScrollArea>
     );
 }

@@ -217,23 +217,35 @@ export default function GoalsPage() {
     };
 
     return (
-        <Box
+        <ScrollArea
+            h="100vh"
             sx={() => ({
                 overflow: "hidden",
-                width: `calc(100vw - ${responsiveCalcChange}px)`,
-                maxWidth: `100vw`,
+                position: "relative",
             })}
         >
-            <TagFiltersHeader filterTags={filterTags} setTags={setFilterTags} />
-            <ScrollArea mb="xl">
-                {goalsLoading == null ? (
-                    <Center>
-                        <Loader size={40} />
-                    </Center>
-                ) : (
-                    <RenderFilterGoals />
-                )}
-            </ScrollArea>
-        </Box>
+            <Box
+                sx={() => ({
+                    overflow: "hidden",
+                    width: `calc(100vw - ${responsiveCalcChange}px)`,
+                    maxWidth: `100vw`,
+                    marginBottom: "50px",
+                })}
+            >
+                <TagFiltersHeader
+                    filterTags={filterTags}
+                    setTags={setFilterTags}
+                />
+                <ScrollArea mb="xl">
+                    {goalsLoading == null ? (
+                        <Center>
+                            <Loader size={40} />
+                        </Center>
+                    ) : (
+                        <RenderFilterGoals />
+                    )}
+                </ScrollArea>
+            </Box>
+        </ScrollArea>
     );
 }

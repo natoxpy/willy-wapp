@@ -64,22 +64,12 @@ export default function RootDashboard({ route }: { route: string }) {
                 }}
             >
                 <div>
-                    {/* <DrawersLayerPage /> */}
-                    {/* className={classes.baseContainer} */}
-                    {/* {...bind()} */}
                     <div
                         style={{
                             background: theme.backgroundColor,
                             color: theme.textColor,
                         }}
                     >
-                        {/* <LoadingOverlay
-                        visible={router.route == "/dashboard"}
-                        sx={() => ({
-                            zIndex: 3,
-                        })}
-                    /> */}
-
                         <Head>
                             <title>Dashboard</title>
                         </Head>
@@ -92,38 +82,22 @@ export default function RootDashboard({ route }: { route: string }) {
                                 OUserSelect: "none",
                             })}
                         >
-                            {/* <animated.div><NavBar /></animated.div> */}
                             <animated.div>
                                 <Navbar />
                             </animated.div>
                             <Box
-                                onClick={() => {
-                                    //     extendedHandler.close();
-                                }}
                                 sx={() => ({
-                                    // opacity:
-                                    //     navbar.opened && matchMaxWidth("md")
-                                    //         ? 0.5
-                                    //         : 1,
                                     width: "100vw",
                                 })}
                             >
-                                <ScrollArea
-                                    h="100vh"
-                                    sx={() => ({
-                                        overflow: "hidden",
-                                        position: "relative",
-                                    })}
+                                <Box
+                                    pt="lg"
+                                    style={{
+                                        maxWidth: "100vw !important",
+                                    }}
                                 >
-                                    <Box
-                                        pt="lg"
-                                        style={{
-                                            maxWidth: "100vw !important",
-                                        }}
-                                    >
-                                        <Pages activePage={route} />
-                                    </Box>
-                                </ScrollArea>
+                                    <Pages activePage={route} />
+                                </Box>
                             </Box>
                         </Flex>
                     </div>
@@ -141,5 +115,5 @@ export function Pages({ activePage }: { activePage: string }) {
     if (activePage == "transactions") page = <TransactionsPage />;
     if (activePage == "assistant") page = <PersonalAssist />;
 
-    return <div style={{ marginTop: "35px" }}>{page}</div>;
+    return <div style={{ marginTop: "35px", overflow: "hidden" }}>{page}</div>;
 }

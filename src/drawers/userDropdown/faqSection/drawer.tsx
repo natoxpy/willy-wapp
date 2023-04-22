@@ -32,7 +32,7 @@ export default function FAQDrawer() {
             answer: "You can create a budget by clicking on the 'Create Budget' button on the left side of the screen.",
         },
         {
-            question: "Wat are goals?",
+            question: "What are goals?",
             answer: "Goals are a way to keep track of your savings. You can create a goal and add savings to it.",
         },
         {

@@ -3,6 +3,7 @@ import {
     Container,
     Flex,
     Grid,
+    ScrollArea,
     SegmentedControl,
     SimpleGrid,
 } from "@mantine/core";
@@ -80,48 +81,57 @@ export default function Home() {
     const responsiveCalcChange = ContinuesMatchMaxWidth("sm") ? 0 : 329;
 
     return (
-        <Container
-            p={0}
-            m={0}
+        <ScrollArea
+            h="100vh"
             sx={() => ({
                 overflow: "hidden",
-                width: `calc(100vw - ${responsiveCalcChange}px)`,
-                maxWidth: `100vw`,
+                position: "relative",
             })}
         >
-            <Grid>
-                <Grid.Col
-                    sx={() => ({
-                        minWidth: `calc(100vw - ${responsiveCalcChange}px)`,
-                    })}
-                >
-                    <Box>
-                        <Header
+            <Container
+                p={0}
+                m={0}
+                mb={50}
+                sx={() => ({
+                    overflow: "hidden",
+                    width: `calc(100vw - ${responsiveCalcChange}px)`,
+                    maxWidth: `100vw`,
+                })}
+            >
+                <Grid>
+                    <Grid.Col
+                        sx={() => ({
+                            minWidth: `calc(100vw - ${responsiveCalcChange}px)`,
+                        })}
+                    >
+                        <Box>
+                            <Header
+                                activityTimeRange={activityTimeRange}
+                                setActivityTimeRange={setActivityTimeRange}
+                            />
+                        </Box>
+                    </Grid.Col>
+                    <Grid.Col>
+                        <TransactionsHome
+                            responsiveCalcChange={responsiveCalcChange}
                             activityTimeRange={activityTimeRange}
-                            setActivityTimeRange={setActivityTimeRange}
                         />
-                    </Box>
-                </Grid.Col>
-                <Grid.Col>
-                    <TransactionsHome
-                        responsiveCalcChange={responsiveCalcChange}
-                        activityTimeRange={activityTimeRange}
-                    />
-                </Grid.Col>
-                <Grid.Col
-                    sx={() => ({
-                        maxWidth: `calc(100vw - ${responsiveCalcChange}px)`,
-                    })}
-                >
-                    <Box>
-                        {/* <TransactionsGraph
+                    </Grid.Col>
+                    <Grid.Col
+                        sx={() => ({
+                            maxWidth: `calc(100vw - ${responsiveCalcChange}px)`,
+                        })}
+                    >
+                        <Box>
+                            {/* <TransactionsGraph
                             activityType={activityTimeRange}
                             moneyTransactions={moneyTransactions}
                             transactions={transactions}
                         /> */}
-                    </Box>
-                </Grid.Col>
-            </Grid>
-        </Container>
+                        </Box>
+                    </Grid.Col>
+                </Grid>
+            </Container>
+        </ScrollArea>
     );
 }

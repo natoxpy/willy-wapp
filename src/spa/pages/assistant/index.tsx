@@ -1,24 +1,16 @@
-import {
-    Box,
-    SimpleGrid,
-    ActionIcon,
-    Flex,
-    ScrollArea,
-    Image,
-    Container,
-    Space,
-} from "@mantine/core";
+import { Box, Flex, ScrollArea, Container, Space } from "@mantine/core";
 import { IconSend } from "@tabler/icons-react";
 import { useEffect, useRef } from "react";
 import { UseAssistant } from "./state";
 
-import { assistantChatRequest, UseAssistantRequest } from "./assisChatRequest";
+import { UseAssistantRequest } from "./assisChatRequest";
 import { Message } from "./messageComp";
 import { ContinuesMatchMaxWidth } from "@/utils";
 import { CTextInput } from "@/CustomComponents/CTextInput";
 import { ActionIconBtn } from "@/drySystems/ActionIconBtn";
 import { CText } from "@/CustomComponents/CText";
 import { CBadge } from "@/CustomComponents/CBadge";
+import { useTheme } from "@/themes";
 
 function AssistantMessagesArea({
     scrollToBottom,
@@ -33,7 +25,7 @@ function AssistantMessagesArea({
     }, [messages]);
 
     return (
-        <Box h="calc(100vh - calc(210px + 0px))">
+        <Box>
             {messages.map((message, index) => {
                 if (!message.content) return;
                 if (message.role == "system") return;
@@ -63,6 +55,8 @@ function AssistantChatbox({ scrollToBottom }: { scrollToBottom: () => void }) {
     let messageInput = useRef<HTMLInputElement>(null);
     const { messages, setMessages, loading, setLoading } = UseAssistant();
     const { sendMessage } = UseAssistantRequest();
+    const { theme } = useTheme();
+    const responsiveCalcChange = ContinuesMatchMaxWidth("sm") ? 0 : 329;
 
     const handleSendMessage = async () => {
         if (!messageInput.current) return;
@@ -93,14 +87,24 @@ function AssistantChatbox({ scrollToBottom }: { scrollToBottom: () => void }) {
     };
 
     return (
-        <Box>
+        <Box
+            sx={() => ({
+                position: "fixed",
+                bottom: 0,
+                left: responsiveCalcChange,
+                width: `calc(100% - ${responsiveCalcChange}px)`,
+                padding: "15px",
+                boxShadow: "0px -2px 10px rgba(0, 0, 0, 0.1)",
+                background: theme.backgroundColor,
+            })}
+        >
             <CText>
                 <CBadge variant="red">
-                    there is many problem we are working hard to fix
+                    there is many problems we are working hard to fix
                 </CBadge>
             </CText>
 
-            <Space h={10} />
+            <Space h={15} />
 
             <Flex justify={"center"} align="center">
                 <CTextInput
@@ -141,9 +145,6 @@ export default function PersonalAssistant() {
             behavior: "smooth",
         });
 
-    // const scrollToTop = () =>
-    //     viewport.current?.scrollTo({ top: 0, behavior: "smooth" });
-
     const responsiveCalcChange = ContinuesMatchMaxWidth("sm") ? 0 : 329;
 
     return (
@@ -158,15 +159,7 @@ export default function PersonalAssistant() {
                 height: "calc(100vh - 50px)",
             })}
         >
-            {/* <Flex justify={"center"}>
-                <Image
-                    width={150}
-                    src={
-                        "https://media.discordapp.net/attachments/1082403461808803860/1092145471910334625/image.png?width=902&height=897"
-                    }
-                />
-            </Flex> */}
-            <ScrollArea viewportRef={viewport} mb="lg">
+            <ScrollArea viewportRef={viewport} mb="lg" h="calc(100vh - 200px)">
                 <AssistantMessagesArea scrollToBottom={scrollToBottom} />
             </ScrollArea>
             <AssistantChatbox scrollToBottom={scrollToBottom} />

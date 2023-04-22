@@ -11,7 +11,7 @@ import {
     FilterOptionsAccItem,
     TagFiltersHeader,
 } from "@/drySystems/FilterOptions";
-import { useTransactions } from "@/firebase/firestore";
+import { useMoneyTransactions, useTransactions } from "@/firebase/firestore";
 import { Transaction } from "@/firebase/firestore/types";
 import { useTheme } from "@/themes";
 import { BaseTheme } from "@/themes/base.theme";
@@ -231,24 +231,36 @@ export default function TransactionsPage() {
     };
 
     return (
-        <Box
+        <ScrollArea
+            h="100vh"
             sx={() => ({
                 overflow: "hidden",
-                width: `calc(100vw - ${responsiveCalcChange}px)`,
-                maxWidth: `100vw`,
+                position: "relative",
             })}
         >
-            <TagFiltersHeader filterTags={filterTags} setTags={setFilterTags} />
+            <Box
+                sx={() => ({
+                    overflow: "hidden",
+                    width: `calc(100vw - ${responsiveCalcChange}px)`,
+                    maxWidth: `100vw`,
+                    marginBottom: "50px",
+                })}
+            >
+                <TagFiltersHeader
+                    filterTags={filterTags}
+                    setTags={setFilterTags}
+                />
 
-            <ScrollArea mb="xl">
-                {transactionsLoaded == null ? (
-                    <Center>
-                        <Loader size={40} />
-                    </Center>
-                ) : (
-                    <RenderFilterTransactions />
-                )}
-            </ScrollArea>
-        </Box>
+                <ScrollArea mb="xl">
+                    {transactionsLoaded == null ? (
+                        <Center>
+                            <Loader size={40} />
+                        </Center>
+                    ) : (
+                        <RenderFilterTransactions />
+                    )}
+                </ScrollArea>
+            </Box>
+        </ScrollArea>
     );
 }
