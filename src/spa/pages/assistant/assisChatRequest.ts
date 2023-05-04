@@ -186,8 +186,18 @@ export function UseAssistantRequest() {
                 return;
             }
 
+            console.log("content", assistantRes);
+
             setMessages((msgs) => {
-                if (assistantRes == null) return msgs;
+                if (assistantRes == null) {
+                    return [
+                        ...msgs,
+                        {
+                            role: "assistant",
+                            content: "Sorry, I didn't understand that",
+                        },
+                    ];
+                }
 
                 return [
                     ...msgs,

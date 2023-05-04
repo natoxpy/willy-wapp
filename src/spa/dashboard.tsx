@@ -1,18 +1,9 @@
-import {
-    Box,
-    Button,
-    Flex,
-    LoadingOverlay,
-    ScrollArea,
-    Text,
-    useMantineTheme,
-} from "@mantine/core";
+import { Box, Flex, Text } from "@mantine/core";
 import { animated } from "@react-spring/web";
 import Head from "next/head";
-import { createContext, useContext, useEffect } from "react";
+import { useEffect } from "react";
 import Navbar from "./navbar";
-import { useNavbar } from "./navbar/state";
-import { useDashboard, DashboardProvider } from "./dashboardState";
+import { DashboardProvider } from "./dashboardState";
 import {
     HomePage,
     BudgetsPage,
@@ -20,16 +11,9 @@ import {
     TransactionsPage,
     PersonalAssist,
 } from "./pages";
-import { UseQuery } from "@/utils";
 import { useTheme } from "@/themes";
 import { useRouter } from "next/router";
 import { useAuthUser } from "@/firebase/auth/authUser";
-
-const dashboardContext = createContext({
-    navBar: {
-        open: true,
-    },
-});
 
 export default function RootDashboard({ route }: { route: string }) {
     const { theme } = useTheme();

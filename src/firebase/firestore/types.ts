@@ -36,7 +36,7 @@ export interface Budget {
 
     uid: string;
 
-    status: "active" | "completed" | "timeLimitReached";
+    status: "active" | "completed" | "timeLimitReached" | "cancelled";
 }
 
 export interface Goal {
@@ -54,7 +54,7 @@ export interface Goal {
 
     uid: string;
 
-    status: "active" | "completed" | "givenUp" | "timeLimitReached";
+    status: "active" | "completed" | "cancelled" | "timeLimitReached";
 }
 
 export interface Transaction {
